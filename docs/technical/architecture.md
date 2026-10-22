@@ -1,5 +1,7 @@
 # Rethink — Conceptual & Technical Blueprint for MVP Engineering
 
+> **Later implementation decisions (23 October 2026):** the user explicitly approved OI-01..03 and OPS-01..05 implementation rules, including all-correct → Rejected and no C5 after Optional Review. See [current decision record](../decisions.md#current-implementation-decisions--23-october-2026) and [concrete operational contract](../implementation/MVP-COMPLETION.md). Original source-status statements and FR wording below are preserved; implementation approval does not establish expert mathematics, usability or learning-effectiveness acceptance.
+
 > **Document status:** Source-faithful engineering handoff, **not** an approved physical implementation. Derived from original PDF pp. 85–88 (conceptual architecture), 98–103 (implementation objectives & authority), 104–108 (components), 109–117 (process workflows), 118–126 (data, AI, methods), 127–133 (readiness & governance). Tech choices from paper are explicitly `PAPER-PROPOSED`, not locked. OI-01–03 and OPS-01–05 remain unresolved. See `../decisions.md`.
 
 ## 1. Purpose, applicability and source precedence
@@ -296,3 +298,7 @@ An engineering capability is ready for **verification** only if relevant product
 7. Verify all 39 FRs and SC1–SC3, then separately evaluate SC4 and possible learning outcome evidence. Build actionable engineering backlog separately.
 
 **These priorities are derived implementation planning, not a declaration of approved sequencing, existing completed tasks or a new MVP scope.**
+
+## Engineering implementation selection — 23 October 2026
+
+The user selected an API-only Next.js backend hosted on Vercel, primarily serving the existing Swift app, and authorized removing the older broad website backend. Current physical module mapping, verification and removed scope are documented separately in [the implementation report](../implementation/BACKEND-REBUILD.md) and [DEC-2026-10-23-BACKEND](../decisions.md#dec-2026-10-23-backend--replace-legacy-backend-with-a-swiftvercel-recovery-api). This engineering selection implements the logical responsibilities above; it does not amend the source PRD, mandate the paper's candidate stack, resolve OI/OPS dependencies or prove a production deployment.

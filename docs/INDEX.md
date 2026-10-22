@@ -1,5 +1,7 @@
 # Rethink — Documentation Index & Source-of-Truth Map
 
+> **Current implementation update (23 October 2026):** the user explicitly approved OI-01..03 and OPS-01..05 implementation rules plus progress/feedback/concept recognition. See [the completion contract and evidence](implementation/MVP-COMPLETION.md) and [current decisions](decisions.md#current-implementation-decisions--23-october-2026). Source-status statements below retain PDF provenance; expert content review, iOS runtime and user studies remain distinct from implementation approval.
+
 **Purpose:** This is the front door for Codex. Use selective retrieval; do not paste or ingest the full archive for every task. The linked main files are detailed *working derivatives*, while `source/` preserves all 133 uploaded pages for completeness and dispute resolution.
 
 ## Essential files
@@ -23,7 +25,10 @@
 | [`design/ux-writing-acceptance-tests.md`](design/ux-writing-acceptance-tests.md) | Proposed UX-writing QA scenarios covering language, diagnosis copy, validation, errors, accessibility and governance | Proposed test suite; not executed results |
 | [`decisions.md`](decisions.md) | Approved baseline vs OI-01..03 Open, OPS-01..05 Pending, decision procedures and change log | pp. 17, 50–51, 57, 89–97, 103, 110–117, 127–133 |
 | [`implementation/FR-TRACEABILITY.md`](implementation/FR-TRACEABILITY.md) | Current SwiftUI and backend v2 implementation mapping for all 39 approved FRs, with remaining acceptance dependencies | Engineering audit; does not replace PRD approval or verification |
+| [`implementation/MVP-COMPLETION.md`](implementation/MVP-COMPLETION.md) | Approved completion rules, implemented feature inventory, live verification and remaining acceptance work | Current user decisions; original PRD archive unchanged |
+| [`implementation/BACKEND-REBUILD.md`](implementation/BACKEND-REBUILD.md) | Current Swift/Vercel recovery backend, removed legacy scope, module map and verification | User-authorized implementation replacement; OI/OPS remain unresolved |
 | [`implementation/SPL-CONTENT-REVIEW.md`](implementation/SPL-CONTENT-REVIEW.md) | Draft SPL mathematical references, evidence guard fixes, executed checks and proposed item/rubric review decisions | Engineering review; OI/OPS approval remains pending |
+| [`implementation/SESSION-INTEGRITY.md`](implementation/SESSION-INTEGRITY.md) | Saved-evidence validation, interrupted journey scenarios and real v2 PostgreSQL permission/revision checks | Executed engineering checks; OPS-05 remains pending |
 | [`source/ReThink-Documentation-original.pdf`](source/ReThink-Documentation-original.pdf) | Exact canonical uploaded source including tables, spacing and visual layout | All 133 pages |
 
 ## Project in a minute

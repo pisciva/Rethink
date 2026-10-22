@@ -32,11 +32,12 @@ enum AuthServiceError: Error, LocalizedError {
     case missingSession
     case service(String)
     case invalidResponse
+    case invalidSession
 
     var errorDescription: String? {
         switch self {
         case .notConfigured:
-            return "Konfigurasi backend belum diisi di AppConfig.swift."
+            return "Ruang belajar belum siap. Hubungi pengelola aplikasi untuk mengaktifkannya."
         case .emailConfirmationRequired:
             return "Akun dibuat. Cek email untuk konfirmasi, lalu masuk kembali."
         case .missingSession:
@@ -45,6 +46,8 @@ enum AuthServiceError: Error, LocalizedError {
             return message
         case .invalidResponse:
             return "Layanan akun tidak dapat dihubungi."
+        case .invalidSession:
+            return "Sesi ini sudah berakhir. Mulai sesi baru untuk melanjutkan."
         }
     }
 }
@@ -59,6 +62,8 @@ private struct SupabaseRefresh: Encodable {
 }
 
 private struct SupabaseErrorBody: Decodable {
+    let code: String?
+    let error_code: String?
     let error_description: String?
     let msg: String?
     let message: String?
@@ -113,7 +118,9 @@ struct SupabaseAuthClient {
     }
 
     private func request(path: String, query: [URLQueryItem], body: Data) async throws -> SupabaseAuthResponse {
-        guard AppConfig.isConfigured else { throw AuthServiceError.notConfigured }
+        guard !publishableKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              !publishableKey.contains("YOUR_"), baseURL.host != nil,
+              !baseURL.absoluteString.contains("YOUR_PROJECT") else { throw AuthServiceError.notConfigured }
         guard var components = URLComponents(
             url: baseURL.appendingPathComponent(path),
             resolvingAgainstBaseURL: false
@@ -143,6 +150,14 @@ struct SupabaseAuthClient {
         }
         guard (200..<300).contains(http.statusCode) else {
             let errorBody = try? JSONDecoder().decode(SupabaseErrorBody.self, from: data)
+            // Only an explicit rejection of the refresh credentials ends a guest
+            // session. A timeout, 429 or server outage must preserve its identity.
+            let invalidRefreshCodes = ["refresh_token_not_found", "refresh_token_already_used", "invalid_grant", "session_not_found", "session_expired"]
+            if query.contains(where: { $0.name == "grant_type" && $0.value == "refresh_token" }),
+               [400, 401, 403].contains(http.statusCode),
+               invalidRefreshCodes.contains(errorBody?.error_code ?? errorBody?.code ?? errorBody?.error ?? "") {
+                throw AuthServiceError.invalidSession
+            }
             let message = errorBody?.error_description
                 ?? errorBody?.msg
                 ?? errorBody?.message

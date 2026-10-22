@@ -1,5 +1,5 @@
-import { cors, preflight } from '../../../lib/cors.ts';
-import { aiConfig } from '../../../lib/ai.ts';
+import { cors, preflight } from '../../../src/http/cors.ts';
+import { aiConfig } from '../../../src/infrastructure/gateway.ts';
 export const dynamic = 'force-dynamic';
 export function GET(request: Request) {
   const config = aiConfig();

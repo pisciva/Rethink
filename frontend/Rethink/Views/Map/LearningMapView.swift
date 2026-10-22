@@ -42,6 +42,13 @@ struct LearningMapView: View {
                 }
 
                 layerExplanation
+                if selectedLayer == .progress, !journeyStore.resetRequired,
+                   let journey = journeyStore.journey {
+                    if let evidence = journey.presentation?.validation {
+                        ValidationEvidenceView(evidence: evidence)
+                    }
+                    ConceptAchievementView(journey: journey)
+                }
 
                 if let error = journeyStore.errorMessage, !journeyStore.resetRequired {
                     Text(error).font(.subheadline).foregroundStyle(.red)

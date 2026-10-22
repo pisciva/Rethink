@@ -1,5 +1,7 @@
 # Rethink — Gamification Acceptance & QA Test Matrix
 
+> **Implementation update (23 October 2026):** the user approved the three presentation mechanisms and concrete OI/OPS implementation rules in [the current decision record](../decisions.md#current-implementation-decisions--23-october-2026). Source/proposal status statements below are preserved as provenance. Approval is not evidence that UI, expert pedagogy or user-comprehension checks passed.
+
 > **Document ID:** RT-QA-GAM-001 | **Version:** 0.9 PROPOSED  
 > Companion: [`gamification-specification.md`](gamification-specification.md)  
 > **Do not mistake test proposal for approved acceptance.** `GATE` means a source decision is unresolved and the corresponding assertion cannot be signed off until reviewed.  

@@ -1,8 +1,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    // Product-owner development preference: open Home, even before onboarding completion.
-    @State private var isShowingOnboarding = AppConfig.replaysOnboardingForTesting || AppConfig.onboardingPreviewPage != nil
+    @State private var isShowingOnboarding = OnboardingPreferenceStore().shouldPresent(
+        replay: AppConfig.replaysOnboardingForTesting,
+        preview: AppConfig.onboardingPreviewPage != nil,
+        developmentBypass: AppConfig.opensHomeForDevelopment
+    )
     @StateObject private var auth = AuthStore()
     @StateObject private var catalog = CatalogStore()
     @StateObject private var journey = JourneyStore()
@@ -53,9 +56,9 @@ struct ContentView: View {
             }
         }
         .onChange(of: auth.session?.userId) { _, userId in
-            if userId == nil {
-                journey.clear()
-            } else {
+            // Clear on every identity change, including one non-nil user to another.
+            journey.clear()
+            if userId != nil {
                 Task { await journey.load(auth: auth) }
             }
         }
@@ -85,6 +88,7 @@ struct ContentView: View {
                     onRetry: { Task { await catalog.load() } }
                 )
             }
+            .id(navigation.catalogNavigationID)
             .tabItem {
                 Label("Jelajahi", systemImage: navigation.selectedTab == .explore ? "square.grid.2x2.fill" : "square.grid.2x2")
                     .environment(\.symbolVariants, .none)

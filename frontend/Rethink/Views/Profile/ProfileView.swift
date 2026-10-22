@@ -67,6 +67,11 @@ struct ProfileView: View {
 
                 if let error = journeyStore.errorMessage {
                     Text(error).font(.subheadline).foregroundStyle(.red)
+                    if journeyStore.requiresReload {
+                        Button("Muat ulang kemajuan") { Task { await journeyStore.load(auth: auth) } }
+                            .buttonStyle(DarkCapsuleStyle())
+                            .disabled(journeyStore.isLoading || journeyStore.isWorking)
+                    }
                 }
 
                 Button { showResetConfirmation = true } label: {
@@ -82,7 +87,7 @@ struct ProfileView: View {
                     .brandSurface()
                 }
                 .buttonStyle(GentlePressStyle())
-                .disabled(journeyStore.isWorking || journeyStore.isLoading)
+                .disabled(!journeyStore.canMutate)
 
                 Text("Rethink · Satu konsep, satu langkah.")
                     .font(.caption)

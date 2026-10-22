@@ -54,6 +54,11 @@ struct TopicOverviewView: View {
                             .foregroundStyle(.red)
                             .padding(18)
                             .brandSurface()
+                        if journeyStore.requiresReload {
+                            Button("Muat ulang kemajuan") { Task { await journeyStore.load(auth: auth) } }
+                                .buttonStyle(DarkCapsuleStyle())
+                                .disabled(journeyStore.isLoading || journeyStore.isWorking)
+                        }
                     }
                 } else {
                     BrandEmptyState(illustration: "asset 04", title: "Sedang disiapkan", message: "Topik ini belum tersedia untuk pemeriksaan konsep.")
@@ -77,7 +82,7 @@ struct TopicOverviewView: View {
                     .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(DarkCapsuleStyle())
-                .disabled(isStarting || journeyStore.isWorking)
+                .disabled(isStarting || journeyStore.isWorking || journeyStore.isLoading)
                 .padding(.horizontal, 24)
                 .padding(.top, 14)
                 .padding(.bottom, 12)
@@ -120,9 +125,11 @@ struct TopicOverviewView: View {
 
     private func startOrContinue() {
         Task {
+            guard topic.id == "spl", topic.availability == .available else { return }
             isStarting = true
             defer { isStarting = false }
             if journeyStore.journey == nil { await journeyStore.load(auth: auth) }
+            guard !journeyStore.requiresReload else { return }
             guard !journeyStore.resetRequired else {
                 showJourney = true
                 return

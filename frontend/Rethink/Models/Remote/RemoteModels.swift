@@ -113,6 +113,32 @@ struct RemoteJourney: Decodable {
     let attempts: [RemoteAttempt]
     let map: RemoteMap
     let operationalStatus: String
+    let presentation: RemoteJourneyPresentation?
+}
+
+struct RemoteJourneyPresentation: Decodable {
+    let stages: [RemoteJourneyStage]
+    let activity: String
+    let context: RemoteOrigin?
+    let validation: RemoteValidationEvidence?
+    let achievement: RemoteConceptAchievement?
+}
+
+struct RemoteJourneyStage: Decodable, Identifiable {
+    let id: String
+    let label: String
+    let state: String
+}
+
+struct RemoteValidationEvidence: Decodable {
+    let retry: String
+    let transfer: String
+}
+
+struct RemoteConceptAchievement: Decodable, Identifiable {
+    let id: String
+    let concept: String
+    let earnedAt: String
 }
 
 struct RemoteJourneyEnvelope: Decodable {

@@ -18,9 +18,11 @@ final class AuthStore: ObservableObject {
     @Published var errorMessage: String?
 
     private let client: SupabaseAuthClient
-    private let tokenStore: KeychainTokenStore
+    private let tokenStore: any SessionTokenStore
+    private var refreshTask: Task<Void, Error>?
+    private var sessionGeneration = 0
 
-    init(client: SupabaseAuthClient? = nil, tokenStore: KeychainTokenStore? = nil) {
+    init(client: SupabaseAuthClient? = nil, tokenStore: (any SessionTokenStore)? = nil) {
         self.client = client ?? SupabaseAuthClient()
         self.tokenStore = tokenStore ?? KeychainTokenStore()
     }
@@ -40,7 +42,9 @@ final class AuthStore: ObservableObject {
             do {
                 try await refresh()
             } catch {
-                signOut()
+                // refresh() clears only explicitly revoked/expired credentials.
+                // Preserve saved identity during temporary service failures.
+                errorMessage = error.localizedDescription
             }
         }
     }
@@ -54,27 +58,34 @@ final class AuthStore: ObservableObject {
     func signInAnonymously() async {
         guard !isWorking else { return }
         isWorking = true
+        let generation = sessionGeneration
         errorMessage = nil
         defer { isWorking = false }
         do {
             let response = try await client.signInAnonymously()
+            guard generation == sessionGeneration else { return }
             guard response.accessToken != nil else {
                 throw AuthServiceError.missingSession
             }
             try apply(response)
         } catch let authError as AuthServiceError {
+            guard generation == sessionGeneration else { return }
             if case .service(let message) = authError,
                message.lowercased().contains("anonymous") {
-                errorMessage = "Anonymous Sign-Ins belum diaktifkan di Supabase. Aktifkan fitur tersebut di Authentication → Providers, lalu coba lagi."
+                errorMessage = "Layanan sesi tamu belum tersedia. Coba lagi nanti."
             } else {
                 errorMessage = authError.localizedDescription
             }
         } catch {
+            guard generation == sessionGeneration else { return }
             errorMessage = error.localizedDescription
         }
     }
 
     func signOut() {
+        sessionGeneration += 1
+        refreshTask?.cancel()
+        refreshTask = nil
         session = nil
         errorMessage = nil
         tokenStore.clear()
@@ -94,16 +105,31 @@ final class AuthStore: ObservableObject {
     }
 
     private func refresh() async throws {
+        if let refreshTask {
+            try await refreshTask.value
+            return
+        }
         guard let refreshToken = session?.refreshToken else {
             throw AuthServiceError.missingSession
         }
-        do {
-            let response = try await client.refresh(refreshToken: refreshToken)
-            try apply(response)
-        } catch {
-            signOut()
-            throw error
+        let generation = sessionGeneration
+        let task = Task { @MainActor in
+            do {
+                let response = try await self.client.refresh(refreshToken: refreshToken)
+                guard generation == self.sessionGeneration else { throw CancellationError() }
+                try self.apply(response)
+                self.errorMessage = nil
+            } catch {
+                if generation == self.sessionGeneration,
+                   let authError = error as? AuthServiceError, case .invalidSession = authError {
+                    self.signOut()
+                }
+                throw error
+            }
         }
+        refreshTask = task
+        defer { if generation == sessionGeneration { refreshTask = nil } }
+        try await task.value
     }
 
     private func apply(_ response: SupabaseAuthResponse) throws {

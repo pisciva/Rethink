@@ -3,8 +3,6 @@ node_modules/
 .env*
 !.env.example
 *.tsbuildinfo
-test-results/
 .vercel/
 
-# Archived backend is retained locally, outside the active app.
-/archive/
+.vercel

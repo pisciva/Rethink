@@ -2,6 +2,23 @@
 
 > **Source status as of uploaded 133-page documentation:** Approved Overall PRD v1.0 and **39 Approved Must Have functional requirements**; **OI-01–OI-03 OPEN**; **OPS-01–OPS-05 PENDING**. This Markdown does not confer any additional approval. Relevant PDF pages: 17, 50–51, 57, 68–71, 74–84, 89–97, 102–103, 110–117, 127–133.
 
+## Current implementation decisions — 23 October 2026
+
+**DEC-2026-10-23-MVP-COMPLETION — APPROVED FOR IMPLEMENTATION by the user in this development conversation.** Source statuses below describe the original PDF, which remains unchanged. The following later decisions supersede the earlier interim choices for this implementation; they do not establish empirical diagnostic validity, expert content acceptance or learner effectiveness.
+
+| Ref | Current approved implementation rule | Requirements / verification impact |
+|---|---|---|
+| OI-01 | Current mathematical/evidence system rules retain final diagnostic authority. AI advises only on unclear Q3, with bounded quoted output and conservative insufficient-evidence fallback. | FR-C3-04..08; existing uncertainty, counterevidence, AI-output and Q4 fixtures retained. |
+| OI-02 | Optional Review ends without C5 or learner-state update; origin and non-confirmed diagnosis are preserved. | FR-C2-04, FR-C3-10, FR-C4-02/07, FR-C5-01/05, FR-X-01..03; V-X-08. |
+| OI-03 | All-correct Q1–Q3 → Rejected for the examined blocker, with Optional Review or catalog continuation; no SPL mastery claim. | FR-C2-03, FR-C3-07/09/10, FR-X-02/03; V-X-07. Old saved pending histories require explicit reset, never silent regrading. |
+| OPS-01/02 | Existing linear package; wrong evaluable practice responses remain editable with fixed guidance; valid correct active practice after Visual/Worked completes C4. Technical attempt exhaustion offers explicit reset. | FR-C4-05..08, FR-C5-01. No achievement or C5 state from C4 alone. |
+| OPS-03 | Supported equivalent expanded linear forms accepted; unreadable, empty, unsupported/nonlinear and non-expanded submissions remain ungraded, without new evidence/state. Existing input bounds retained. | FR-C5-04/05; invalid/equivalent/format fixtures. |
+| OPS-04 | Retain the exact curated bank and bounded rubric listed in [the reviewed proposal](implementation/MVP-COMPLETION.md) for this implementation. | FR-C3-01..08, FR-C4-01/03..05, FR-C5-02..04. Expert pedagogy/language-rubric acceptance remains a separate outstanding review. |
+| OPS-05 | Owner-scoped revision-checked Supabase snapshots; reload after uncertain saves, explicit reset of incompatible evidence, preserved identity on temporary outages; branch-aware read-only progress and stable Concept Applied recognition from persisted qualifying C5 evidence. | FR-X-01..03; no new reward write endpoint, permanent award ledger, duplicate notification or UI-created judgment. |
+| GAM presentation | Implement the three documented presentation mechanisms under the selected operational rules: branch-aware progress, evidence-bound contextual feedback and a stable result-backed concept-recognition card. | Proposed GAM scenarios are engineering test inputs; no XP, streaks, competition, unapproved curriculum or mastery percentage. |
+
+**Approval evidence:** the user explicitly selected each OI alternative, then selected “Approve these implementation rules” for OPS-01..05 and the described result-backed recognition policy. Full concrete rules and alternatives are in [MVP-COMPLETION.md](implementation/MVP-COMPLETION.md). Approved implementation direction is distinct from passing tests and final release acceptance. No archival source or approved FR wording was rewritten.
+
 ## 1. Decision classification and authority
 
 | Status | Interpretation for Codex | Authorization |
@@ -185,3 +202,59 @@ Full backend suite: 63 tests passed; TypeScript check passed. iOS UX and final p
 - Verification: 66 backend tests passed; production build (including TypeScript) passed. Checks include core roles, no Q2/result disclosure in Q3, updated item references, AI context, existing outcome branches, and explicit draft-2 session reset.
 - Remaining limits: full OPS-04 bank/pedagogical acceptance, comprehensive Q3 natural-language rubric (OI-01), all-correct outcome (OI-03), optional-review validation (OI-02), OPS-01..05 and live iOS/accessibility/comprehension testing remain open/pending. This approval does not close those registers or authorize new outcome rules.
 - Implementation: `backend/lib/v2/content.ts`, `engine.ts`, `reasoning.ts`, `catalog.ts`; [review](implementation/SPL-CONTENT-REVIEW.md); [API contract](../backend/docs/API-V2.md).
+
+## 12. Saved-session evidence integrity — 22 October 2026
+
+User direction: read the docs and complete additional unfinished work. Engineering scope: FR-X-01..03, FR-C3-03/05/06/08 and FR-C5-04/05/08. [Session integrity review](implementation/SESSION-INTEGRITY.md) records the reproduced defect and implementation.
+
+The existing loader accepted contradictory/missing histories, including an Understood result with no validation evidence. It now checks current-version snapshots against the existing engine and refuses inconsistent results through the existing explicit reset-required flow. Reads do not rewrite stored records, invoke a provider, assign replacement results or change eligibility. Valid interrupted sessions, Q4, optional review, pending results and reinforcement remain supported. This is an engineering evidence guard, **not a resolution of OPS-05 or a new approved state-machine specification**. Future changes to policy/evaluation must preserve explicit versioning and restart/migration semantics.
+
+Verification: **79 backend tests passed**, including real v2 SQL migration permissions, revision conflicts, legacy separation and account deletion in embedded PostgreSQL. Production build including TypeScript passed. No live migration, deployment, GitHub push, iOS execution or learner study was performed for this slice. OI-01..03 remain Open and OPS-01..05 Pending.
+
+## DEC-2026-10-23-BACKEND — Replace legacy backend with a Swift/Vercel recovery API
+
+- **User-approved implementation direction:** replace the backend with one closer to the documentation; delete the old backend rather than retain an archive; host on Vercel; primarily serve the Swift app. Approval is from the current conversation, not a modification of the source PRD.
+- Supersedes the earlier implementation direction to retain the teammate website backend, its grade-based catalog and website v1 compatibility. The replacement uses approved subject/topic entry and removes broad pretest, curriculum, chat, transcript and media services from the active deployment.
+- Requirements: C1–C5 (all 39 FRs) and FR-X-01..03 boundaries, original PDF pp. 40–51, 61–84, 104–117. Source FR wording is unchanged.
+- Engineering choice: API-only TypeScript/Next.js, Node.js 24.x, prepared for Vercel; Swift URLSession remains the client. Logical architecture components are modules, not separate services. The paper's candidate stack is not a mandate.
+- Preserve reviewed recovery helpers, approved draft-3 Q2/Q3 items, conservative uncertainty handling and saved-evidence integrity; separate C1 catalog, C2 projection, C3 interpretation, C4 guidance, C5 validation and adapters. Preserve Swift v2 endpoint/response contracts and valid account-owned recovery rows. Reject client-assigned outcomes/unknown command fields.
+- Removal is from the local working tree; Git history retains the committed predecessor. No production service, table, account or live record was deleted. Existing `.env.local` was preserved; no source archive was modified.
+- Executed verification: 50 replacement tests passed, production build/TypeScript passed, npm ci offline dry-run passed, 35 prior Swift-facing response snapshots matched before deletion, built-server checks passed and all 12 removed legacy API paths returned 404.
+- Vercel CLI is installed but unauthenticated; hosting project selection and connection are required before deployment. No deployment or live migration was performed; no Swift release URL was changed.
+- OI-01..03 remain **Open**, OPS-01..05 remain **Pending**. Existing interim directions and the scoped Q2/Q3 approval remain in force. No final rubric, completion or state-machine acceptance is conferred.
+- [Implementation/verification report](implementation/BACKEND-REBUILD.md), [native API setup](../backend/SETUP.md), [API contract](../backend/docs/API-V2.md).
+
+## DEC-2026-10-23-SUPABASE — Align Swift with the configured backend project
+
+- User decision in this conversation: use backend project `hhovzaaeolcfynyetabf` and update the Swift app's public configuration. The user separately selected a new Rethink API project on Vercel.
+- Updated `frontend/Rethink/App/AppConfig.swift` defaults to the selected project URL and its configured public key. The key was checked as publishable/anon before being written; no backend secret/service-role value was copied into app source or printed.
+- `KeychainTokenStore` now namespaces session records by Supabase host, preventing another project's saved guest tokens from being restored/refreshed against the selected project. The old unscoped token record is not automatically migrated or deleted. Existing progress is not transferred across projects, and no live account/data operation was performed.
+- Engineering scope: authentication configuration and FR-X context isolation; no C3/C5 policy, new learning path or final OPS-05 resolution.
+- Verification: static public-configuration match and secret-exclusion checks passed; existing initializer call sites inspected. Swift/Xcode runtime and Keychain operations were **NOT RUN** in the Windows environment.
+- The Vercel CLI still reports no credentials after the sign-in attempt. No project/deployment was created and the Swift API URL was not switched to an invented endpoint. Hosting sign-in is the remaining prerequisite for new-project deployment.
+
+## Hosting execution update — 23 October 2026
+
+Vercel sign-in succeeded as `hansenhalim1`. Created and linked the new `hansens-projects-6e7d42c5/rethink-recovery-api` project; existing Vercel projects are unchanged. Source deployment is in progress. Automatic approval review rejected transfer of existing Supabase/AI configuration to Vercel pending explicit user authorization. No credential transfer was executed. The selected Supabase project returned `404 / PGRST205` for the recovery table; applying the existing migration and enabling anonymous sign-ins remain required. The user has been given the exact migration file and dashboard link. This is infrastructure status, not an OI/OPS resolution or proof of a working hosted recovery flow.
+
+### Hosting execution follow-up
+
+The user explicitly approved transferring the existing Supabase and AI configuration to Production on the new Vercel project. Transfer completed without displaying credentials, with backend secret and AI keys marked sensitive. Production is https://rethink-recovery-api.vercel.app. The fresh cloud build and TypeScript passed. Next.js was upgraded to 16.4.2 to address the audit findings; local production audit and cloud install report zero vulnerabilities, and all 50 replacement tests passed again. The user reported applying the migration; a live recovery-table query passed. Anonymous signup still returns HTTP 422 / `anonymous_provider_disabled`, so the user has been asked to enable/save the setting. No successful guest/save-resume or Swift API cutover is claimed yet. OI/OPS remain unresolved.
+
+### Anonymous-auth recheck — 23 October 2026
+
+After the user reported enabling anonymous sign-ins, two live checks still returned HTTP 422 / `anonymous_provider_disabled` from the selected `hhovzaaeolcfynyetabf` project. Recovery-table availability passed. No synthetic guest was created, and hosted authenticated save/resume remains blocked. Asked the user to confirm the setting persists after refresh in this exact project. Swift API cutover remains pending; no product-policy change was made.
+
+### Hosted guest verification and Swift API cutover — 23 October 2026
+
+After the user enabled and saved Anonymous Sign-Ins in the selected project, the hosted check passed: anonymous signup, authenticated empty journey, SPL selection, Q1–Q3 diagnosis, saved/interrupted resume, stale-revision rejection, confirmed recovery through Visual → Worked → active Practice → Independent Retry → Transfer, and persisted Distributive Property Understood/map projection. The temporary synthetic guest was deleted through the admin API afterward, cascading its own evidence only. Q3 used curated interpretation; no external AI completion or learner-effectiveness claim is made.
+
+Updated `frontend/Rethink/App/AppConfig.swift` default API URL to https://rethink-recovery-api.vercel.app, preserving local environment overrides and the already approved matching Supabase public configuration. This serves FR-X-01..03 infrastructure/context continuity without changing C3/C5 policies. Static configuration checks passed. Xcode/device execution, Keychain runtime and user comprehension remain NOT RUN; OI-01..03 and OPS-01..05 retain their source statuses. Prior hosting/auth blockers above are historical and are now resolved.
+
+### Completion execution and grading integrity — 23 October 2026
+
+Implemented the user-approved OI/OPS rules and GAM projections, visible practice feedback, explicit catalog/map exits, attempt-limit restart, client session refresh/unknown-save guards, source-backed catalog and Release first-launch onboarding. The DEBUG Home shortcut remains available. Current completed implementation and scenario evidence: [MVP-COMPLETION.md](implementation/MVP-COMPLETION.md). The full hosted branch matrix passed, including real guest isolation, refresh and bounded Gateway Q3; both test guests were deleted.
+
+A grading-integrity defect was found during completion: a floating-point tolerance accepted slightly wrong expressions as equivalent. FR-C3-04 / FR-C5-04 now use exact rational arithmetic for supported linear forms. Unsupported adjacent numeric tokens remain ungraded instead of being guessed as multiplication. Previously accepted incompatible near-equal histories require the existing explicit restart, not silent regrading. Current bank expressions are unchanged. The exact-arithmetic production smoke passed and removed its temporary guest; all 57 backend tests and the local build passed. Swift/package/simulator, accessibility and expert pedagogical/rubric acceptance remain NOT RUN.
+
+Final completion deployment: `rethink-recovery-3b3353x58-hansens-projects-6e7d42c5.vercel.app` Ready on the existing production alias, with cloud build/TypeScript PASS and zero audit vulnerabilities. Final backend suite: 57 PASS, 0 FAIL. All synthetic guests from branch and grading-input probes were deleted. Legacy pending outcome emission is removed; old incompatible evidence still requires explicit restart. Remaining work is verification on Mac/device and independent expert/usability acceptance, rather than another implementation-policy approval.

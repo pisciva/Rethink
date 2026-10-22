@@ -1,8 +1,10 @@
 # MVP functional requirement implementation trace
 
-Source: `../prd/requirements.md` (39 approved Must Have FRs). This table records the **active SwiftUI → backend v2 path**, not the older local prototype or the website v1 API. Engineering status below means product acceptance, not whether a code path exists or a unit test passed. “Code present” means an implementation path exists; it does **not** mean the mathematics, product policy, usability, or live release has received final acceptance. The question bank and operational rules remain draft under `../decisions.md`.
+> **Current backend (23 October 2026):** the legacy implementation has been replaced by the Swift/Vercel recovery API in `backend/src/`. See [current architecture, module mapping and verification](BACKEND-REBUILD.md). Dated test totals below are historical; the active suite has 57 passing tests and the approved branches were exercised live. See [completion contract](MVP-COMPLETION.md). Whole-product acceptance remains separate from engineering checks.
 
-| FR | Active implementation evidence | Acceptance dependency | Engineering status |
+Source: `../prd/requirements.md` (39 approved Must Have FRs). This table records the **active SwiftUI → backend v2 path**, not the older local prototype or the website v1 API. Engineering status below means product acceptance, not whether a code path exists or a unit test passed. “Code present” means an implementation path exists; it does **not** mean the mathematics, product policy, usability, or live release has received final acceptance. The user explicitly approved the OI/OPS implementation rules on 23 October 2026. Expert mathematics/pedagogy review and iOS/user acceptance remain unexecuted. Current table statuses below refer to full acceptance; they do not negate the passing backend checks listed separately.
+
+| FR | Active implementation evidence | Remaining acceptance check | Engineering status |
 |---|---|---|---|
 | FR-C1-01 | Swift `MathematicsCatalogView`; v2 `catalog` endpoint | Live iOS UX check | Untested |
 | FR-C1-02 | Swift subject/topic navigation; v2 subject/topic hierarchy | Live iOS UX check | Untested |
@@ -11,40 +13,52 @@ Source: `../prd/requirements.md` (39 approved Must Have FRs). This table records
 | FR-C1-05 | Backend accepts only supported `spl`; Swift hides unsupported entry | Unsupported-topic scenario | Untested |
 | FR-C2-01 | V2 curated `distribution → spl` relation; Swift map diagram | Mathematical relation review | Untested |
 | FR-C2-02 | Swift Explore map uses catalog relation without personal status | Pre-diagnosis UX check | Untested |
-| FR-C2-03 | Backend `map.focus` derives from Confirmed only; Swift distinguishes other results | OI-03 for all-correct | Blocked by pending decision |
-| FR-C2-04 | Backend `map.progress` derives from C5 result; Swift displays concept state | OI-02; OPS-03/04 | Blocked by pending decision |
+| FR-C2-03 | Backend `map.focus` derives from Confirmed only; Swift distinguishes other results | iOS Focus/result consistency check | Untested |
+| FR-C2-04 | Backend `map.progress` derives from C5 result; Swift displays concept state | Expert response/rubric and iOS result review | Untested |
 | FR-C2-05 | Unsupported/unassessed concepts receive no personal state in v2 | Scenario verification | Untested |
-| FR-C3-01 | Supported journey is SPL context, Distributive Property concept only | OPS-04 | Blocked by pending decision |
-| FR-C3-02 | Backend Q1 MCQ, Q2 expression, Q3 explanation | OPS-04 mathematical item review | Blocked by pending decision |
+| FR-C3-01 | Supported journey is SPL context, Distributive Property concept only | Expert item/rubric review | Untested |
+| FR-C3-02 | Backend Q1 MCQ, Q2 expression, Q3 explanation | Expert mathematical item review | Untested |
 | FR-C3-03 | Swift input by format; backend raw attempts with role and question ID | Data/privacy review | Untested |
-| FR-C3-04 | Backend bounded math parser, Q3 rubric and optional bounded AI advice | OI-01; OPS-04 rubric review | Blocked by pending decision |
-| FR-C3-05 | Backend cross-question rule considers correct, known-error and insufficient evidence | OI-01 reviewed cases | Blocked by pending decision |
-| FR-C3-06 | Backend conditional single Q4 procedural trace, never repeats | OI-01; OPS-04 probe review | Blocked by pending decision |
-| FR-C3-07 | Draft Confirmed/Rejected/Uncertain rule; all-correct held | OI-01; OI-03 | Blocked by pending decision |
-| FR-C3-08 | Q3 AI advice limited to a quoted, guarded item interpretation; backend retains result authority | OI-01 final methodology review | Blocked by pending decision |
-| FR-C3-09 | Swift/backend result and scope messages; all-correct pending state | OI-03; user comprehension check | Blocked by pending decision |
-| FR-C3-10 | Confirmed Recovery and non-confirmed Optional Review routes | OI-02/03 for unresolved branches | Blocked by pending decision |
-| FR-C4-01 | One v2 curated Distributive Property package | OPS-04 content review | Blocked by pending decision |
-| FR-C4-02 | Backend stores confirmed-recovery or optional-review origin | OI-02 downstream policy | Blocked by pending decision |
+| FR-C3-04 | Backend bounded math parser, Q3 rubric and optional bounded AI advice | Expert language-rubric review | Untested |
+| FR-C3-05 | Backend cross-question rule considers correct, known-error and insufficient evidence | Expert diagnostic-case review | Untested |
+| FR-C3-06 | Backend conditional single Q4 procedural trace, never repeats | Expert probe-case review | Untested |
+| FR-C3-07 | Approved guarded outcomes; all-correct maps to Rejected | Expert synthesis cases and iOS continuation | Untested |
+| FR-C3-08 | Q3 AI advice limited to a quoted, guarded item interpretation; backend retains result authority | Expert methodology acceptance | Untested |
+| FR-C3-09 | Swift/backend scoped outcomes; legacy pending sessions require restart | iOS and user-comprehension checks | Untested |
+| FR-C3-10 | Confirmed Recovery and non-confirmed Optional Review routes | iOS branch-continuation checks | Untested |
+| FR-C4-01 | One v2 curated Distributive Property package | Expert content review | Untested |
+| FR-C4-02 | Backend stores confirmed-recovery or optional-review origin | iOS origin/continuation check | Untested |
 | FR-C4-03 | Swift repeated-group visual uses v2 visual model | Math and accessibility review | Untested |
-| FR-C4-04 | V2 worked steps/reasons rendered in Swift | OPS-04 math review | Blocked by pending decision |
-| FR-C4-05 | V2 partial practice requires a mathematical response; Swift input | OPS-01 feedback review | Blocked by pending decision |
+| FR-C4-04 | V2 worked steps/reasons rendered in Swift | Expert math/presentation review | Untested |
+| FR-C4-05 | V2 partial practice requires a mathematical response; Swift input | iOS feedback and accessibility check | Untested |
 | FR-C4-06 | Backend enforces Visual → Worked → Practice | End-to-end scenario | Untested |
-| FR-C4-07 | Backend tracks completion after draft valid practice rule | OPS-01/02; OI-02 | Blocked by pending decision |
+| FR-C4-07 | Backend tracks completion after approved valid practice rule | iOS completion/handoff check | Untested |
 | FR-C4-08 | Completion alone never writes a C5 learner state | Scenario verification | Untested |
-| FR-C5-01 | Completed confirmed recovery enters retry; Optional Review cannot | OI-02 final policy; OPS-02 | Blocked by pending decision |
-| FR-C5-02 | Unscaffolded retry item rendered from backend | OPS-04 item review | Blocked by pending decision |
-| FR-C5-03 | Backend opens distinct contextual transfer only after retry pass | OPS-04 transfer review | Blocked by pending decision |
-| FR-C5-04 | Bounded math equivalence parser; invalid input records no evidence | OPS-03/04 | Blocked by pending decision |
-| FR-C5-05 | Backend three-state matrix after accepted item results | OPS-03/04; OI-02 | Blocked by pending decision |
+| FR-C5-01 | Completed confirmed recovery enters retry; Optional Review cannot | iOS eligibility/handoff check | Untested |
+| FR-C5-02 | Unscaffolded retry item rendered from backend | Expert item review | Untested |
+| FR-C5-03 | Backend opens distinct contextual transfer only after retry pass | Expert transfer review | Untested |
+| FR-C5-04 | Bounded math equivalence parser; invalid input records no evidence | Expert equivalence/rubric review | Untested |
+| FR-C5-05 | Backend three-state matrix after accepted item results | Expert grading and iOS result review | Untested |
 | FR-C5-06 | Swift/backend messages scope each state to Distributive Property | User comprehension check | Untested |
 | FR-C5-07 | Needs Reinforcement returns to existing package; no new diagnosis | End-to-end scenario | Untested |
 | FR-C5-08 | V2 validation writes only supported concept state | Scenario verification | Untested |
-| FR-X-01 | Journey stores topic, concept, diagnostic result and learning origin | OPS-05 transition review | Blocked by pending decision |
-| FR-X-02 | Backend state machine checks origin, phase and completion before transitions | OI-02/03; OPS-05 | Blocked by pending decision |
-| FR-X-03 | Swift result/map read one v2 journey; backend map is a projection | OI-02/03; OPS-05 | Blocked by pending decision |
+| FR-X-01 | Journey stores topic, concept, diagnostic result and learning origin | Swift session regression execution and iOS resume | Untested |
+| FR-X-02 | Backend state machine checks origin, phase and completion before transitions | Swift/iOS transition and projection checks | Untested |
+| FR-X-03 | Swift result/map read one v2 journey; backend map is a projection | Swift/iOS transition and projection checks | Untested |
 
-Verification available in repository: backend unit/API/database tests, Swift Package tests and Xcode build. The current public v2 deployment was checked for catalog, guest authentication, initial progress and SPL topic selection using a temporary guest that was deleted. Newly edited local backend code needs deployment before the public endpoint includes it. SC4 user comprehension and learning-effectiveness claims require separate research and cannot be established by these tests.
+## Current executed engineering coverage — 23 October 2026
+
+| Scope | Executed result | Limit |
+|---|---|---|
+| C1 support and entry; C2 projections | Backend fixtures and live unsupported/forged-input guards **PASS** | SwiftUI navigation and accessibility NOT RUN |
+| C3 core/probe, evidence guards, three outcomes | Unit/API fixtures and live all-correct Rejected / Uncertain / Confirmed branches **PASS** | Expert diagnostic/rubric validity review and learner comprehension NOT RUN |
+| C4 linear sequence, active practice, optional origin | Fixtures and live confirmed/optional completion routes **PASS** | SwiftUI feedback/layout and pedagogical acceptance NOT RUN |
+| C5 three-state matrix and guards | V-X-03/04/05 live branches, equivalent/invalid/format fixtures **PASS** | Expert accepted-form/transfer review and iOS rendering NOT RUN |
+| FR-X saved evidence and ownership | SQL permissions/revisions, live save/resume, second-guest isolation and token refresh **PASS** | New Swift refresh/concurrency/unknown-save tests prepared, NOT RUN |
+| V-X-07 and V-X-08 | User-approved all-correct Rejected and Optional Review without C5 **PASS** at API level | iOS continuation/interpretability NOT RUN |
+| Proposed GAM progress/feedback/recognition | Backend projection assertions and live repeat-safe qualifying recognition **PASS** | GAM UI/VoiceOver/motion/comprehension scenarios NOT RUN |
+
+**57 backend tests passed, 0 failed**, local and cloud builds/TypeScript passed, fresh cloud install reports zero audit vulnerabilities. A real bounded synthetic Q3 Gateway completion and the hosted Q3 handoff passed. Both synthetic guests used for the live branch matrix were deleted. The updated API is deployed to https://rethink-recovery-api.vercel.app. The macOS Swift-package and simulator-compile workflow is prepared but has not run from this workspace. Full FR acceptance is **Untested**, rather than blocked by the now-resolved implementation policy choices. No causal learning or population diagnostic-accuracy claim follows from these results.
 
 ## Content and evidence guard verification — 22 October 2026
 
@@ -75,3 +89,21 @@ Supersedes the prior 63-test run and production-build NOT RUN status for this en
 - Full backend suite **66 passed, 0 failed**; production build including TypeScript **PASS**. Explicit draft-2 reset, unsupported inputs, non-confirmed/uncertain paths, single-Q4 limit, validation gates and map/evidence consistency are covered by executed fixtures.
 - Proposed UX-030/031 static item checks: **PASS** for core input roles and removal of answer disclosure; learner comprehension and live iOS checks **NOT RUN**. Comprehensive item/rubric acceptance is still **BLOCKED BY DECISION** (OPS-04/OI-01); all FR-level table statuses remain unchanged.
 - No deployment or live database migration performed. Swift fixture updates were not executed on Xcode/Swift in this environment.
+
+## Saved-session integrity verification — 22 October 2026
+
+- [Implementation and scenario report](SESSION-INTEGRITY.md): current-bank loader now rejects missing, contradictory, reordered or unreachably staged evidence before returning a result/map. Existing reset-required handling is used; reads never rewrite learner evidence or create replacement judgments.
+- Coverage: FR-X-01..03; FR-C3-03/05/06/08; FR-C5-04/05/08. No question/copy IDs, completion policy, learner-state definitions or validation eligibility changed.
+- Executed **79 backend tests passed, 0 failed**; production build including TypeScript **PASS**. All 11 journey phases, optional review, one-Q4 bound, all-correct pending, reinforcement cycles, invalid histories, persistence write failure and explicit reset have regression fixtures.
+- `tests/v2-db.test.ts` now executes the actual v2 SQL migration in embedded PostgreSQL, covering private table/RPC permissions, ownership, revision conflicts, legacy separation and account deletion. This supplements earlier mocked v2 API storage tests; it is not a live Supabase migration or distributed-load verification.
+- FR-level acceptance statuses in the table remain unchanged. Final operational contracts and mathematical criteria remain dependent on OPS/OI review. iOS/accessibility/comprehension/live migration/deployment: **NOT RUN**.
+
+## Swift/Vercel backend replacement — 23 October 2026
+
+Active module map: C1 `src/content/catalog.ts`; C2 `src/domain/map.ts`; C3 `src/domain/diagnosis.ts`, `evaluation.ts`, `mathematics.ts`; C4 `src/domain/learning.ts`; C5 `src/domain/validation.ts`; FR-X `src/domain/journey.ts`, `snapshot.ts`, `src/application/commands.ts`, `src/infrastructure/journeys.ts`. All paths are under `backend/`. Curated content/result copy is in `src/content/`; Supabase/AI adapters are isolated in `src/infrastructure/`.
+
+The subject/topic catalog replaces the previous grade-10/curriculum dependency under the user's new direction. Website v1 and broad pretest/curriculum/chat/media services are removed. Existing Swift v2 endpoints/Codable shapes and the approved draft-3 items are retained. Local 50-test suite, production build and built-server removal checks passed; no Vercel deployment, live migration or iOS runtime verification was performed. See [rebuild report](BACKEND-REBUILD.md). Existing FR-level Untested/Blocked statuses are preserved because operational, mathematics and UX acceptance dependencies remain unresolved.
+
+## Completion implementation follow-up — 23 October 2026
+
+Supersedes the earlier rebuild-only hosting/decision status above. Current approved rules and feature changes: [MVP-COMPLETION.md](MVP-COMPLETION.md). Added `src/domain/presentation.ts` and `tests/presentation.test.ts`; Swift presentation views in `Components/LearningCard.swift`, result/map integration, guarded guest refresh and interrupted-save handling, actual subject/topic catalog, release first-launch onboarding and a macOS CI workflow. OI/OPS choices are approved for implementation, while expert content review, iOS runtime and SC4 user comprehension remain unverified. Dated earlier totals and source-status descriptions are historical.

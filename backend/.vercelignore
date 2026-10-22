@@ -1,4 +1,8 @@
-
-
-# Archived backend is retained locally, outside the active app.
-archive/
+node_modules/
+.next/
+.git/
+.env*
+*.tsbuildinfo
+tests/
+supabase/
+docs/

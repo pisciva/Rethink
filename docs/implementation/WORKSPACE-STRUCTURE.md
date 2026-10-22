@@ -1,9 +1,15 @@
-# Workspace layout — 22 October 2026
+# Workspace layout — 23 October 2026
 
-User-authorized file move only. Main backend: `backend/`. Personal backend snapshot: `backend/archive/RethinkBackend_v2/`. Both retain their `.git` directories and uncommitted files. No merge, reset, staging, migration or deployment was performed.
+The active backend is `backend/`: a Swift-focused, API-only Next.js service prepared for Vercel, with C1–C5 domain modules in `src/`. The user explicitly requested removal of the old backend instead of retaining an archive. The earlier 22 October statement about keeping a teammate backend and a local backend archive is superseded.
 
-The Xcode project, application source, Config, Tests, Swift package and local Swift caches move together into `frontend/`. Relative Xcode/Swift package resource paths remain aligned. Product docs move from the app directory into root `docs/`; repository instructions move to root `AGENTS.md`. Existing root docs are retained. Archived docs and source transcriptions are preserved.
+```text
+backend/    Active recovery API, tests, single recovery migration and deployment setup
+frontend/   SwiftUI iOS application and Xcode/Swift Package projects
+docs/       Product baseline, decisions, design references and engineering verification
+```
 
-The main backend excludes `archive/` from TypeScript discovery, Git additions and Vercel deployment packaging. Root `.gitignore` excludes build caches and local secrets. Remote deployment root settings and Xcode's saved recent-project location may need selecting the new paths; no remote setting was changed.
+The broad curriculum/pretest/chat/media backend and its assets are removed. Git commit `69e1d178fb8a8c4cf56a0a237c8dee2c33fc53fa` and earlier history retain the committed predecessor. Reviewed recovery logic and the later saved-session integrity work are carried forward into the replacement. No in-repository legacy archive remains.
 
-Static verification: moved-file existence inventory passed for 707 non-cache files; backend Git HEAD file contents were unchanged. No build, test, server, simulator or database action was run, per user preference. API behavior and frontend backend URL are unchanged.
+Local dependencies/build caches and `.env.local` remain ignored. The local environment file was preserved without printing its values. Source PDF/transcriptions, frontend source and design references were not deleted or rewritten.
+
+Vercel must use `backend` as Root Directory; Swift consumes `/api/v2/catalog` and `/api/v2/progress`. The service has not been deployed and the app's release endpoint has not been switched. See [replacement report](BACKEND-REBUILD.md) and [setup](../../backend/SETUP.md).

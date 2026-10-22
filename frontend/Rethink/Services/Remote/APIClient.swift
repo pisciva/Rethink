@@ -11,8 +11,8 @@ enum APIClientError: Error, LocalizedError {
         switch self {
         case .invalidResponse:
             return "Respons server tidak valid."
-        case .network(let message):
-            return "Tidak dapat terhubung ke backend: \(message)"
+        case .network:
+            return "Tidak dapat terhubung ke layanan. Periksa koneksi lalu coba lagi."
         case .unauthorized:
             return "Sesi berakhir. Silakan masuk lagi."
         case .http(_, _, let message, _):

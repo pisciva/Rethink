@@ -1,5 +1,7 @@
 # Rethink — Approved Product Functional Requirements: Full 39-Item Registry
 
+> **Later implementation decisions (23 October 2026):** the user explicitly approved OI-01..03 and OPS-01..05 implementation rules, including all-correct → Rejected and no C5 after Optional Review. See [current decision record](../decisions.md#current-implementation-decisions--23-october-2026) and [concrete operational contract](../implementation/MVP-COMPLETION.md). Original source-status statements and FR wording below are preserved; implementation approval does not establish expert mathematics, usability or learning-effectiveness acceptance.
+
 > **Scope and provenance:** This file retains the **source original language** of all 39 approved Must Have FRs from detailed source PDF pp. 58–84, with their source verification basis, dependencies and qualifications. Requirements are **approved behavioral obligations**—not implementation proof or approval of open operational choices. Page references use original PDF page indexes, not printed numbering. The archival transcription is at `../source/06-product-requirements-detailed.md` and original PDF at `../source/ReThink-Documentation-original.pdf`.
 
 ## 1. Requirement convention and governance

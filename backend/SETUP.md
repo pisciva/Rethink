@@ -1,107 +1,95 @@
-# Supabase setup and client contract
+# Vercel hosting and Swift setup
 
-Target project: https://supabase.com/dashboard/project/hhovzaaeolcfynyetabf
+Vercel hosts stateless HTTP functions; Supabase provides guest identities and durable recovery evidence. State is never saved in function memory or the Vercel filesystem.
 
-## Activate the database
+## Supabase
 
-Apply migrations in filename order using Supabase migrations or the SQL Editor. It creates:
+1. Choose the **same project** for the API and Swift app; enable **Anonymous Sign-Ins**.
+2. Apply `supabase/migrations/202610220001_spl_recovery_journeys.sql`. Supabase supplies `auth.users` and its standard roles; old website migrations are unnecessary.
+3. The migration creates private `learning_journeys` and service-only `save_learning_journey`. The backend verifies the guest/user access token before selecting that owner's records. Client roles cannot read/write this table directly.
 
-- `profiles`: one display name per Auth user, including a signup trigger and backfill for existing users.
-- `learning_progress`: a validated learning-session snapshot and revision per user/concept. Attempts are retained inside each session JSON, matching the existing engine's 100-attempt cap.
-- Users may update only their own display name. Progress rows are readable only by the backend service role; browser and Swift clients must use the authenticated backend API.
-- Service-role-only progress reads/writes and a `save_learning_progress` function with atomic revision checks. Browser/Swift clients cannot directly read progress, write progress, or claim mastery.
+**Selected project:** the user chose `hhovzaaeolcfynyetabf`. The Swift release fallback now matches the preserved backend public project configuration. Xcode environment overrides still take precedence, so use the same project there. Session records are scoped by project; old guest progress is not automatically migrated between projects.
 
-The second migration removes direct client reads without changing stored progress. Deploy the backend version that reads with the service role before applying it; older backend deployments will no longer be able to load progress. Rollback requires restoring `SELECT` plus the `progress_read_own` policy, which makes each user's full assessment JSON readable from that user's Supabase client again. Database rows cascade when the corresponding Auth user is deleted.
+Existing compatible recovery rows are reused. Obsolete/inconsistent evidence requires explicit restart. No automatic import of legacy website data or deletion of production tables occurs.
 
-## Configure Authentication
+## Vercel project
 
-Enable Email/password authentication. Keep email confirmation enabled if desired. Set the password minimum to at least 8 characters to match the UI (stronger project policies still apply).
+Import the GitHub repository with these settings:
 
-Set the Site URL to `https://re-think-test.vercel.app`. Allow these exact redirect URLs:
+| Setting | Value |
+|---|---|
+| Root Directory | `backend` |
+| Framework | Next.js |
+| Node.js | `24.x` |
+| Install | `npm ci` |
+| Build | `npm run build` |
+| Output | Framework default |
 
-- `https://re-think-test.vercel.app/`
-- `https://re-think-test.vercel.app/?auth=recovery`
-- `http://localhost:3000/`
-- `http://localhost:3000/?auth=recovery`
+`vercel.json` records framework/install/build settings; Root Directory remains a Vercel project setting. Production uses Vercel Functions, not `npm run dev`.
 
-Add preview origins explicitly when needed. Configure production email delivery in Supabase before inviting users broadly. No Google/Apple provider is configured by this implementation.
+Set environment variables for the intended Production/Preview environment:
 
-## Environment variables
+| Variable | Use |
+|---|---|
+| `SUPABASE_URL` | Same project URL as Swift. |
+| `SUPABASE_PUBLISHABLE_KEY` | Same public key as Swift. |
+| `SUPABASE_SECRET_KEY` | Backend only. Never embed in Swift. |
+| `AI_GATEWAY_API_KEY` | Optional bounded Q3 interpretation. Backend only. |
+| `AI_GATEWAY_MODEL` | Optional supported Gateway model; verify actual account/model availability separately. |
+| `ALLOWED_ORIGINS` | Optional browser clients only. Native Swift needs no Origin. |
 
-Frontend (public, embedded at build time):
+Redeploy after changing environment variables. Deployment Protection may present a Vercel login page before the API handles a preview request; use an appropriately reachable API domain for the app while keeping Supabase token checks. Do not ship a Vercel bypass secret in the app.
+
+After deployment:
+
+```sh
+curl https://YOUR-API.vercel.app/api/health
+curl https://YOUR-API.vercel.app/api/v2/catalog
+curl -i https://YOUR-API.vercel.app/api/v2/progress
+```
+
+Expected: health/catalog JSON and 401 for progress without a token. Configuration flags only report presence, not provider/database readiness. Verify a real guest save/resume in the target environment before switching the distributed app.
+
+## Swift app
+
+Existing implementation: `frontend/Rethink/Services/Remote/APIClient.swift`, `SupabaseAuthClient.swift`, auth/journey stores and Codable models. For Xcode local runs, Edit Scheme → Run → Arguments → Environment Variables:
 
 ```dotenv
-NEXT_PUBLIC_API_BASE_URL=https://rethinkbackend.vercel.app
-NEXT_PUBLIC_SUPABASE_URL=https://hhovzaaeolcfynyetabf.supabase.co
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-project-publishable-key
+RETHINK_API_BASE_URL=http://localhost:3001
+RETHINK_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+RETHINK_SUPABASE_PUBLISHABLE_KEY=YOUR_PUBLIC_KEY
 ```
 
-Backend only:
+A simulator on the same Mac can reach localhost. A physical iPhone or simulator on another machine needs a reachable address. Use the Vercel HTTPS URL for remote device testing.
 
-```dotenv
-SUPABASE_URL=https://hhovzaaeolcfynyetabf.supabase.co
-SUPABASE_PUBLISHABLE_KEY=your-project-publishable-key
-SUPABASE_SECRET_KEY=your-project-secret-key
-ALLOWED_ORIGINS=https://re-think-test.vercel.app,http://localhost:3000
+Xcode Run environment variables are not a production configuration mechanism. `frontend/Rethink/App/AppConfig.swift` now defaults to `https://rethink-recovery-api.vercel.app` and the matching public Supabase project configuration after the hosted guest save/resume check passed. Scheme environment overrides still take precedence. Run Xcode/device checks before distributing the app.
+
+URLSession sends `Authorization: Bearer <supabase_access_token>`, `Content-Type: application/json`, and no browser Origin header. The existing client supports this:
+
+```swift
+let client = APIClient(baseURL: URL(string: "https://YOUR-API.vercel.app")!)
+let catalog = try await client.catalog()
+let envelope = try await client.journey(token: try await auth.accessToken())
 ```
 
-The backend also accepts legacy `SUPABASE_ANON_KEY` / `SUPABASE_SERVICE_ROLE_KEY` equivalents. Never expose the secret/service-role key in the web bundle, Swift binary, logs, or Git. Add keys in each Vercel project's environment settings and local ignored environment files. The dashboard link alone is not a credential.
+Refresh an expired token through the existing auth store; reload after `revision_conflict`; require explicit confirmation for `reset_required`. Only public configuration belongs in the app. A local UI event cannot create a learner state or acknowledge a save.
 
-Keep DeepSeek settings in the backend. After each diagnostic answer, DeepSeek updates a private provisional hypothesis and selects the next unused foundation probe from the bank, for at most three probes. Deterministic backend rules still decide the final diagnosis. Deploy the backend first, apply `202610170002_private_learning_progress.sql`, then deploy the website. `/api/feedback` and progress still require sign-in. This work does not automatically push, migrate, or deploy either repository.
+## Status
 
-## API used by both web and Swift
+Deployed to **https://rethink-recovery-api.vercel.app** in the new `hansens-projects-6e7d42c5/rethink-recovery-api` project. Production variables are configured with explicit user approval. Fresh cloud install/build/TypeScript and 57 tests passed on Next.js 16.4.2 with zero audit vulnerabilities. The selected project exposes the recovery table and anonymous sign-ins now work. A synthetic guest passed authenticated save/interrupted resume, stale-revision rejection, confirmed recovery, retry/transfer and persisted Distributive Property state/map checks; that guest and its evidence were deleted. Swift’s default API URL now points to the new production endpoint. A synthetic bounded Q3 completion also passed against the live AI Gateway and the hosted diagnostic endpoint. iOS runtime remains unverified. See [verification and pending decisions](../docs/implementation/BACKEND-REBUILD.md).
 
-Sign in through Supabase Auth using its client SDK. The website uses email/password, signup confirmation, password reset and password update. The static frontend uses browser-managed Supabase sessions; no frontend server or cookies shared with the API are required.
+Official hosting references checked during implementation: [Node.js versions](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions), [monorepo roots](https://vercel.com/docs/monorepos), [environment variables](https://vercel.com/docs/environment-variables), [Deployment Protection](https://vercel.com/docs/deployment-protection).
 
-Send the Supabase access token with `Authorization: Bearer <access_token>` to:
+## Swift checks and onboarding
 
-- `GET /api/me` → `{ id, email, displayName, createdAt }`.
-- `GET /api/progress` → `{ version: 1, sessions: { ... }, revisions: { distribution?: number, inverse?: number } }`.
-- `POST /api/progress` → command below; returns `{ user_id, concept, session, revision, updated_at }`.
-- `POST /api/feedback` → existing feedback request/response, now authenticated.
+On a Mac with the supported Xcode/iOS SDK installed:
 
-`GET /api/health` remains public and reports configuration flags, not proof of provider/database connectivity. Browser preflights allow Content-Type and Authorization. Swift does not send a browser Origin header. `POST /api/diagnostic` only supports local demo mode during development; it is disabled in production and does not save progress.
-
-```json
-{
-  "concept": "distribution",
-  "action": "submit",
-  "expectedRevision": 0,
-  "answer": "3x+2",
-  "reasoning": "My explanation"
-}
+```sh
+cd frontend
+swift test
+xcodebuild -project Rethink.xcodeproj -scheme Rethink -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
 ```
 
-Other actions: `advance`, `reinforce`, `reset` (omit answer/reasoning). Start with expectedRevision 0 when no row exists. Always use the latest returned revision. Backend verification determines the owner; do not send a user ID. Grading and state transitions are calculated on the server; client-supplied mastery or session fields are ignored. Progress API responses omit diagnosis, hypothesis, mastery, and error-pattern fields.
+Run those commands from the repository root before `cd frontend`. The GitHub workflow `.github/workflows/recovery.yml` prepares the same package and simulator compile checks on macOS, alongside backend tests/build. It has not been executed in this Windows workspace.
 
-401 means the token is missing/invalid/expired; refresh the Supabase session and retry once. 400 means invalid input or transition. 409 means a concurrent update: fetch latest progress and let the user review before another command. 503 means Auth/database configuration or connectivity is unavailable. No mutation is optimistically shown as saved in the frontend before the backend confirms it.
-
-The same authenticated Supabase user ID gives web and Swift the same progress. Each device manages its own session. On web sign-out, the workspace is unmounted; logging into a different account starts with that account's server state. Existing anonymous `rethink-mvp-v1` localStorage records remain untouched and are not silently assigned to a newly signed-in user. There is no guest-data import or general math-ability assessment. AI hypotheses remain provisional and concept-specific.
-
-## Verification
-
-Run `npm test`, `npm run typecheck`, and `npm run build`. Tests include actual migration/RLS/trigger/cascade/revision behavior in embedded PostgreSQL (PGlite) and mocked Supabase HTTP integration for token rejection, user isolation, forged-state rejection and concurrency. These tests do not apply the migration or create accounts in the live project.
-
-## SMA curriculum (kelas 10–12)
-
-Apply `supabase/migrations/202610180001_sma_curriculum.sql` after the first two migrations. Paste the entire file into the Supabase SQL Editor and run it once. It adds a private `curriculum_progress` table plus service-role-only `save_curriculum_progress` RPC. Existing profiles and pretest sessions are untouched. The migration must be applied before enabling the new frontend's signed-in SMA progress. No additional environment variables are required.
-
-Deploy the backend before the frontend. The new `/api/curriculum` endpoint is additive; older clients keep using the existing APIs. This repository prepares the migration but does not apply it to the live Supabase project.
-
-Both website and Swift clients use the same Supabase Bearer access token:
-
-- `GET /api/curriculum` returns `{ unlocked, modules, progress }`. Modules contain the shared kelas 10–12 catalogue, explanations, formulas, examples, and quiz options. Answer keys and quiz explanations are omitted until submission. Progress contains `{ moduleId, completed, attempts, revision }` for the authenticated account only.
-- `POST /api/curriculum` accepts `{ moduleId, answerId, expectedRevision }`. Start with revision `0`. It returns `{ correct, explanation, progress }` after saving. Completion is retained once a correct answer has been recorded. Server grading ignores client-supplied completion, correctness, owner IDs, or session snapshots.
-- `403` means both foundation sessions have not reached `complete`; diagnosis/mastery do not affect this gate. `409` means a stale revision: fetch progress again before retrying. `503` can mean the new migration is missing.
-
-The RPC checks and locks both pretest rows in the same transaction as the save. Browser and Swift credentials cannot access this table or invoke its write function directly. Deleting an Auth account cascades to its curriculum progress. The material IDs and questions in `lib/curriculum.ts` must match the frontend copy; adding IDs also requires a constraint migration.
-
-The roadmap contains 18 introductory lessons and one checkpoint per material. These completion flags do not claim validated mastery. The grade ordering is ReThink's learning sequence; schools may distribute Fase F topics differently.
-
-## Unified pretest migration
-
-The current website uses one mixed foundation test. Apply `supabase/migrations/202610210001_foundation_assessment.sql` after the migrations above, then deploy backend and frontend. This adds private saved assessment/checklist storage and updates the curriculum RPC to accept unified completion or both legacy sessions. No new environment variables. Older two-session instructions above describe backward-compatible endpoints. See [the current assessment contract](docs/foundation-pretest.md). The anonymous demo works without the new table, but signed-in assessment requests require it.
-
-## Expanded curriculum migration
-
-After the unified-assessment migration, apply `supabase/migrations/202610210002_curriculum_v2.sql`. It expands the module-ID constraint to the 37 current lessons without deleting existing progress. Deploy backend then frontend. `GET /api/curriculum` retains its existing fields and adds pathway/version metadata; POST keeps the same command shape and account/revision checks. See [curriculum v2](docs/sma-curriculum-v2.md).
+Release first launch uses the existing onboarding, then persisted completion. DEBUG retains the earlier development shortcut to Home; set `RETHINK_SKIP_ONBOARDING=0` to test first-launch activation. `RETHINK_REPLAY_ONBOARDING=1` and the DEBUG preview page override that shortcut. Test persistence with replay disabled. Missing optional narration remains silent and never blocks navigation. The app now preserves the guest on temporary refresh outages, shares concurrent refresh calls, discards old-identity responses, and requires authoritative reload before resubmitting after uncertain saves. These client behaviors have Swift regression tests prepared; actual execution requires the Mac workflow.

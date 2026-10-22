@@ -1,5 +1,7 @@
 # Rethink — MVP Scope, Behavioral Definition & Boundaries
 
+> **Later implementation decisions (23 October 2026):** the user explicitly approved OI-01..03 and OPS-01..05 implementation rules, including all-correct → Rejected and no C5 after Optional Review. See [current decision record](../decisions.md#current-implementation-decisions--23-october-2026) and [concrete operational contract](../implementation/MVP-COMPLETION.md). Original source-status statements and FR wording below are preserved; implementation approval does not establish expert mathematics, usability or learning-effectiveness acceptance.
+
 > **Authority:** approved PRD v1.0 source: original PDF pp. 10–12 and 40–51, supported by pp. 18–22, 52–57, 85–88, 99–103. This is a navigation-ready restatement; unresolved operational choices are **not** silently finalized. All capabilities are logically defined, not guaranteed implemented.
 
 ## 1. MVP contract
