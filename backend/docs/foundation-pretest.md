@@ -1,5 +1,7 @@
 # Unified foundation pretest
 
+> **Legacy implementation documentation:** This 24-answer foundation pretest is not the PRD v2 ten-question diagnostic. Active v2 requirements are in `../../docs/prd/diagnostic-requirements.md`.
+
 The main app at http://localhost:3000 has one **Pretest dasar** entry. Students no longer choose between distribution and inverse-operation tests. Each question displays its topic name. The pilot covers eight foundation topics with 24 original multiple-choice questions from the starter bank: integers/order of operations, fractions, ratios, percentages, distributive algebra, linear equations, coordinates/slopes, and Pythagoras/roots.
 
 Every student gets three rounds: eight entry questions, eight routine questions, then eight applications. There is no time limit. “Belum tahu” records an unknown answer and advances. Answers are graded on the backend; the client receives only the current prompt/options, never keys or distractor diagnoses. The test does not teach or reveal correctness between questions.

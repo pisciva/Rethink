@@ -1,12 +1,12 @@
 # Rethink — Conceptual & Technical Blueprint for MVP Engineering
 
-> **Document status:** Source-faithful engineering handoff, **not** an approved physical implementation. Derived from original PDF pp. 85–88 (conceptual architecture), 98–103 (implementation objectives & authority), 104–108 (components), 109–117 (process workflows), 118–126 (data, AI, methods), 127–133 (readiness & governance). Tech choices from paper are explicitly `PAPER-PROPOSED`, not locked. OI-01–03 and OPS-01–05 remain unresolved. See `../decisions.md`.
+> **Document status:** PRD v2 technical handoff, not an approved physical implementation. Technical Blueprint tab verified 23 October 2026. Paper-derived architecture remains historical context; physical stack, API and deployment choices remain engineering decisions.
 
 ## 1. Purpose, applicability and source precedence
 
 Translate the approved C1–C5 and FR-X product obligations into **logical responsibilities, information flow, evidence ownership, and engineering design constraints**. This document does **not** define microservice topology, deployment provider, database ERD, transport protocol, versioned API, final LLM/model, final prompt, persistence rules, or an implementation already completed.
 
-**Source hierarchy:** Overall Approved PRD v1.0 and individual approved 39 FRs are authoritative for scope and behavior; the research paper supports methodology and suggests a technical approach; older design references provide context; this Technical Blueprint guides design but cannot override approved product decisions. Engineering alternatives are permitted if product behavior remains aligned and deviations are documented. Product-affecting changes require review.
+**Source hierarchy:** PRD v2 Product Requirements and Detailed Requirements are authoritative for behavior; Technical Blueprint guides architecture; Design Requirements guides intended UX; PAPER is research context only. PRD v2 contains 43 approved functional requirements. Engineering alternatives are permitted if behavior remains aligned and deviations are documented.
 
 ### Technical implementation objectives
 
@@ -22,9 +22,9 @@ Translate the approved C1–C5 and FR-X product obligations into **logical respo
 |---|---|
 | Mathematics | Algebra, selected diagnostic topic SPL |
 | Active blocker / recovery concept | Distributive Property only |
-| Assessment | Core Q1 SPL MCQ, Q2 math expression, Q3 reasoning; max one Q4 if needed |
-| Diagnosis result | Confirmed / Rejected / Uncertain (policy detail OI-01, all-correct OI-03) |
-| Learning | One curated linear package + optional non-confirmed review |
+| Assessment | Ten curated primary questions Q1–Q10; bounded follow-up probes with separate IDs |
+| Diagnosis result | Per-concept Supported / Not Supported / Uncertain / Insufficiently Assessed |
+| Learning | Open concept selection; one complete curated package for Distributive Property |
 | Validation | Retry without scaffold → different-context transfer only if passed |
 | Learner state | Understood / Procedural Only / Needs Reinforcement from valid C5 evidence |
 | Map | Explore / Focus / Progress projection only |
@@ -52,9 +52,9 @@ These are **logical information responsibilities**, not a prescription for five 
 | ID | Logical component | Responsibility | Inputs (conceptual) | Outputs | PRD mapping |
 |---|---|---|---|---|---|
 | **LC-01** | Learning Entry & Catalog | Catalog/relationships/support availability, diagnostic entry eligibility | Curated catalog, topic-concept relationships, capability support | Selected supported topic context | C1, F1–F2 |
-| **LC-02** | Assessment Flow Controller | Core Q1–Q3, conditional max one Q4, response capture and item context | Topic, diagnostic blueprint, curated questions, student submissions | Attributable assessment responses | C3 |
+| **LC-02** | Assessment Flow Controller | Q1–Q10, bounded follow-up, response capture and item context | Topic, blueprint, curated questions, student submissions | Attributable assessment responses | C3 |
 | **LC-03** | Mathematical Evaluation Support | Correctness, transformations, evaluation against math references | Raw responses, reference solutions, rubrics | Item-level math observations/evaluations | C3, C5 |
-| **LC-04** | Diagnostic Interpretation & Decision Support | Cross-question evidence synthesis; coordinate supported diagnosis | Mathematical observations, reasoning, supported error/diagnostic knowledge | Confirmed/Rejected/Uncertain and evidence basis, under OI-01 | C3, OI-01 |
+| **LC-04** | Diagnostic Interpretation & Decision Support | Per-concept evidence synthesis and recommendation priority | Mathematical observations, reasoning, supported error/diagnostic knowledge | Per-concept evidence status, coverage and evidence basis | C3 |
 | **LC-05** | Guided Learning Controller | Curated lesson sequencing, active practice interactions, completion | Learning-entry origin, supported concept/package, student actions | Participation evidence, completion, handoff context | C4 |
 | **LC-06** | Knowledge Validation Controller | Retry, conditional transfer, three-state mapping | Eligibility, curated C5 tasks, mathematical result | Understood/Procedural Only/Needs Reinforcement | C5 |
 | **LC-07** | Session & Transition Coordination | Maintain context and enforce valid transitions | Topic, diagnosis outcome, learning origin/completion, validation | Transition eligibility and consistent workflow state | FR-X-01..03 |
@@ -110,10 +110,10 @@ flowchart LR
 | Stage | Owner | Work | Expected output |
 |---|---|---|---|
 | **D1** Assessment Initialization | LC-01/02 | Verify SPL actively supported, retrieve approved blueprint | Valid session/topic context |
-| **D2** Core Question Administration | LC-02 | Present Q1 target MCQ, Q2 isolated math response, Q3 conceptual explanation | Response evidence tagged to roles |
+| **D2** Primary Question Administration | LC-02 | Present exactly Q1–Q10 from approved blueprint | Response evidence tagged to roles and concepts |
 | **D3** Mathematical Evidence Evaluation | LC-03 | Evaluate correctness, transformations and relevant reasoning | Item-level observations |
 | **D4** Cross-Question Evidence Synthesis | LC-04 | Consider supporting, counter and missing/ambiguous evidence | Evidence summary for candidate blocker |
-| **D5** Conditional Probe | LC-02/04 | If relevant information gap, present **max 1** Q4 Procedural Trace OR Conceptual Probe; evaluate it | Additional observations |
+| **D5** Bounded Follow-up | LC-02/04 | If named information gap remains, present a separate-ID non-leading probe; stop by approved termination policy | Additional observations |
 | **D6** Diagnostic Finalization | LC-04 under OI-01 | Apply final **approved** policy when known; don't force uncertainty into confirmation | Confirmed/Rejected/Uncertain |
 | **D7** Result + Handoff | LC-07/08 | Explain scope/limits; route according to outcome; project map | Valid continuation context |
 
@@ -190,13 +190,13 @@ Specific technical error states, event queues, partial-resume policy and authori
 |---|---|---|
 | Topic/concept knowledge | Subject, topic, concept, prerequisite links and support flags | LC-01, LC-08 |
 | Diagnostic knowledge | Supported blocker, known error patterns, criteria, coverage | LC-03/04 |
-| Assessment assets | Q1–Q3 and optional Q4, answers/roles/metadata | LC-02/03/04 |
+| Assessment assets | Q1–Q10 blueprint, separate follow-up IDs, answers/roles/metadata | LC-02/03/04 |
 | Guided learning assets | Conceptual visual, worked examples, partial active practice, criteria | LC-05/03 |
 | Validation assets | Retry item, meaningfully different transfer, concept structure, scoring | LC-06/03 |
 | Learner evidence | Raw responses, observation, reasoning interpretation, C3 outcome, participation/completion, C5 learner state | LC-03..08 as relevant |
 | Session/transition context | Selected topic, supported concept, entry origin, eligibility and applicable results | LC-02, LC-05..08 |
 
-**Curated package minimum:** reviewed Q1–Q4 candidates and answer/rubrics; Distributive Property pattern knowledge; mathematically valid visual; multi-step example reasoning; active partial practice; unscaffolded independent retry; meaningful different representation transfer; item-level success criteria. None of the sample equations in PDF alone constitute **approved OPS-04 final question bank**.
+**Curated package minimum:** reviewed Q1–Q10 blueprint and follow-up candidates with answer/rubrics; Distributive Property pattern knowledge; mathematically valid visual; multi-step example reasoning; active partial practice; unscaffolded independent retry; meaningful different representation transfer; item-level success criteria. Sample equations alone do not constitute an approved final question bank.
 
 ### Evidence integrity
 
@@ -206,7 +206,7 @@ Treat these as conceptually separate: **raw response → mathematical observatio
 
 ### 10.1 Evidence-Centered Design (ECD) adaptation
 
-Source proposes *Claim → Evidence → Task → Interpretation → Verification* informed by ECD. The Student Model is a hypothesis about **Distributive Property**, not a global score. Task Model relates to evidence roles Q1–Q4. Evidence Model records outcome/transformations/explanations. Cross-question synthesis considers supporting, contradictory and insufficient data. Verification uses reviewed reference cases.
+Source proposes *Claim → Evidence → Task → Interpretation → Verification* informed by ECD. The Student Model is evidence-bounded per concept, not a global score. Task Model relates to Q1–Q10 and separate follow-up roles. Evidence Model records outcomes, transformations and explanations. Cross-question synthesis considers supporting, contradictory and insufficient data. Verification uses reviewed reference cases.
 
 **Do not claim** full ECD statistical measurement models, DINA implementation, Rule Space inference, calibrated mastery probabilities, or broad CDM reliability unless actually implemented and independently established.
 
@@ -263,7 +263,7 @@ An engineering capability is ready for **verification** only if relevant product
 
 | Area | Expected evidence | Source alignment |
 |---|---|---|
-| FR traceability | Mapping of implementation to all 39 approved FRs | C1–C5, FR-X |
+| FR traceability | Legacy 39-FR mapping; v2 target contains 43 approved FRs | C1–C5, FR-X |
 | Math validity | Curated inputs/accepted expressions, expected outputs, human math review | OPS-04 |
 | Diagnostic decision integrity | Confirmed, Rejected, Uncertain, counterevidence and optional probing cases | C3, OI-01 |
 | Guided learning | Visual/explanation validity, ordered stages, active practice/completion | C4, OPS-01/02 |
@@ -293,6 +293,6 @@ An engineering capability is ready for **verification** only if relevant product
 4. Define C5 response grading and failure/equivalence **OPS-03**, keeping unanswered/uninterpretable separate from conceptual failure unless approved.
 5. Resolve product routing **OI-02** (post-optional review) and **OI-03** (all-correct pattern).
 6. Define coherent operational state/transition **OPS-05** with FR-X scenario verification; keep C2 a read-only projection of outcomes.
-7. Verify all 39 FRs and SC1–SC3, then separately evaluate SC4 and possible learning outcome evidence. Build actionable engineering backlog separately.
+7. Reconcile all 43 v2 FRs and SC1–SC3, then separately evaluate SC4 and learning-outcome evidence. Keep legacy 39-FR implementation mapping separate from v2 acceptance.
 
 **These priorities are derived implementation planning, not a declaration of approved sequencing, existing completed tasks or a new MVP scope.**

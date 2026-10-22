@@ -56,7 +56,7 @@ test('each pilot has packaged media, aligned captions and nonoverlapping transcr
   for (const v of bank.videos) {
     for (const file of [v.videoFile, v.posterFile, v.captionsFile]) assert.ok(existsSync(new URL(`../public/videos/${file}`, import.meta.url)), `Missing ${file}`);
     const captions = readFileSync(new URL(`../public/videos/${v.captionsFile}`, import.meta.url), 'utf8');
-    assert.ok(captions.startsWith('WEBVTT\n'));
+    assert.ok(captions.startsWith('WEBVTT\n') || captions.startsWith('WEBVTT\r\n'));
     let end = 0;
     for (const cue of v.transcript) {
       assert.ok(cue.startSeconds >= end && cue.endSeconds > cue.startSeconds && cue.endSeconds <= v.durationSeconds);

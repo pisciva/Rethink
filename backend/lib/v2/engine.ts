@@ -61,12 +61,22 @@ function currentKey(journey: Journey): keyof typeof questions | null {
   return null;
 }
 
+/** Conservative guard: explicit uncertainty or conflicting claims cannot establish evidence. */
+export function reasoningNeedsReview(raw: string): boolean {
+  const text = raw.toLowerCase().replace(/\s+/g, ' ').trim();
+  if (/\b(tidak|belum|kurang) (tahu|yakin|paham|mengerti)\b|\bragu(-ragu)?\b|\bapakah\b/.test(text)) return true;
+  const claimsCorrectExpansion = /5x/.test(text) && /\b10\b/.test(text)
+    && /(setiap suku|semua suku|x.{0,30}(2|dua)|2.{0,30}x)/.test(text);
+  const claimsUnchangedConstant = /\b2\b.{0,20}(tetap|tidak dikali)/.test(text);
+  return claimsCorrectExpansion && claimsUnchangedConstant;
+}
+
 export function explanationObservation(raw: string): Observation {
   const text = raw.toLowerCase().replace(/\s+/g, ' ').trim();
-  if (!text || text.length > 1200) return 'insufficient';
+  if (!text || text.length > 1200 || reasoningNeedsReview(raw)) return 'insufficient';
   const negatedMisconception = /bukan hanya|tidak hanya/.test(text);
   if (!negatedMisconception && /hanya.{0,35}(x|variabel)|\b2\b.{0,20}(tetap|tidak dikali)|tidak.{0,20}(angka 2|konstanta)/.test(text)) return 'known-error';
-  if (/3x/.test(text) && /\b6\b/.test(text) && /(setiap suku|semua suku|x.{0,30}(2|dua)|2.{0,30}x)/.test(text)) return 'correct';
+  if (/5x/.test(text) && /\b10\b/.test(text) && /(setiap suku|semua suku|x.{0,30}(2|dua)|2.{0,30}x)/.test(text)) return 'correct';
   return 'insufficient';
 }
 
@@ -111,7 +121,7 @@ export function submitAnswer(
   const key = currentKey(journey);
   if (!key || questions[key].id !== questionId || !Number.isFinite(Date.parse(at)) || journey.attempts.length >= 100) return null;
   const localResult = observation(key, raw);
-  const result = key === 'q3' && localResult === 'insufficient' && reasoningAdvice?.source === 'gateway' && reasoningAdvice.observation === 'correct'
+  const result = key === 'q3' && localResult === 'insufficient' && !reasoningNeedsReview(raw) && reasoningAdvice?.source === 'gateway' && reasoningAdvice.observation === 'correct'
     ? 'correct' : localResult;
   if (!result) return null;
   const role = questions[key].role;

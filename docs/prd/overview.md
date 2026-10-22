@@ -1,5 +1,7 @@
 # Rethink — Product Overview, Goals, Evidence, and Governance
 
+> **Legacy alignment note:** This file contains PRD v1 narrative. Use [`README.md`](README.md), [`product-overview.md`](product-overview.md), and [`mvp-definition.md`](mvp-definition.md) for active PRD v2 behavior.
+
 > **Status:** Faithful product/decision synthesis of approved PRD v1.0 + PRD summary. **Source:** PDF pp. 2–9, 15–39, 89–97; exact transcripts at `../source/00-prd-consolidated-summary.md`, `../source/01-product-overview.md`, `../source/02-problem-statement.md`, `../source/03-product-goals.md`, `../source/08-product-roadmap.md`, `../source/09-risks-and-dependencies.md`, and `../source/10-acceptance-governance.md`. If any paraphrase differs, inspect original and raise a correction.
 
 ## 1. Product identity

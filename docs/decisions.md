@@ -1,6 +1,8 @@
 # Rethink — Product Decisions, Open Issues, Operational Specifications & Change Control
 
-> **Source status as of uploaded 133-page documentation:** Approved Overall PRD v1.0 and **39 Approved Must Have functional requirements**; **OI-01–OI-03 OPEN**; **OPS-01–OPS-05 PENDING**. This Markdown does not confer any additional approval. Relevant PDF pages: 17, 50–51, 57, 68–71, 74–84, 89–97, 102–103, 110–117, 127–133.
+> **PRD v2 migration note (23 October 2026):** Product Requirements and Detailed Requirements tabs are now the behavior authority. They define 43 approved functional requirements, Q1–Q10 bounded multi-concept screening, per-concept evidence statuses, contextual Socratic assistance, and a separate five-question SPL Final Assessment. The older OI/OPS entries below describe the PRD v1 baseline and require reconciliation before being used as v2 blockers.
+
+> **Historical status:** uploaded 133-page PDF captured PRD v1.0 and 39 FRs. **Current authority:** PRD v2 tabs verified 23 October 2026, with 43 approved FRs. The OI/OPS register below is retained as a v1 decision history and must not override v2 behavior. This Markdown does not confer approval.
 
 ## 1. Decision classification and authority
 
@@ -23,7 +25,7 @@ All agents must separate **product approval**, **engineering implementation**, *
 
 **Affected:** C3, FR-C3-05/06/07/08, diagnosis D4–D6, LC-04/LC-03, T2, AI safeguards, D2 decision integrity, potentially SC2 and scenario V-X-01.
 
-**Product invariants regardless of decision:** only Distributive Property blocker; Q1–Q3 plus maximum one Q4; preserve raw mathematical observations and alternative explanations; avoid unsupported confirmation; Uncertain valid; no arbitrary numerical “confidence” as calibrated probability; no hidden LLM-generated diagnoses outside supported knowledge.
+**Historical v1 invariants:** preserve raw mathematical observations and alternative explanations; avoid unsupported confirmation; no arbitrary numerical “confidence” as calibrated probability. PRD v2 replaces the single-blocker Q1–Q4 assessment with Q1–Q10 multi-concept screening and per-concept evidence statuses. Distributive Property remains the only complete recovery package in the current MVP.
 
 **Engineering proposal to prepare (not a final decision):** identify deterministic mathematical evaluator boundaries; proposed evidence types and aggregation; explain LLM task and model-output validation; formalize cases supporting/contradicting/no evidence; specify failure/uncertain fallback, reference cases and human mathematical review, plus latency/cost/reliability trade-offs. A deterministic-only policy, LLM-led bounded policy and hybrid policy can be evaluated, but not represented as approved without review.
 
@@ -164,3 +166,24 @@ These directions authorize the temporary implementation approach, not final math
 User approved retaining the teammate backend as the main backend, using the grade-based catalog, showing all ten grade-10 general modules and activating only SPL. The approved implementation direction is SPL Q1–Q3, at most one Q4, evidence-bounded distributive diagnosis, curated recovery, eligible retry/transfer and distributive-only learner state. The archived v2 implementation is ported into the main backend as `/api/v2/*`; the archive remains unchanged. Legacy website API compatibility remains in force. This serves FR-C1-01..05, FR-C2-01..05, FR-C3-01..10, FR-C4-01..08, FR-C5-01..08 and FR-X-01..03 without claiming complete acceptance.
 
 Earlier interim OI-01/02/03 and draft OPS-04 directions remain unchanged. No mathematical review, empirical validation, build, test, live migration, deployment or Swift integration is claimed. Migration: `backend/supabase/migrations/202610220001_spl_recovery_journeys.sql`. Contract: `backend/docs/API-V2.md`.
+
+## 11. SPL content and evidence review — 22 October 2026
+
+The user directed proceeding with the missing-work priority, starting with mathematical content review. [The engineering review](implementation/SPL-CONTENT-REVIEW.md) records existing draft answer references, repeated Q1–Q3 content, Q3 answer disclosure, reproduced keyword-rubric failures, and concrete alternatives for product/pedagogy/engineering review.
+
+A conservative evidence guard now preserves explicit uncertainty and conflicting constant/expansion claims as insufficient, including across AI-advice handoff. This serves FR-C3-04/05/08's approved evidence boundaries without finalizing OI-01 or approving a full natural-language rubric. Existing stored attempts are not reinterpreted. Repeated-group prose was clarified; no question IDs, answer keys, learning-completion rules, optional-review eligibility or final diagnostic synthesis rules changed.
+
+Full backend suite: 63 tests passed; TypeScript check passed. iOS UX and final product/mathematics acceptance remain unverified. OI-01..03 remain **Open**, OPS-01..05 remain **Pending**. The recommended Q2/Q3 revision and general ambiguity rubric remain **PROPOSED**; no final resolution or approver is recorded.
+
+## DEC-2026-10-22-Q2Q3 — Separate diagnostic expressions and remove answer disclosure
+
+- Related OI/OPS: OPS-04; OI-01/03 and OPS-05 remain relevant but unresolved.
+- Source baseline: FR-C3-02/04/05/08, FR-X-01/02/03; original PDF pp. 66–70 and 80–81. This changes draft assets, not approved FR wording.
+- Decision: **APPROVED FOR THIS IMPLEMENTATION** by the user in this development conversation, 22 October 2026 (reply “sure” to the proposed replacement).
+- Approved scope: retain Q1; use Q2 `4(x+3)` with reference `4x+12` and omitted-constant-multiplier pattern `4x+3`; use Q3 “Pada bentuk 5(x + 2), jelaskan bagaimana angka 5 digunakan pada suku-suku di dalam kurung dan mengapa.” The Q3 reference expansion is `5x+10`, with the multiplier applied to both terms. Update numerical references and AI context together.
+- Alternative considered: retain repeated expressions with dependent-evidence modelling. Rejected for this item revision because it retains answer disclosure.
+- Rationale: Q2 should collect an application response before Q3 collects reasoning without revealing the Q2 solution. Distinct examples do not prove statistical independence or diagnostic accuracy.
+- Engineering implementation: bank version `spl-distribution-draft-3`, same question IDs; old versions use the existing explicit reset-required flow and are not silently regraded. Swift receives question content from the backend; decoding fixtures and API examples were synchronized.
+- Verification: 66 backend tests passed; production build (including TypeScript) passed. Checks include core roles, no Q2/result disclosure in Q3, updated item references, AI context, existing outcome branches, and explicit draft-2 session reset.
+- Remaining limits: full OPS-04 bank/pedagogical acceptance, comprehensive Q3 natural-language rubric (OI-01), all-correct outcome (OI-03), optional-review validation (OI-02), OPS-01..05 and live iOS/accessibility/comprehension testing remain open/pending. This approval does not close those registers or authorize new outcome rules.
+- Implementation: `backend/lib/v2/content.ts`, `engine.ts`, `reasoning.ts`, `catalog.ts`; [review](implementation/SPL-CONTENT-REVIEW.md); [API contract](../backend/docs/API-V2.md).

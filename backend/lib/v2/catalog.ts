@@ -17,7 +17,7 @@ export const gradeTenModules = materials.filter(m => m.grade === 10 && m.track =
   };
 });
 export const mvpCatalog = {
-  version: 2, contentVersion: 'spl-distribution-draft-2', contentStatus: 'draft-ops-04', curriculumVersion,
+  version: 2, contentVersion: 'spl-distribution-draft-3', contentStatus: 'draft-ops-04', curriculumVersion,
   grades: [{ id: 10, title: 'Kelas 10', modules: gradeTenModules }],
   // Compatibility projection for existing Swift catalog decoding; new UI uses grades.
   subjects: [{ id: 'algebra', title: 'Aljabar', topics: gradeTenModules.map(m => ({ ...m, id: m.topicId })) }],

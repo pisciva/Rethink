@@ -1,5 +1,7 @@
 # Question bank curriculum review
 
+> **Legacy implementation review:** Existing bank findings do not constitute the PRD v2 Q1–Q10 coverage matrix. See `../../docs/technical/assessment-blueprint.md` for target behavior.
+
 Research date: 21 October 2026. Scope: Indonesian SMA mathematics.
 
 ## Official baseline
