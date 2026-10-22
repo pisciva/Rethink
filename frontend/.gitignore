@@ -1,0 +1,30 @@
+# macOS
+.DS_Store
+._*
+
+# Swift Package Manager and build caches
+.build/
+.swiftpm/**
+!.swiftpm/**/
+!.swiftpm/**/Package.resolved
+DerivedData/
+build/
+.cache/
+
+# Personal Xcode settings
+**/xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+
+# Local secrets
+.env
+.env.*
+!.env.example
+*.p12
+*.mobileprovision
+
+# Logs
+*.log
+
+Rethink/Reference/

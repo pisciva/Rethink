@@ -1,0 +1,167 @@
+{
+  "pdf_source": "Salinan dari ReThink Documentation.pdf",
+  "pdf_pages": 133,
+  "pdf_sha256": "ec46ee8e883a2dc3be1f482f70b1cedbe27e05142edd1255ad1370896aa2bca8",
+  "archival_segments": [
+    {
+      "file": "docs/source/00-prd-consolidated-summary.md",
+      "first_page": 1,
+      "last_page": 17,
+      "pages": 17,
+      "size_bytes": 51171
+    },
+    {
+      "file": "docs/source/01-product-overview.md",
+      "first_page": 18,
+      "last_page": 22,
+      "pages": 5,
+      "size_bytes": 11843
+    },
+    {
+      "file": "docs/source/02-problem-statement.md",
+      "first_page": 23,
+      "last_page": 31,
+      "pages": 9,
+      "size_bytes": 21697
+    },
+    {
+      "file": "docs/source/03-product-goals.md",
+      "first_page": 32,
+      "last_page": 39,
+      "pages": 8,
+      "size_bytes": 18924
+    },
+    {
+      "file": "docs/source/04-product-scope-mvp.md",
+      "first_page": 40,
+      "last_page": 51,
+      "pages": 12,
+      "size_bytes": 25686
+    },
+    {
+      "file": "docs/source/05-product-requirements-summary.md",
+      "first_page": 52,
+      "last_page": 57,
+      "pages": 6,
+      "size_bytes": 21810
+    },
+    {
+      "file": "docs/source/06-product-requirements-detailed.md",
+      "first_page": 58,
+      "last_page": 84,
+      "pages": 27,
+      "size_bytes": 55856
+    },
+    {
+      "file": "docs/source/07-product-conceptual-architecture.md",
+      "first_page": 85,
+      "last_page": 88,
+      "pages": 4,
+      "size_bytes": 8036
+    },
+    {
+      "file": "docs/source/08-product-roadmap.md",
+      "first_page": 89,
+      "last_page": 92,
+      "pages": 4,
+      "size_bytes": 8747
+    },
+    {
+      "file": "docs/source/09-risks-and-dependencies.md",
+      "first_page": 93,
+      "last_page": 95,
+      "pages": 3,
+      "size_bytes": 8513
+    },
+    {
+      "file": "docs/source/10-acceptance-governance.md",
+      "first_page": 96,
+      "last_page": 97,
+      "pages": 2,
+      "size_bytes": 3560
+    },
+    {
+      "file": "docs/source/11-technical-overview.md",
+      "first_page": 98,
+      "last_page": 103,
+      "pages": 6,
+      "size_bytes": 10787
+    },
+    {
+      "file": "docs/source/12-technical-components.md",
+      "first_page": 104,
+      "last_page": 108,
+      "pages": 5,
+      "size_bytes": 10329
+    },
+    {
+      "file": "docs/source/13-technical-workflows.md",
+      "first_page": 109,
+      "last_page": 117,
+      "pages": 9,
+      "size_bytes": 18858
+    },
+    {
+      "file": "docs/source/14-data-ai-methodology.md",
+      "first_page": 118,
+      "last_page": 126,
+      "pages": 9,
+      "size_bytes": 18273
+    },
+    {
+      "file": "docs/source/15-readiness-technical-governance.md",
+      "first_page": 127,
+      "last_page": 133,
+      "pages": 7,
+      "size_bytes": 13357
+    }
+  ],
+  "requirement_count": 39,
+  "requirement_ids": [
+    "FR-C1-01",
+    "FR-C1-02",
+    "FR-C1-03",
+    "FR-C1-04",
+    "FR-C1-05",
+    "FR-C2-01",
+    "FR-C2-02",
+    "FR-C2-03",
+    "FR-C2-04",
+    "FR-C2-05",
+    "FR-C3-01",
+    "FR-C3-02",
+    "FR-C3-03",
+    "FR-C3-04",
+    "FR-C3-05",
+    "FR-C3-06",
+    "FR-C3-07",
+    "FR-C3-08",
+    "FR-C3-09",
+    "FR-C3-10",
+    "FR-C4-01",
+    "FR-C4-02",
+    "FR-C4-03",
+    "FR-C4-04",
+    "FR-C4-05",
+    "FR-C4-06",
+    "FR-C4-07",
+    "FR-C4-08",
+    "FR-C5-01",
+    "FR-C5-02",
+    "FR-C5-03",
+    "FR-C5-04",
+    "FR-C5-05",
+    "FR-C5-06",
+    "FR-C5-07",
+    "FR-C5-08",
+    "FR-X-01",
+    "FR-X-02",
+    "FR-X-03"
+  ],
+  "source_based_detailed_requirements": true,
+  "notes": [
+    "Original PDF included to preserve images/tables/layout that text extraction may flatten.",
+    "Source transcripts are page-numbered, not approved new PRD revisions.",
+    "No standalone Design Requirements chapter or finalized physical API/DB specification in uploaded 133-page PDF."
+  ]
+}

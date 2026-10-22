@@ -1,0 +1,9 @@
+.DS_Store
+frontend/.build/
+frontend/.swiftpm/
+**/node_modules/
+**/.next/
+**/*.tsbuildinfo
+**/.env*
+!**/.env.example
+**/.vercel/

@@ -1,0 +1,423 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 110;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B7E1A1000000000000000001 /* SwiftMath in Frameworks */ = {isa = PBXBuildFile; productRef = B7E1A1000000000000000003 /* SwiftMath */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		54E44C34307D45EB00142FFB /* Rethink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rethink.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		54E44C37307D45EB00142FFB /* Exceptions for "Rethink" folder in "Rethink" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Config/Info.plist,
+				Reference/.DS_Store,
+				"Reference/genie/Screenshot 2026-10-15 at 00.20.18.png",
+				"Reference/genie/Screenshot 2026-10-15 at 00.20.22.png",
+				"Reference/genie/Screenshot 2026-10-15 at 00.20.30.png",
+				"Reference/genie/Screenshot 2026-10-15 at 00.20.46.png",
+				"Reference/genie/Screenshot 2026-10-15 at 00.20.54.png",
+				"Reference/genie/Screenshot 2026-10-15 at 00.21.01.png",
+				"Reference/genie/Screenshot 2026-10-15 at 00.21.08.png",
+				"Reference/genie/Screenshot 2026-10-15 at 00.21.15.png",
+				"Reference/genie/Screenshot 2026-10-15 at 00.21.45.png",
+				"Reference/genie/Screenshot 2026-10-15 at 00.21.52.png",
+				Reference/onboarding/IMG_8660.PNG,
+				Reference/onboarding/IMG_8661.PNG,
+				Reference/onboarding/IMG_8681.PNG,
+				Reference/onboarding/IMG_8682.PNG,
+				Reference/onboarding/IMG_8683.PNG,
+				Reference/onboarding/IMG_8684.PNG,
+				Reference/onboarding/IMG_8685.PNG,
+				Reference/onboarding/IMG_8686.PNG,
+				Reference/onboarding/IMG_8687.PNG,
+				Reference/onboarding/IMG_8688.PNG,
+				Reference/onboarding/IMG_8689.PNG,
+				Reference/onboarding/IMG_8690.PNG,
+				Reference/onboarding/IMG_8692.PNG,
+				Reference/onboarding/IMG_8693.PNG,
+				Reference/onboarding/IMG_8694.PNG,
+				"Reference/rekad/Screenshot 2026-10-18 at 22.09.38.png",
+				"Reference/rekad/Screenshot 2026-10-18 at 22.10.03.png",
+				"Reference/rekad/Screenshot 2026-10-18 at 22.10.11.png",
+				"Reference/rekad/Screenshot 2026-10-18 at 22.10.19.png",
+				"Reference/rekad/Screenshot 2026-10-18 at 22.10.28.png",
+				"Reference/rekad/Screenshot 2026-10-18 at 22.10.36.png",
+				"Reference/rekad/Screenshot 2026-10-18 at 22.10.40.png",
+				"Reference/rekad/Screenshot 2026-10-18 at 22.10.53.png",
+				"Reference/rekad/Screenshot 2026-10-18 at 22.11.12.png",
+				"Reference/rekad/Screenshot 2026-10-18 at 22.11.19.png",
+				"Reference/rekad/Screenshot 2026-10-18 at 22.11.22.png",
+				"Reference/rekad/Screenshot 2026-10-18 at 22.11.34.png",
+				"Reference/rekad/Screenshot 2026-10-18 at 22.11.51.png",
+				"Reference/rekad/Screenshot 2026-10-18 at 22.12.16.png",
+				"Reference/rekad/Screenshot 2026-10-18 at 22.12.19.png",
+				"Reference/rekad/Screenshot 2026-10-18 at 22.12.21.png",
+				"Reference/rekad/Screenshot 2026-10-18 at 22.12.36.png",
+				"Resources/images/1. Fondasi Aljabar.png",
+				Resources/images/mascot.png,
+				Tests/DiagnosisCoreTests/CatalogSupportTests.swift,
+				Tests/DiagnosisCoreTests/DiagnosisCoreSmokeTests.swift,
+				Tests/DiagnosisCoreTests/OnboardingTests.swift,
+				Tests/DiagnosisCoreTests/RemoteModelsTests.swift,
+				ViewModels/Map/LearningMapViewModel.swift,
+			);
+			target = 54E44C33307D45EB00142FFB /* Rethink */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		54E44C36307D45EB00142FFB /* Rethink */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				54E44C37307D45EB00142FFB /* Exceptions for "Rethink" folder in "Rethink" target */,
+			);
+			path = Rethink;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		54E44C31307D45EB00142FFB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				B7E1A1000000000000000001 /* SwiftMath in Frameworks */,
+			);
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		54E44C2B307D45EB00142FFB = {
+			isa = PBXGroup;
+			children = (
+				54E44C36307D45EB00142FFB /* Rethink */,
+				54E44C35307D45EB00142FFB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		54E44C35307D45EB00142FFB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				54E44C34307D45EB00142FFB /* Rethink.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		54E44C33307D45EB00142FFB /* Rethink */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 54E44C3F307D45EC00142FFB /* Build configuration list for PBXNativeTarget "Rethink" */;
+			buildPhases = (
+				54E44C30307D45EB00142FFB /* Sources */,
+				54E44C31307D45EB00142FFB /* Frameworks */,
+				54E44C32307D45EB00142FFB /* Resources */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				54E44C36307D45EB00142FFB /* Rethink */,
+			);
+			name = Rethink;
+			packageProductDependencies = (
+				B7E1A1000000000000000003 /* SwiftMath */,
+			);
+			productName = Rethink;
+			productReference = 54E44C34307D45EB00142FFB /* Rethink.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		54E44C2C307D45EB00142FFB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2700;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					54E44C33307D45EB00142FFB = {
+						CreatedOnToolsVersion = 27.0;
+					};
+				};
+			};
+			buildConfigurationList = 54E44C2F307D45EB00142FFB /* Build configuration list for PBXProject "Rethink" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 54E44C2B307D45EB00142FFB;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				B7E1A1000000000000000002 /* XCRemoteSwiftPackageReference "SwiftMath" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 54E44C35307D45EB00142FFB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				54E44C33307D45EB00142FFB /* Rethink */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		54E44C32307D45EB00142FFB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		54E44C30307D45EB00142FFB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		54E44C3D307D45EC00142FFB /* Debug configuration for PBXProject "Rethink" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 6LL856622C;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		54E44C3E307D45EC00142FFB /* Release configuration for PBXProject "Rethink" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 6LL856622C;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		54E44C40307D45EC00142FFB /* Debug configuration for PBXNativeTarget "Rethink" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6LL856622C;
+				ENABLE_PREVIEWS = YES;
+				EXCLUDED_SOURCE_FILE_NAMES = (
+					"*.md",
+					"*.pdf",
+					"*.json",
+					"Screenshot*.png",
+				);
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Rethink/Config/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Challenge.rethink.Akbar.Rethink;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		54E44C41307D45EC00142FFB /* Release configuration for PBXNativeTarget "Rethink" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6LL856622C;
+				ENABLE_PREVIEWS = YES;
+				EXCLUDED_SOURCE_FILE_NAMES = (
+					"*.md",
+					"*.pdf",
+					"*.json",
+					"Screenshot*.png",
+				);
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Rethink/Config/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Challenge.rethink.Akbar.Rethink;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		54E44C2F307D45EB00142FFB /* Build configuration list for PBXProject "Rethink" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				54E44C3D307D45EC00142FFB /* Debug configuration for PBXProject "Rethink" */,
+				54E44C3E307D45EC00142FFB /* Release configuration for PBXProject "Rethink" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		54E44C3F307D45EC00142FFB /* Build configuration list for PBXNativeTarget "Rethink" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				54E44C40307D45EC00142FFB /* Debug configuration for PBXNativeTarget "Rethink" */,
+				54E44C41307D45EC00142FFB /* Release configuration for PBXNativeTarget "Rethink" */,
+			);
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B7E1A1000000000000000002 /* XCRemoteSwiftPackageReference "SwiftMath" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mgriebling/SwiftMath.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.7.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B7E1A1000000000000000003 /* SwiftMath */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B7E1A1000000000000000002 /* XCRemoteSwiftPackageReference "SwiftMath" */;
+			productName = SwiftMath;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 54E44C2C307D45EB00142FFB /* Project object */;
+	validationLevel = 1;
+}

@@ -1,0 +1,10 @@
+node_modules/
+.next/
+.env*
+!.env.example
+*.tsbuildinfo
+test-results/
+.vercel/
+
+# Archived backend is retained locally, outside the active app.
+/archive/
