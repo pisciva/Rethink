@@ -58,7 +58,7 @@ Example response shape:
   "resetRequired": false,
   "journey": {
     "version": 2,
-    "contentVersion": "spl-distribution-draft-2",
+    "contentVersion": "spl-distribution-draft-3",
     "concept": "distribution",
     "selectedTopic": "spl",
     "phase": "diagnosis",
@@ -67,7 +67,7 @@ Example response shape:
       "id": "distribution-q2",
       "role": "q2-application",
       "prompt": "Hilangkan tanda kurung dan tuliskan bentuk aljabar yang setara.",
-      "math": "3(x + 2)",
+      "math": "4(x + 3)",
       "format": "expression"
     },
     "learningContent": null,
@@ -105,7 +105,7 @@ The API stores raw responses plus an internal per-attempt evidence category and 
 - **OI-01:** final responsibility split between mathematical evaluation, AI interpretation and diagnostic policy remains open. V2 uses an explicit draft rule for the result. Gemini can advise only on otherwise unclear Q3 reasoning; its quote must match the submitted answer and meet a narrow mathematical guard. Invalid output, missing configuration or provider failure remains insufficient evidence. This temporary implementation does not close OI-01.
 - **OI-02:** the product has directed a temporary gate: Optional Review cannot access C5. This does not settle a permanent post-review learner-state policy.
 - **OI-03:** all-correct remains pending with no invented mapping.
-- **OPS-01/02/03/04/05:** feedback, completion, invalid/equivalent response handling, mathematical assets/rubrics and cross-capability transitions need review. `spl-distribution-draft-2` and `draft-ops-01-05` make this visible in the API.
+- **OPS-01/02/03/04/05:** feedback, completion, invalid/equivalent response handling, mathematical assets/rubrics and cross-capability transitions need review. `spl-distribution-draft-3` and `draft-ops-01-05` make this visible in the API.
 
 Before release as a validated assessment, review the Q1–Q4 items, explanatory rubric, C3 decision table, Guided Practice feedback/completion, and C5 invalid-input handling with the product and mathematics owners. Tests prove the implemented draft behavior; they do not approve these rules or establish learning effectiveness.
 
@@ -151,3 +151,9 @@ Q3 uses `lib/ai.ts` and the main backend's AI_GATEWAY settings. Only otherwise-i
 Apply the new additive migration before deploying. It creates `learning_journeys` and its service-only revision-checked RPC; it does not copy legacy completion into recovery evidence. If the archive journey migration was already applied to this same database, the new migration preserves the existing table and replaces the RPC. All old curriculum/assessment/media endpoints remain legacy compatibility APIs with their previous behavior; they are not the new MVP access contract. New clients must use v2. Do not combine legacy checkpoint completion with v2 concept understanding.
 
 Implementation includes ported engine and API regression cases, but no tests, server, build, live AI request, migration or deployment were executed for this revision, per user direction. Mathematical assets remain draft OPS-04. Swift UI integration is a separate task.
+
+## Draft-3 diagnostic item revision — 22 October 2026
+
+The user-approved item revision preserves Q1 and uses Q2 `4(x+3)` and Q3 reasoning about `5(x+2)`, without giving the Q2 expansion or the Q3 expansion in the prompt. The active content version is `spl-distribution-draft-3`. Question IDs and response formats are unchanged; clients should render returned question text and math rather than hardcode the old examples.
+
+Stored draft-2 sessions now return the existing `resetRequired: true` response. Continuing them returns `409 reset_required`; an explicit reset using the current revision starts a draft-3 journey. No automatic rewrite or regrading occurs. No database migration is needed for this version bump. Overall content/rubric review remains OPS-04 pending; see [the scoped approval](../../docs/decisions.md#dec-2026-10-22-q2q3--separate-diagnostic-expressions-and-remove-answer-disclosure).

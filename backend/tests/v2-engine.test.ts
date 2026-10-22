@@ -30,9 +30,9 @@ test('diagnosis administers three distinct core roles and holds all-correct deci
   assert.equal(publicJourney(journey).currentQuestion?.id, 'spl-q1');
   journey = answer(journey, 'spl-q1', 'A');
   assert.equal(publicJourney(journey).currentQuestion?.id, 'distribution-q2');
-  journey = answer(journey, 'distribution-q2', '3x+6');
+  journey = answer(journey, 'distribution-q2', '4x+12');
   assert.equal(publicJourney(journey).currentQuestion?.id, 'distribution-q3');
-  journey = answer(journey, 'distribution-q3', 'Tiga dikalikan ke setiap suku: x menjadi 3x dan 2 menjadi 6.');
+  journey = answer(journey, 'distribution-q3', 'Lima dikalikan ke setiap suku: x menjadi 5x dan 2 menjadi 10.');
   const view = publicJourney(journey);
   assert.equal(view.phase, 'diagnostic-decision-pending');
   assert.equal(view.diagnosticOutcome, null);
@@ -46,10 +46,10 @@ test('diagnosis administers three distinct core roles and holds all-correct deci
 test('two concordant conceptual errors confirm only after Q3 and allow guided recovery', () => {
   let journey = startedJourney();
   journey = answer(journey, 'spl-q1', 'B');
-  journey = answer(journey, 'distribution-q2', '3x+2');
+  journey = answer(journey, 'distribution-q2', '4x+3');
   assert.equal(publicJourney(journey).diagnosticOutcome, null);
   assert.equal('correct' in publicJourney(journey).attempts[1], false);
-  journey = answer(journey, 'distribution-q3', 'Tiga hanya dikalikan ke x; angka 2 tetap.');
+  journey = answer(journey, 'distribution-q3', 'Lima hanya dikalikan ke x; angka 2 tetap.');
   assert.equal(publicJourney(journey).diagnosticOutcome, 'confirmed');
   assert.equal(publicJourney(journey).map.focus, 'distribution');
   journey = transition(journey, 'start-recovery')!;
@@ -68,8 +68,8 @@ test('two concordant conceptual errors confirm only after Q3 and allow guided re
 test('rejected diagnosis can review content without entering validation', () => {
   let journey = startedJourney();
   journey = answer(journey, 'spl-q1', 'B');
-  journey = answer(journey, 'distribution-q2', '3x+6');
-  journey = answer(journey, 'distribution-q3', 'Tiga dikali ke setiap suku: x menjadi 3x dan 2 menjadi 6.');
+  journey = answer(journey, 'distribution-q2', '4x+12');
+  journey = answer(journey, 'distribution-q3', 'Lima dikali ke setiap suku: x menjadi 5x dan 2 menjadi 10.');
   assert.equal(publicJourney(journey).diagnosticOutcome, 'rejected');
   assert.equal(transition(journey, 'start-recovery'), null);
   journey = transition(journey, 'start-review')!;
@@ -84,7 +84,7 @@ test('rejected diagnosis can review content without entering validation', () => 
 test('ambiguous core evidence permits at most one targeted Q4 and no fabricated learner state', () => {
   let journey = startedJourney();
   journey = answer(journey, 'spl-q1', 'B');
-  journey = answer(journey, 'distribution-q2', '3x+2');
+  journey = answer(journey, 'distribution-q2', '4x+3');
   journey = answer(journey, 'distribution-q3', 'Saya mencoba menghitungnya.');
   assert.equal(publicJourney(journey).currentQuestion?.id, 'distribution-q4');
   journey = answer(journey, 'distribution-q4', '8');
@@ -98,8 +98,8 @@ test('ambiguous core evidence permits at most one targeted Q4 and no fabricated 
 test('confirmed recovery gates transfer and scopes final validation state', () => {
   let journey = startedJourney();
   journey = answer(journey, 'spl-q1', 'B');
-  journey = answer(journey, 'distribution-q2', '3x+2');
-  journey = answer(journey, 'distribution-q3', 'Tiga hanya dikalikan ke x; angka 2 tetap.');
+  journey = answer(journey, 'distribution-q2', '4x+3');
+  journey = answer(journey, 'distribution-q3', 'Lima hanya dikalikan ke x; angka 2 tetap.');
   journey = transition(journey, 'start-recovery')!;
   journey = transition(transition(journey, 'advance')!, 'advance')!;
   journey = answer(journey, 'distribution-practice', '10');
@@ -118,8 +118,8 @@ test('confirmed recovery gates transfer and scopes final validation state', () =
 test('retry failure blocks transfer and both valid successes establish only concept-level understanding', () => {
   let journey = startedJourney();
   journey = answer(journey, 'spl-q1', 'B');
-  journey = answer(journey, 'distribution-q2', '3x+2');
-  journey = answer(journey, 'distribution-q3', 'Tiga hanya dikalikan ke x; angka 2 tetap.');
+  journey = answer(journey, 'distribution-q2', '4x+3');
+  journey = answer(journey, 'distribution-q3', 'Lima hanya dikalikan ke x; angka 2 tetap.');
   journey = transition(journey, 'start-recovery')!;
   journey = transition(transition(journey, 'advance')!, 'advance')!;
   journey = answer(journey, 'distribution-practice', '10');
@@ -137,26 +137,26 @@ test('retry failure blocks transfer and both valid successes establish only conc
 
 test('invalid math and stale question do not create evidence', () => {
   const journey = startedJourney();
-  assert.equal(submitAnswer(journey, 'distribution-q2', '3x+6'), null);
+  assert.equal(submitAnswer(journey, 'distribution-q2', '4x+12'), null);
   const afterQ1 = answer(journey, 'spl-q1', 'B');
   assert.equal(submitAnswer(afterQ1, 'distribution-q2', 'alert(1)'), null);
-  assert.equal(submitAnswer(afterQ1, 'distribution-q2', '3(x+2)'), null);
+  assert.equal(submitAnswer(afterQ1, 'distribution-q2', '4(x+3)'), null);
   assert.equal(afterQ1.attempts.length, 1);
 });
 
 test('negated misconception wording is not read as evidence of that misconception', () => {
   let journey = startedJourney();
   journey = answer(journey, 'spl-q1', 'B');
-  journey = answer(journey, 'distribution-q2', '3x+2');
-  journey = answer(journey, 'distribution-q3', 'Bukan hanya x yang dikali 3: angka 2 juga dikali 3 sehingga menjadi 3x+6.');
+  journey = answer(journey, 'distribution-q2', '4x+3');
+  journey = answer(journey, 'distribution-q3', 'Bukan hanya x yang dikali 5: angka 2 juga dikali 5 sehingga menjadi 5x+10.');
   assert.notEqual(publicJourney(journey).diagnosticOutcome, 'confirmed');
 });
 
 test('a correct SPL target response is counterevidence, so two later errors require the bounded probe', () => {
   let journey = startedJourney();
   journey = answer(journey, 'spl-q1', 'A');
-  journey = answer(journey, 'distribution-q2', '3x+2');
-  journey = answer(journey, 'distribution-q3', 'Tiga hanya dikalikan ke x; angka 2 tetap.');
+  journey = answer(journey, 'distribution-q2', '4x+3');
+  journey = answer(journey, 'distribution-q3', 'Lima hanya dikalikan ke x; angka 2 tetap.');
   assert.equal(publicJourney(journey).currentQuestion?.id, 'distribution-q4');
   assert.equal(publicJourney(journey).diagnosticOutcome, null);
   journey = answer(journey, 'distribution-q4', '4');
@@ -166,8 +166,8 @@ test('a correct SPL target response is counterevidence, so two later errors requ
 test('a correct conceptual explanation remains counterevidence after a matching Q4 error', () => {
   let journey = startedJourney();
   journey = answer(journey, 'spl-q1', 'B');
-  journey = answer(journey, 'distribution-q2', '3x+2');
-  journey = answer(journey, 'distribution-q3', 'Tiga dikali ke setiap suku: x menjadi 3x dan 2 menjadi 6.');
+  journey = answer(journey, 'distribution-q2', '4x+3');
+  journey = answer(journey, 'distribution-q3', 'Lima dikali ke setiap suku: x menjadi 5x dan 2 menjadi 10.');
   assert.equal(publicJourney(journey).currentQuestion?.id, 'distribution-q4');
   journey = answer(journey, 'distribution-q4', '4');
   assert.equal(publicJourney(journey).diagnosticOutcome, 'uncertain');
@@ -177,8 +177,8 @@ test('a correct conceptual explanation remains counterevidence after a matching 
 test('attempts carry internal evidence provenance without exposing it publicly', () => {
   let journey = startedJourney();
   journey = answer(journey, 'spl-q1', 'B');
-  journey = answer(journey, 'distribution-q2', '3x+2');
-  journey = answer(journey, 'distribution-q3', 'Tiga hanya dikalikan ke x; angka 2 tetap.');
+  journey = answer(journey, 'distribution-q2', '4x+3');
+  journey = answer(journey, 'distribution-q3', 'Lima hanya dikalikan ke x; angka 2 tetap.');
   assert.deepEqual(journey.attempts.map(a => a.evidence), [
     { category: 'outcome', direction: 'supporting' },
     { category: 'transformation', direction: 'supporting' },
@@ -191,8 +191,8 @@ test('attempts carry internal evidence provenance without exposing it publicly',
 test('reinforcement clears the projected C5 state while retaining validation attempts', () => {
   let journey = startedJourney();
   journey = answer(journey, 'spl-q1', 'B');
-  journey = answer(journey, 'distribution-q2', '3x+2');
-  journey = answer(journey, 'distribution-q3', 'Tiga hanya dikalikan ke x; angka 2 tetap.');
+  journey = answer(journey, 'distribution-q2', '4x+3');
+  journey = answer(journey, 'distribution-q3', 'Lima hanya dikalikan ke x; angka 2 tetap.');
   journey = transition(journey, 'start-recovery')!;
   journey = transition(transition(journey, 'advance')!, 'advance')!;
   journey = answer(journey, 'distribution-practice', '10');
@@ -209,8 +209,8 @@ test('reinforcement clears the projected C5 state while retaining validation att
 test('optional review completion explains that validation is not opened', () => {
   let journey = startedJourney();
   journey = answer(journey, 'spl-q1', 'B');
-  journey = answer(journey, 'distribution-q2', '3x+6');
-  journey = answer(journey, 'distribution-q3', 'Tiga dikali ke setiap suku: x menjadi 3x dan 2 menjadi 6.');
+  journey = answer(journey, 'distribution-q2', '4x+12');
+  journey = answer(journey, 'distribution-q3', 'Lima dikali ke setiap suku: x menjadi 5x dan 2 menjadi 10.');
   journey = transition(journey, 'start-review')!;
   journey = transition(transition(journey, 'advance')!, 'advance')!;
   journey = answer(journey, 'distribution-practice', '10');
@@ -220,9 +220,9 @@ test('optional review completion explains that validation is not opened', () => 
 
 test('submission issue distinguishes stale, format and unreadable answers', () => {
   const journey = startedJourney();
-  assert.equal(submissionIssue(journey, 'distribution-q2', '3x+6'), 'stale_question');
+  assert.equal(submissionIssue(journey, 'distribution-q2', '4x+12'), 'stale_question');
   assert.equal(submissionIssue(journey, 'spl-q1', 'A'), 'invalid_answer');
   const afterQ1 = answer(journey, 'spl-q1', 'A');
-  assert.equal(submissionIssue(afterQ1, 'distribution-q2', '3(x+2)'), 'expanded_form_required');
+  assert.equal(submissionIssue(afterQ1, 'distribution-q2', '4(x+3)'), 'expanded_form_required');
   assert.equal(submissionIssue(afterQ1, 'distribution-q2', 'alert(1)'), 'invalid_answer');
 });

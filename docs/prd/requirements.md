@@ -968,3 +968,7 @@ See source summary PDF pp. 56–57 and detailed verification pp. 82–84.
 6. Usability SC4 and causal educational effectiveness D4 are evaluated separately and are not proven by these FR tests.
 
 **Bottom line:** The original wording of all 39 approved behavioral obligations is included above; the original PDF archive remains the ultimate reference for exact layout and any table/text-extraction ambiguity.
+
+## Draft diagnostic item implementation note — 22 October 2026
+
+The user approved replacing the repeated draft Q2/Q3 examples: Q2 `4(x+3)` (reference `4x+12`), Q3 a conceptual explanation of `5(x+2)` without supplying its result. See [DEC-2026-10-22-Q2Q3](../decisions.md#dec-2026-10-22-q2q3--separate-diagnostic-expressions-and-remove-answer-disclosure) and [review](../implementation/SPL-CONTENT-REVIEW.md). This serves FR-C3-02/04/05/08 and FR-X-01..03; it does not amend the source requirement wording or close OI-01..03/OPS-01..05. The bank remains explicitly draft. Old bank sessions require the existing explicit restart rather than regrading old evidence against new items. Engineering verification: 66 backend tests and production build passed; iOS/user acceptance remains untested.

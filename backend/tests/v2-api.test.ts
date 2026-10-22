@@ -12,14 +12,63 @@ const request = (token?: string, body?: unknown) => new Request(url, {
   body: body === undefined ? undefined : JSON.stringify(body),
 });
 
+test('FR-C3-04/08 and FR-X-01/03: guarded Q3 evidence survives API save/resume without leaking judgments', async () => {
+  for (const answer of [
+    'Saya tidak tahu apakah hanya x yang dikalikan 5.',
+    'Bukan hanya x yang dikalikan 5, tetapi angka 2 tetap. Hasilnya 5x+10 untuk setiap suku.',
+  ]) {
+    const mock = mockSupabase();
+    process.env.AI_GATEWAY_API_KEY = 'test-key';
+    const databaseFetch = globalThis.fetch;
+    let unexpectedRequests = 0;
+    globalThis.fetch = async (input, init) => {
+      const outgoing = new Request(input, init);
+      if (new URL(outgoing.url).hostname !== 'supabase.test') {
+        unexpectedRequests++;
+        throw new Error('guarded reasoning must not contact a provider');
+      }
+      return databaseFetch(input, init);
+    };
+    const post = async (body: unknown) => {
+      const response = await POST(request('user-a', body));
+      assert.equal(response.status, 200);
+      return response.json();
+    };
+    try {
+      await post({ concept: 'distribution', action: 'select-topic', topicId: 'spl', expectedRevision: 0 });
+      await post({ concept: 'distribution', action: 'submit', questionId: 'spl-q1', answer: 'A', expectedRevision: 1 });
+      await post({ concept: 'distribution', action: 'submit', questionId: 'distribution-q2', answer: '4x+12', expectedRevision: 2 });
+      const saved = await post({ concept: 'distribution', action: 'submit', questionId: 'distribution-q3', answer, expectedRevision: 3 });
+      assert.equal(saved.revision, 4);
+      assert.equal(saved.journey.currentQuestion.id, 'distribution-q4');
+      assert.equal(saved.journey.diagnosticOutcome, null);
+      assert.equal(saved.journey.learnerState, null);
+      assert.equal(saved.journey.map.focus, null);
+      assert.equal(saved.journey.map.progress, null);
+      const attempt = saved.journey.attempts[2];
+      assert.equal(attempt.answer, answer);
+      for (const field of ['observation', 'evidence', 'interpretationSource']) assert.equal(field in attempt, false);
+      const stored = mock.v2Rows.get(`${userA}:distribution`)!.session as { attempts: { observation: string; interpretationSource: string }[] };
+      assert.equal(stored.attempts[2].observation, 'insufficient');
+      assert.equal(stored.attempts[2].interpretationSource, 'curated');
+      const resumed = await (await GET(request('user-a'))).json();
+      assert.equal(resumed.revision, saved.revision);
+      assert.deepEqual(resumed.journey, saved.journey);
+      assert.equal(unexpectedRequests, 0);
+    } finally { mock.restore(); }
+  }
+});
+
 test('v2 catalog exposes supported scope and draft labels without answer keys', async () => {
   const response = await getCatalog(new Request('https://backend.test/api/v2/catalog'));
   assert.equal(response.status, 200);
   const data = await response.json();
   assert.equal(data.contentStatus, 'draft-ops-04');
-  assert.equal(data.subjects[0].topics[0].concepts[0].id, 'distribution');
-  assert.equal(data.subjects[0].topics[0].capabilities.diagnosis, 'active');
-  assert.equal(data.subjects[0].topics[0].capabilities.validation, 'confirmed-recovery-only');
+  const spl = data.subjects[0].topics.find((topic: { id: string }) => topic.id === 'spl');
+  assert.ok(spl, 'supported SPL entry must exist regardless of catalog ordering');
+  assert.equal(spl.concepts[0].id, 'distribution');
+  assert.equal(spl.capabilities.diagnosis, 'active');
+  assert.equal(spl.capabilities.validation, 'confirmed-recovery-only');
   assert.ok(data.subjects[0].topics.some((topic: { availability: string }) => topic.availability === 'unavailable'));
   assert.deepEqual(data.relationships, [{ from: 'distribution', to: 'spl', kind: 'prerequisite' }]);
   assert.equal(JSON.stringify(data).includes('3x+6'), false);
@@ -60,7 +109,7 @@ test('v2 progress asks for an explicit reset when a stored session is stale', as
   try {
     mock.v2Rows.set(`${userA}:distribution`, {
       user_id: userA, concept: 'distribution', revision: 3,
-      session: { ...newJourneyForTest(), contentVersion: 'old-bank' },
+      session: { ...newJourneyForTest(), contentVersion: 'spl-distribution-draft-2' },
     });
     const current = await (await GET(request('user-a'))).json();
     assert.equal(current.resetRequired, true);
@@ -85,7 +134,7 @@ test('v2 progress returns an explicit format code for an expanded-form task', as
     assert.equal(selected.status, 200);
     const q1 = await POST(request('user-a', { concept: 'distribution', action: 'submit', expectedRevision: 1, questionId: 'spl-q1', answer: 'A' }));
     assert.equal(q1.status, 200);
-    const q2 = await POST(request('user-a', { concept: 'distribution', action: 'submit', expectedRevision: 2, questionId: 'distribution-q2', answer: '3(x+2)' }));
+    const q2 = await POST(request('user-a', { concept: 'distribution', action: 'submit', expectedRevision: 2, questionId: 'distribution-q2', answer: '4(x+3)' }));
     assert.equal(q2.status, 400);
     assert.equal((await q2.json()).code, 'expanded_form_required');
   } finally { mock.restore(); }
@@ -97,8 +146,8 @@ test('optional review completion does not imply validation access', async () => 
   try {
     await post({ concept: 'distribution', action: 'select-topic', topicId: 'spl', expectedRevision: 0 });
     await post({ concept: 'distribution', action: 'submit', expectedRevision: 1, questionId: 'spl-q1', answer: 'B' });
-    await post({ concept: 'distribution', action: 'submit', expectedRevision: 2, questionId: 'distribution-q2', answer: '3x+6' });
-    await post({ concept: 'distribution', action: 'submit', expectedRevision: 3, questionId: 'distribution-q3', answer: 'Tiga dikali ke setiap suku: x menjadi 3x dan 2 menjadi 6.' });
+    await post({ concept: 'distribution', action: 'submit', expectedRevision: 2, questionId: 'distribution-q2', answer: '4x+12' });
+    await post({ concept: 'distribution', action: 'submit', expectedRevision: 3, questionId: 'distribution-q3', answer: 'Lima dikali ke setiap suku: x menjadi 5x dan 2 menjadi 10.' });
     await post({ concept: 'distribution', action: 'start-review', expectedRevision: 4 });
     await post({ concept: 'distribution', action: 'advance', expectedRevision: 5 });
     await post({ concept: 'distribution', action: 'advance', expectedRevision: 6 });

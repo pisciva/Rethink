@@ -6,7 +6,7 @@ final class RemoteModelsTests: XCTestCase {
         let json = """
         {
           "version": 2,
-          "contentVersion": "spl-distribution-draft-2",
+          "contentVersion": "spl-distribution-draft-3",
           "contentStatus": "draft-ops-04",
           "subjects": [{
             "id": "algebra",
@@ -25,7 +25,7 @@ final class RemoteModelsTests: XCTestCase {
         """.data(using: .utf8)!
 
         let catalog = try JSONDecoder().decode(RemoteCatalog.self, from: json)
-        XCTAssertEqual(catalog.contentVersion, "spl-distribution-draft-2")
+        XCTAssertEqual(catalog.contentVersion, "spl-distribution-draft-3")
         XCTAssertEqual(catalog.subjects.first?.topics.first?.capabilities?.validation, "confirmed-recovery-only")
         XCTAssertEqual(catalog.relationships.first?.from, "distribution")
     }
@@ -39,7 +39,7 @@ final class RemoteModelsTests: XCTestCase {
           "resetRequired": false,
           "journey": {
             "version": 2,
-            "contentVersion": "spl-distribution-draft-2",
+            "contentVersion": "spl-distribution-draft-3",
             "concept": "distribution",
             "selectedTopic": "spl",
             "phase": "diagnostic-decision-pending",

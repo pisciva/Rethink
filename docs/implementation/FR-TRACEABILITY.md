@@ -45,3 +45,33 @@ Source: `../prd/requirements.md` (39 approved Must Have FRs). This table records
 | FR-X-03 | Swift result/map read one v2 journey; backend map is a projection | OI-02/03; OPS-05 | Blocked by pending decision |
 
 Verification available in repository: backend unit/API/database tests, Swift Package tests and Xcode build. The current public v2 deployment was checked for catalog, guest authentication, initial progress and SPL topic selection using a temporary guest that was deleted. Newly edited local backend code needs deployment before the public endpoint includes it. SC4 user comprehension and learning-effectiveness claims require separate research and cannot be established by these tests.
+
+## Content and evidence guard verification — 22 October 2026
+
+See [SPL content review](SPL-CONTENT-REVIEW.md) for the item references, reproduced Q3 issues, proposed item revision and outstanding review decisions.
+
+- Executed full backend suite: **63 passed, 0 failed** on Windows Node.js 24.18.1; backend TypeScript check **PASS**. The suite includes embedded PostgreSQL checks, not a live Supabase migration or deployment.
+- Added independent mathematical checks for FR-C3-02/04, FR-C4-03/04 and FR-C5-02/04/05, public-answer-key omission checks, and invalid validation-input integrity checks.
+- Added a conservative FR-C3-04/05/08 guard and regression fixtures: explicit uncertainty and conflicting constant/expansion claims remain insufficient in local interpretation, provider interpretation and the AI-advice handoff. Final synthesis rules and OI-01 status are unchanged; this is not a complete reviewed language rubric.
+- Clarified the repeated-group explanation. Copy ID `learn.visual.groups.explanation`: CONDITIONAL, editorial REVIEW_NEEDED; OPS-04 remains pending.
+- Fixed stale test assumptions about SPL catalog position and Windows caption line endings. No product behavior was changed by those test fixes.
+- Proposed UX-031: **FAIL** on static review of Q3 disclosing Q2's answer. Proposed UX-057: executed unreadable-input fixtures **PASS**, full response-policy acceptance **BLOCKED BY DECISION** (OPS-03).
+- iOS build, simulator/device UX, VoiceOver, comprehension studies, production build and deployment: **NOT RUN**. All FR-level acceptance statuses in the table remain unchanged; passing a fixture is not acceptance of an entire FR.
+
+## Follow-up quality verification — 22 October 2026
+
+Supersedes the prior 63-test run and production-build NOT RUN status for this engineering revision:
+
+- Full backend suite: **65 passed, 0 failed**. TypeScript check: **PASS**. Production build: **PASS** (Windows Node.js 24.18.1).
+- Strengthened mathematical fixtures to check the displayed input expressions, completed blanks and SPL options against independent references, rather than only checking answer-key constants.
+- Added Q3 guard false-positive fixtures and authenticated API save/resume checks covering insufficient observation persistence, no private judgments in learner responses, unchanged map state and no provider request for guarded input (FR-C3-04/08; FR-X-01/03).
+- Built-server smoke checks: health, ten-module catalog, SPL-only active entry, missing-token rejection, browser-origin rejection and allowed preflight **PASS**. The temporary local server was stopped.
+- No new user-facing copy or final product policy was introduced in this follow-up. No live authenticated Supabase journey, deployment, iOS build/runtime, accessibility or learner-comprehension study was executed. FR-level acceptance statuses and OI/OPS statuses remain unchanged. See [review details](SPL-CONTENT-REVIEW.md).
+
+## Approved Q2/Q3 revision verification — 22 October 2026
+
+- Scoped approval: [DEC-2026-10-22-Q2Q3](../decisions.md#dec-2026-10-22-q2q3--separate-diagnostic-expressions-and-remove-answer-disclosure). Q2 is `4(x+3)`; Q3 asks for reasoning about `5(x+2)` without providing either expansion. Copy IDs: `diag.item.q2.prompt`, `diag.item.q2.math`, `diag.item.q3.prompt` — CONDITIONAL, APPROVED_FOR_DESIGN for this user-approved draft implementation.
+- Updated item references, Q3 local interpretation and AI context, API examples, catalog content version and Swift decoding fixtures. Version is `spl-distribution-draft-3`; IDs are unchanged. This serves FR-C3-02/04/05/08 and FR-X-01..03.
+- Full backend suite **66 passed, 0 failed**; production build including TypeScript **PASS**. Explicit draft-2 reset, unsupported inputs, non-confirmed/uncertain paths, single-Q4 limit, validation gates and map/evidence consistency are covered by executed fixtures.
+- Proposed UX-030/031 static item checks: **PASS** for core input roles and removal of answer disclosure; learner comprehension and live iOS checks **NOT RUN**. Comprehensive item/rubric acceptance is still **BLOCKED BY DECISION** (OPS-04/OI-01); all FR-level table statuses remain unchanged.
+- No deployment or live database migration performed. Swift fixture updates were not executed on Xcode/Swift in this environment.

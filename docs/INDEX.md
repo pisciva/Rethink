@@ -23,6 +23,7 @@
 | [`design/ux-writing-acceptance-tests.md`](design/ux-writing-acceptance-tests.md) | Proposed UX-writing QA scenarios covering language, diagnosis copy, validation, errors, accessibility and governance | Proposed test suite; not executed results |
 | [`decisions.md`](decisions.md) | Approved baseline vs OI-01..03 Open, OPS-01..05 Pending, decision procedures and change log | pp. 17, 50–51, 57, 89–97, 103, 110–117, 127–133 |
 | [`implementation/FR-TRACEABILITY.md`](implementation/FR-TRACEABILITY.md) | Current SwiftUI and backend v2 implementation mapping for all 39 approved FRs, with remaining acceptance dependencies | Engineering audit; does not replace PRD approval or verification |
+| [`implementation/SPL-CONTENT-REVIEW.md`](implementation/SPL-CONTENT-REVIEW.md) | Draft SPL mathematical references, evidence guard fixes, executed checks and proposed item/rubric review decisions | Engineering review; OI/OPS approval remains pending |
 | [`source/ReThink-Documentation-original.pdf`](source/ReThink-Documentation-original.pdf) | Exact canonical uploaded source including tables, spacing and visual layout | All 133 pages |
 
 ## Project in a minute

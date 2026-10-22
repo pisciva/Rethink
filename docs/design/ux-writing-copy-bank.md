@@ -117,6 +117,9 @@
 | `diag.question.role.q1` | SR/help text | Pilih satu jawaban pada soal Sistem Persamaan Linear. | SAFE-DRAFT |
 | `diag.question.role.q2` | SR/help text | Tulis bentuk matematika yang setara. | SAFE-DRAFT |
 | `diag.question.role.q3` | SR/help text | Jelaskan alasan di balik langkah matematika ini. | SAFE-DRAFT |
+| `diag.item.q2.prompt` | Question | Hilangkan tanda kurung dan tuliskan bentuk aljabar yang setara. | CONDITIONAL — draft-3 Q2; user-approved implementation; APPROVED_FOR_DESIGN; OPS-04 overall pending |
+| `diag.item.q2.math` | Math | 4(x + 3) | CONDITIONAL — draft-3 Q2; user-approved implementation; APPROVED_FOR_DESIGN; OPS-04 overall pending |
+| `diag.item.q3.prompt` | Question | Pada bentuk 5(x + 2), jelaskan bagaimana angka 5 digunakan pada suku-suku di dalam kurung dan mengapa. | CONDITIONAL — draft-3 Q3; user-approved implementation; APPROVED_FOR_DESIGN; OPS-04 overall pending |
 | `diag.answer.placeholder` | Input help | Tulis jawabanmu di sini | SAFE-DRAFT |
 | `diag.explanation.placeholder` | Input help | Tulis alasanmu di sini | SAFE-DRAFT |
 | `diag.submit` | CTA | Kirim jawaban | SAFE-DRAFT |
@@ -152,6 +155,7 @@
 | `learn.steps.progress` | Status | {done} dari 3 tahap belajar selesai | CONDITIONAL — actual completion |
 | `learn.visual.title` | Heading | Biar konsepnya lebih kebayang | SAFE-DRAFT |
 | `learn.visual.prompt` | Body | Perhatikan bagaimana angka di luar kurung dikalikan ke setiap suku di dalamnya. | CONDITIONAL — reviewed math item |
+| `learn.visual.groups.explanation` | Body | Tiga kelompok yang masing-masing berisi x dan 2 berarti x + x + x = 3x dan 2 + 2 + 2 = 6. Pengali berlaku untuk setiap suku di dalam kurung. | CONDITIONAL — draft repeated-group asset; OPS-04 review pending; copy approval REVIEW_NEEDED |
 | `learn.worked.title` | Heading | Coba lihat langkahnya | SAFE-DRAFT |
 | `learn.worked.prompt` | Body | Tiap langkah punya alasan. Yuk, ikuti satu per satu. | SAFE-DRAFT |
 | `learn.practice.title` | Heading | Sekarang giliran kamu | SAFE-DRAFT |
