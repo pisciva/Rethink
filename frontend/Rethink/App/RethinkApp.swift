@@ -15,3 +15,7 @@ struct RethinkApp: App {
         }
     }
 }
+
+#Preview("Rethink") {
+    ContentView()
+}

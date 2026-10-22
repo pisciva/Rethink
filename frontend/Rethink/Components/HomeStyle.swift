@@ -1,6 +1,7 @@
 import SwiftUI
 
 enum HomeStyle {
+    static let background = Color.white
     static let sky = Color("SkyTint")
     static let paper = Color("Paper")
     static let ink = Color("Ink")

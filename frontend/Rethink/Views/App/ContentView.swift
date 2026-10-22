@@ -3,6 +3,8 @@ import SwiftUI
 struct ContentView: View {
     // Product-owner development preference: open Home, even before onboarding completion.
     @State private var isShowingOnboarding = AppConfig.replaysOnboardingForTesting || AppConfig.onboardingPreviewPage != nil
+    @State private var isShowingChat = false
+    @State private var previousTab: AppTab = .home
     @StateObject private var auth = AuthStore()
     @StateObject private var catalog = CatalogStore()
     @StateObject private var journey = JourneyStore()
@@ -29,7 +31,7 @@ struct ContentView: View {
                     ProgressView().tint(HomeStyle.blue)
                 }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(HomeStyle.sky.ignoresSafeArea())
+                    .background(HomeStyle.background.ignoresSafeArea())
             } else if !auth.isAuthenticated {
                 GuestSessionView()
             } else {
@@ -61,56 +63,66 @@ struct ContentView: View {
         }
     }
 
+    private var chatTabRole: TabRole {
+        if #available(iOS 27.0, *) {
+            return .prominent
+        }
+        return .search
+    }
+
     private var tabs: some View {
         TabView(selection: $navigation.selectedTab) {
-            NavigationStack {
-                HomeView(
-                    viewModel: homeViewModel,
-                    openExplore: { navigation.selectedTab = .explore },
-                    openMap: { navigation.selectedTab = .map },
-                    openProfile: { navigation.selectedTab = .profile }
-                )
-            }
-            .tabItem {
+            Tab(value: AppTab.home) {
+                NavigationStack {
+                    HomeView(
+                        viewModel: homeViewModel,
+                        openExplore: { navigation.selectedTab = .explore },
+                        openMap: { navigation.selectedTab = .map }
+                    )
+                }
+            } label: {
                 Label("Beranda", systemImage: navigation.selectedTab == .home ? "house.fill" : "house")
                     .environment(\.symbolVariants, .none)
             }
-            .tag(AppTab.home)
 
-            NavigationStack {
-                MathematicsCatalogView(
-                    subjects: catalog.subjects,
-                    isLoading: catalog.isLoading,
-                    errorMessage: catalog.errorMessage,
-                    onRetry: { Task { await catalog.load() } }
-                )
-            }
-            .tabItem {
+            Tab(value: AppTab.explore) {
+                NavigationStack {
+                    GradeCatalogView()
+                }
+            } label: {
                 Label("Jelajahi", systemImage: navigation.selectedTab == .explore ? "square.grid.2x2.fill" : "square.grid.2x2")
                     .environment(\.symbolVariants, .none)
             }
-            .tag(AppTab.explore)
 
-            NavigationStack {
-                LearningMapView()
-            }
-            .tabItem {
+            Tab(value: AppTab.map) {
+                NavigationStack { LearningMapView() }
+            } label: {
                 Label("Peta", systemImage: navigation.selectedTab == .map ? "map.fill" : "map")
                     .environment(\.symbolVariants, .none)
             }
-            .tag(AppTab.map)
 
-            NavigationStack {
-                ProfileView()
-            }
-            .tabItem {
-                Label("Profil", systemImage: navigation.selectedTab == .profile ? "person.crop.circle.fill" : "person.crop.circle")
+            // Newer systems require an explicit prominent role for the detached slot.
+            Tab(value: AppTab.chat, role: chatTabRole) {
+                Color.clear
+            } label: {
+                Label("Chatbot", systemImage: "bubble.left.and.bubble.right")
                     .environment(\.symbolVariants, .none)
             }
-            .tag(AppTab.profile)
         }
         .tint(HomeStyle.ink)
+        .onChange(of: navigation.selectedTab) { _, tab in
+            if tab == .chat {
+                navigation.selectedTab = previousTab
+                isShowingChat = true
+            } else {
+                previousTab = tab
+            }
+        }
+        .fullScreenCover(isPresented: $isShowingChat) {
+            NavigationStack { ChatView() }
+        }
     }
+
 }
 
 #Preview {

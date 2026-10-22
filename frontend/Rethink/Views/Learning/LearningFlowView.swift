@@ -51,7 +51,7 @@ struct LearningFlowView: View {
             .frame(maxWidth: 700)
             .frame(maxWidth: .infinity)
         }
-        .background(HomeStyle.sky.ignoresSafeArea())
+        .background(HomeStyle.background.ignoresSafeArea())
         .navigationTitle("Belajar Konsep")
         .navigationBarTitleDisplayMode(.inline)
     }

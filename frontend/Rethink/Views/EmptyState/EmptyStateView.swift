@@ -32,7 +32,7 @@ struct EmptyStateView: View {
                 .frame(minHeight: geometry.size.height, alignment: .center)
             }
         }
-        .background(HomeStyle.sky.ignoresSafeArea())
+        .background(HomeStyle.background.ignoresSafeArea())
         .navigationTitle(kind.navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom, spacing: 0) {

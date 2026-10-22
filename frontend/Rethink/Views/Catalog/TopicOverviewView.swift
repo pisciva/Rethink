@@ -63,7 +63,7 @@ struct TopicOverviewView: View {
             .frame(maxWidth: 640)
             .frame(maxWidth: .infinity)
         }
-        .background(HomeStyle.sky.ignoresSafeArea())
+        .background(HomeStyle.background.ignoresSafeArea())
         .navigationTitle("Tentang topik")
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom, spacing: 0) {
@@ -83,7 +83,7 @@ struct TopicOverviewView: View {
                 .padding(.bottom, 12)
                 .frame(maxWidth: 640)
                 .frame(maxWidth: .infinity)
-                .background(HomeStyle.sky.opacity(0.97))
+                .background(HomeStyle.background)
             }
         }
         .navigationDestination(isPresented: $showJourney) { JourneyFlowView() }

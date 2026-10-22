@@ -1,17 +1,33 @@
 import SwiftUI
+import PhotosUI
+import UIKit
 
 struct ProfileView: View {
     @EnvironmentObject private var auth: AuthStore
     @EnvironmentObject private var journeyStore: JourneyStore
     @State private var showResetConfirmation = false
+    @State private var selectedPhoto: PhotosPickerItem?
+    @State private var photoError: String?
+    @State private var isLoadingPhoto = false
+    @AppStorage("rethink.profile.avatar") private var avatar = ""
 
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 24) {
                 VStack(spacing: 16) {
-                    BrandIllustration(name: "asset 35", size: 150, tilt: -7)
-                        .padding(20)
-                        .background(Circle().fill(HomeStyle.powder.opacity(0.6)))
+                    PhotosPicker(selection: $selectedPhoto, matching: .images) {
+                        VStack(spacing: 10) {
+                            ProfileAvatar(size: 112)
+                            Text(isLoadingPhoto ? "Menyiapkan foto…" : "Ubah foto profil")
+                                .font(.subheadline.weight(.medium))
+                                .foregroundStyle(HomeStyle.blue)
+                        }
+                    }
+                    .disabled(isLoadingPhoto)
+                    .accessibilityLabel("Pilih foto profil")
+                    if let photoError {
+                        Text(photoError).font(.caption).foregroundStyle(.red)
+                    }
                     Text("Ruang belajarmu.").brandHeading(34)
                     Text("Setiap pemahaman dimulai\ndari rasa ingin tahu.")
                         .font(.subheadline)
@@ -94,8 +110,39 @@ struct ProfileView: View {
             .frame(maxWidth: 640)
             .frame(maxWidth: .infinity)
         }
-        .background(HomeStyle.sky.ignoresSafeArea())
+        .background(HomeStyle.background.ignoresSafeArea())
+        .toolbar(.visible, for: .navigationBar)
         .navigationTitle("Profil")
+        .task(id: selectedPhoto) {
+            guard let selectedPhoto else { return }
+            isLoadingPhoto = true
+            photoError = nil
+            defer { isLoadingPhoto = false }
+            do {
+                guard let data = try await selectedPhoto.loadTransferable(type: Data.self),
+                      let image = UIImage(data: data), image.size.width > 0, image.size.height > 0 else {
+                    photoError = "Foto belum bisa dibuka. Pilih foto lain."
+                    return
+                }
+                guard !Task.isCancelled else { return }
+                let side: CGFloat = 256
+                let scale = max(side / image.size.width, side / image.size.height)
+                let format = UIGraphicsImageRendererFormat()
+                format.scale = 1
+                let thumbnail = UIGraphicsImageRenderer(size: CGSize(width: side, height: side), format: format).image { _ in
+                    let size = CGSize(width: image.size.width * scale, height: image.size.height * scale)
+                    image.draw(in: CGRect(x: (side - size.width) / 2, y: (side - size.height) / 2, width: size.width, height: size.height))
+                }
+                if let jpeg = thumbnail.jpegData(compressionQuality: 0.8) {
+                    avatar = jpeg.base64EncodedString()
+                } else {
+                    photoError = "Foto belum bisa disimpan. Coba foto lain."
+                }
+            } catch {
+                guard !Task.isCancelled else { return }
+                photoError = "Foto belum bisa dimuat. Coba lagi."
+            }
+        }
         .navigationBarTitleDisplayMode(.inline)
         .confirmationDialog("Mulai ulang sesi belajar?", isPresented: $showResetConfirmation, titleVisibility: .visible) {
             Button("Mulai ulang", role: .destructive) { Task { await journeyStore.reset(auth: auth) } }

@@ -16,6 +16,12 @@ struct MathematicsCatalogView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            if !showsNavigationBar {
+                TabPageHeader(title: "Jelajahi")
+                    .padding(.horizontal, 24)
+                    .padding(.top, 12)
+                    .padding(.bottom, 16)
+            }
             if let subject = selectedSubject {
                 CatalogCategoryStrip(
                     items: subjects.map { .init(id: $0.id, title: $0.title, image: $0.illustrationName) },
@@ -72,7 +78,7 @@ struct MathematicsCatalogView: View {
             }
         }
         .background {
-            LinearGradient(colors: [HomeStyle.lavender.opacity(0.4), HomeStyle.sky, Color.white], startPoint: .top, endPoint: .bottom)
+            HomeStyle.background
                 .ignoresSafeArea()
         }
         .toolbar(showsNavigationBar ? .visible : .hidden, for: .navigationBar)

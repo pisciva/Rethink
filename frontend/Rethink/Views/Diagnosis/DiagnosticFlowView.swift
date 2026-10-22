@@ -73,7 +73,7 @@ struct DiagnosticFlowView: View {
             .frame(maxWidth: 700)
             .frame(maxWidth: .infinity)
         }
-        .background(HomeStyle.sky.ignoresSafeArea())
+        .background(HomeStyle.background.ignoresSafeArea())
         .navigationTitle("Pemeriksaan Konsep")
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(isPresented: $showLearning) { LearningFlowView() }
