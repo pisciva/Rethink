@@ -1,5 +1,7 @@
 # Rethink learning API v2 — Swift integration contract
 
+> **Implementation snapshot, not PRD v2 target contract:** This file still documents the earlier Q1–Q3/Q4 single-concept journey. Active v2 target behavior is in `../../docs/prd/diagnostic-requirements.md` and `../../docs/technical/assessment-blueprint.md`. Do not treat this file as evidence that Q1–Q10 or SPL Final Assessment is implemented.
+
 This is the additive backend contract for the approved Algebra → SPL → Sifat Distributif MVP. `/api/*` without `/v2` remains the website's legacy API. V2 does not copy or alter legacy progress. Question content and operational rules are **draft**, pending the product/mathematics decisions named below.
 
 ## Set up and deployment

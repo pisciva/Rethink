@@ -1,3 +1,7 @@
+# Legacy v1 requirements archive
+
+> This file preserves the repository's original 39-FR PRD v1 derivative for implementation history. It is **not** the active PRD v2 requirements authority. PRD v2 has 43 approved functional requirements, Q1–Q10 multi-concept screening, bounded follow-up probes, contextual Socratic assistance, and a separate five-question SPL Final Assessment. See [`../PRD_V2_MIGRATION_CHANGELOG.md`](../PRD_V2_MIGRATION_CHANGELOG.md).
+
 # Rethink — Approved Product Functional Requirements: Full 39-Item Registry
 
 > **Scope and provenance:** This file retains the **source original language** of all 39 approved Must Have FRs from detailed source PDF pp. 58–84, with their source verification basis, dependencies and qualifications. Requirements are **approved behavioral obligations**—not implementation proof or approval of open operational choices. Page references use original PDF page indexes, not printed numbering. The archival transcription is at `../source/06-product-requirements-detailed.md` and original PDF at `../source/ReThink-Documentation-original.pdf`.

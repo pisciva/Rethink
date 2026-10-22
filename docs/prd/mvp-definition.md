@@ -1,12 +1,12 @@
 # Rethink — MVP Scope, Behavioral Definition & Boundaries
 
-> **Authority:** approved PRD v1.0 source: original PDF pp. 10–12 and 40–51, supported by pp. 18–22, 52–57, 85–88, 99–103. This is a navigation-ready restatement; unresolved operational choices are **not** silently finalized. All capabilities are logically defined, not guaranteed implemented.
+> **Authority:** PRD v2 Product Requirements and Detailed Requirements tabs, verified 23 October 2026. `docs/source/` remains the historical PRD v1 archive. Target behavior below is separate from implementation status.
 
 ## 1. MVP contract
 
 Rethink MVP demonstrates **one complete evidence-grounded conceptual recovery loop**, not a broad mathematics education application. The learner selects **Sistem Persamaan Linear (SPL)** under **Algebra** as the supported topic. The single supported diagnostic and recovery concept is **Distributive Property** (property of distribution in algebra). Assess it in (a) isolated algebraic applications and (b) transformation within SPL; both yield evidence about the **same concept**, not separate diagnosed competencies or blockers.
 
-The MVP must prove a structurally reusable, controlled C1–C5 pathway with correct non-confirmed/uncertain branching. *Feature shown in navigation* is not the same as *feature supported*. No broad diagnosis, no total SPL proficiency score, no complete curriculum, no full adaptive tutoring or long-term retention claim.
+The MVP must prove bounded multi-concept screening, per-concept evidence synthesis, open learning choice, and one complete recovery loop for Distributive Property. *Feature shown in navigation* is not the same as *feature supported*. No full diagnosis of every prerequisite, no probabilistic mastery score, no complete curriculum, no unrestricted tutoring or long-term retention claim.
 
 ### Essential domain distinctions
 
@@ -19,7 +19,7 @@ The MVP must prove a structurally reusable, controlled C1–C5 pathway with corr
 | Represented | Exists as structural content for navigation | Active capability |
 | Configured | Has some defined assets or metadata | Approved and released capability |
 | Actively Supported | Explicitly enabled and content/assessment-ready in current scope | Everything present in graph |
-| Diagnostic outcome | Confirmed / Rejected / Uncertain for supported blocker | Learner understanding state |
+| Diagnostic evidence status | Supported / Not Supported / Uncertain / Insufficiently Assessed per concept | C5 learner state |
 | Learning completion | Student finished guided activities under defined criteria | Independent concept comprehension |
 | C5 learner state | Understood / Procedural Only / Needs Reinforcement | SPL topic mastery |
 
@@ -46,17 +46,19 @@ The MVP must prove a structurally reusable, controlled C1–C5 pathway with corr
 
 **Applicable FR:** FR-C2-01..05; FR-X-03; source pp. 64–65.
 
-### C3 — Targeted Diagnostic Assessment & Outcomes
+### C3 — Multi-Concept Diagnostic Assessment & Outcomes
 
-- Run within selected SPL context; evaluate only Distributive Property supported blocker.
-- Administer exactly the three **core** questions: Q1/Q2/Q3; at most one relevant optional Q4; source examples are **illustrations, not finalized question bank**.
+- Run within selected SPL context; screen supported candidate concepts through exactly ten curated primary questions, Q1–Q10.
+- Each item has version, concept tags, evidence roles, expected response, observable evidence, misconception candidates, rubric, supporting evidence and contradicting evidence criteria.
+- A single item error does not establish every tagged blocker. Synthesize evidence separately per concept.
+- Follow-up AI probes use separate IDs, require a specific information gap, remain bounded and logged, and terminate on evidence sufficiency or approved budget. Final probe limits remain an operational contract, not an invented number.
 - Preserve raw submitted response, relevant question role and mathematical context; evaluate available evidence without using correctness alone as confirmation.
 - Synthesize supporting, counterevidence, and insufficient/ambiguous evidence across questions.
-- Produce *Confirmed*, *Rejected*, or *Uncertain* **only under the final applicable diagnostic policy**; division of AI and rule authority **OI-01 OPEN**. Formal all-correct mapping **OI-03 OPEN**.
+- Produce per-concept `Supported`, `Not Supported`, `Uncertain`, or `Insufficiently Assessed`, only under approved evaluation policy. Keep evidence status, coverage, recommendation priority, content availability and learner state separate.
 - Explain which concept was examined and assessment limits; do not attribute other causes or confer SPL mastery.
 - Confirmed → supported targeted recovery. Rejected/Uncertain → topic exploration and/or Optional Concept Review with explicit non-confirmed wording; do not convert to confirmed diagnosis through review.
 
-**Applicable FR:** FR-C3-01..10; source pp. 66–71.
+**Applicable FR:** PRD v2 C3 requirements; 43 total approved functional requirements. Current repository implementation remains partial and does not claim full v2 acceptance.
 
 ### C4 — Targeted Guided Learning
 
@@ -71,7 +73,7 @@ The MVP must prove a structurally reusable, controlled C1–C5 pathway with corr
 
 **Applicable FR:** FR-C4-01..08; source pp. 72–75.
 
-### C5 — Knowledge Validation & Learning Outcomes
+### C5 — Knowledge Validation & SPL Final Assessment
 
 - On eligible **completed confirmed recovery**, offer an **Independent Retry** for the concept: no provided visual explanation, worked solution or partially completed assistance; preserve structure while changing example.
 - Only **after valid successful retry**, offer a **Transfer Problem**: same underlying mathematical structure in meaningfully different wording/representation/context. Merely changing numbers is not sufficient transfer design.
@@ -80,19 +82,18 @@ The MVP must prove a structurally reusable, controlled C1–C5 pathway with corr
 - Needs Reinforcement → same Guided Learning package; no new concept diagnosis, no adaptive prerequisite exploration.
 - C5 is not a second diagnosis engine. Do not claim failed retry implies a newly found misconception.
 - Optional Review route into validation **OI-02 OPEN**.
+- Separately administer SPL Final Assessment: exactly five questions, pass at 3/5 or higher, Not Passed at 0–2/5, retry after failure, and preserve all attempts. It may start after diagnosis without completing all blockers. Its topic result never marks every prerequisite Understood.
 
 **Applicable FR:** FR-C5-01..08; source pp. 76–80.
 
-## 3. Diagnostic blueprint Q1–Q4 (immutable source limits)
+## 3. Diagnostic blueprint Q1–Q10
 
 | Item | Role | Input format | Intended evidence | Caveats |
 |---|---|---|---|---|
-| **Q1** | Target Performance: SPL | Single-answer multiple-choice | Performance on selected target topic; meaningful distractors possible | Final correctness alone not enough to confirm blocker |
-| **Q2** | Isolated Prerequisite Application | Short mathematical expression/step | Observable Distributive Property transformation | Transformation evidence not full mastery |
-| **Q3** | Conceptual Reasoning | Short reasoning/explanation | Explanatory evidence beyond answer correctness | Reasoning may be ambiguous; AI interpretation constrained |
-| **Q4** | Conditional probe only if information gap | Procedural Trace **OR** Conceptual Probe | Evidence for discriminating hypothesis/counterevidence | At most one, non-recursive, not for everyone |
+| **Q1–Q10** | Curated primary assessment | Mixed approved response formats | Multi-concept evidence across target, prerequisite, reasoning and representation roles | Tags do not copy one result to every concept |
+| **Follow-up probes** | Contextual diagnostic clarification | Procedural, conceptual or representation-focused response | Resolve one named information gap | Separate IDs; bounded; no leading; termination policy required |
 
-**Total ≤4 items.** Q1–Q3 are core; Q4 is optional. PDF p. 10 has **illustrative, nonfinal** prompts such as direct expansion `3(x+2)` and explanation of why `2(x+3)=2x+6`; do not assume those exact questions, distractors or rubrics are approved OPS-04. Student answer correctness is **outcome evidence**; a visible operation is **transformation evidence**; verbal reasoning is **explanatory evidence**. For diagnosis, consider observation, interpretation, alternative causes, and how different questions relate. Classifications must be conservative.
+**Q1–Q10 are primary items.** Follow-up probes are additional, separately identified diagnostic evidence. Student answer correctness is outcome evidence; a visible operation is transformation evidence; verbal reasoning is explanatory evidence. Classifications must be conservative. No arbitrary LLM confidence percentage is a probability.
 
 ### Supported outcomes
 
@@ -137,9 +138,9 @@ Only apply after assessment responses are validly evaluated against approved cur
 flowchart TD
     A[Mathematics catalog] --> B[Select Algebra / supported SPL]
     B --> C[Explore map and initiate diagnostic]
-    C --> D[Q1-Q3 core evidence]
+    C --> D[Q1-Q10 primary evidence]
     D --> E{Relevant information gap?}
-    E -- Yes --> F[One conditional Q4]
+    E -- Yes --> F[Bounded follow-up probe, separate ID]
     E -- No --> G[Bounded diagnostic outcome]
     F --> G
     G --> H{Diagnostic outcome}
@@ -216,7 +217,7 @@ These are source-provided initial **verification categories, not final executabl
 - **OPS-01:** feedback/retries for partial guided practice.
 - **OPS-02:** exact lesson-completion evidence/threshold.
 - **OPS-03:** parsing/ambiguity/equivalence/blank validation responses.
-- **OPS-04:** finalized, mathematically reviewed Q1–Q4, visual/example/practice/retry/transfer and rubrics.
+- **OPS-04:** finalized, mathematically reviewed Q1–Q10, follow-up probes, visual/example/practice/retry/transfer and rubrics.
 - **OPS-05:** actual cross-capability transitions, session state and persistence design.
 
 All are unresolved in source. See [`../decisions.md`](../decisions.md). **This document cannot be used to declare their final answer.**

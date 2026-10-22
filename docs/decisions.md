@@ -1,6 +1,8 @@
 # Rethink — Product Decisions, Open Issues, Operational Specifications & Change Control
 
-> **Source status as of uploaded 133-page documentation:** Approved Overall PRD v1.0 and **39 Approved Must Have functional requirements**; **OI-01–OI-03 OPEN**; **OPS-01–OPS-05 PENDING**. This Markdown does not confer any additional approval. Relevant PDF pages: 17, 50–51, 57, 68–71, 74–84, 89–97, 102–103, 110–117, 127–133.
+> **PRD v2 migration note (23 October 2026):** Product Requirements and Detailed Requirements tabs are now the behavior authority. They define 43 approved functional requirements, Q1–Q10 bounded multi-concept screening, per-concept evidence statuses, contextual Socratic assistance, and a separate five-question SPL Final Assessment. The older OI/OPS entries below describe the PRD v1 baseline and require reconciliation before being used as v2 blockers.
+
+> **Historical status:** uploaded 133-page PDF captured PRD v1.0 and 39 FRs. **Current authority:** PRD v2 tabs verified 23 October 2026, with 43 approved FRs. The OI/OPS register below is retained as a v1 decision history and must not override v2 behavior. This Markdown does not confer approval.
 
 ## 1. Decision classification and authority
 
@@ -23,7 +25,7 @@ All agents must separate **product approval**, **engineering implementation**, *
 
 **Affected:** C3, FR-C3-05/06/07/08, diagnosis D4–D6, LC-04/LC-03, T2, AI safeguards, D2 decision integrity, potentially SC2 and scenario V-X-01.
 
-**Product invariants regardless of decision:** only Distributive Property blocker; Q1–Q3 plus maximum one Q4; preserve raw mathematical observations and alternative explanations; avoid unsupported confirmation; Uncertain valid; no arbitrary numerical “confidence” as calibrated probability; no hidden LLM-generated diagnoses outside supported knowledge.
+**Historical v1 invariants:** preserve raw mathematical observations and alternative explanations; avoid unsupported confirmation; no arbitrary numerical “confidence” as calibrated probability. PRD v2 replaces the single-blocker Q1–Q4 assessment with Q1–Q10 multi-concept screening and per-concept evidence statuses. Distributive Property remains the only complete recovery package in the current MVP.
 
 **Engineering proposal to prepare (not a final decision):** identify deterministic mathematical evaluator boundaries; proposed evidence types and aggregation; explain LLM task and model-output validation; formalize cases supporting/contradicting/no evidence; specify failure/uncertain fallback, reference cases and human mathematical review, plus latency/cost/reliability trade-offs. A deterministic-only policy, LLM-led bounded policy and hybrid policy can be evaluated, but not represented as approved without review.
 
