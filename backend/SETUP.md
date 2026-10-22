@@ -35,10 +35,16 @@ Set environment variables for the intended Production/Preview environment:
 | `SUPABASE_PUBLISHABLE_KEY` | Same public key as Swift. |
 | `SUPABASE_SECRET_KEY` | Backend only. Never embed in Swift. |
 | `AI_GATEWAY_API_KEY` | Optional bounded Q3 interpretation. Backend only. |
-| `AI_GATEWAY_MODEL` | Optional supported Gateway model; verify actual account/model availability separately. |
+| `AI_GATEWAY_MODEL` | Gateway `provider/model` ID for a text model supporting JSON-schema output. Defaults to `deepseek/deepseek-v4.1-flash-1017` when unset/blank. |
 | `ALLOWED_ORIGINS` | Optional browser clients only. Native Swift needs no Origin. |
 
 Redeploy after changing environment variables. Deployment Protection may present a Vercel login page before the API handles a preview request; use an appropriately reachable API domain for the app while keeping Supabase token checks. Do not ship a Vercel bypass secret in the app.
+
+### Switching the AI model
+
+In the Rethink API project's **Settings → Environment Variables**, set `AI_GATEWAY_MODEL` to the exact `provider/model` ID from the [Gateway model catalog](https://vercel.com/ai-gateway/models), select Production (and Preview if needed), then redeploy. The existing Gateway key and Swift app configuration stay the same; no code edit is required. The model must be available to the team and support text Chat Completions with [JSON-schema structured output](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/structured-outputs). Image, embedding and other incompatible models cannot serve this task.
+
+The transport uses common Gateway parameters and model defaults for temperature/reasoning. Reasoning models can consume the output budget or exceed the five-second Q3 timeout; select a model suitable for short structured responses and evaluate it before release. A valid model ID is not proof of access, remaining credits or response quality. Provider failures, truncation, refusals and invalid advice remain insufficient evidence, with no automatic model/credential fallback. Local math checks, Q3 quote guards and final system authority are unchanged; a model change does not regrade persisted attempts. Fine-tuned endpoints outside the Gateway catalog require a separate integration.
 
 After deployment:
 

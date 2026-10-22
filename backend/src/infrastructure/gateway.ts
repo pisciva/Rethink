@@ -3,7 +3,9 @@ export const DEFAULT_AI_MODEL = 'deepseek/deepseek-v4.1-flash-1017';
 export type AIConfig = { provider: 'vercel'; model: string; configured: boolean; valid: boolean };
 export function aiConfig(): AIConfig {
   const model = process.env.AI_GATEWAY_MODEL?.trim() || DEFAULT_AI_MODEL;
-  return { provider: 'vercel', model, configured: Boolean(process.env.AI_GATEWAY_API_KEY?.trim() || process.env.VERCEL_OIDC_TOKEN?.trim()), valid: /^deepseek\/[a-z0-9][a-z0-9.-]{0,99}$/.test(model) };
+  // Gateway uses provider/model IDs. Availability and structured-output support
+  // are checked by the provider; do not hard-code a provider or model catalog.
+  return { provider: 'vercel', model, configured: Boolean(process.env.AI_GATEWAY_API_KEY?.trim() || process.env.VERCEL_OIDC_TOKEN?.trim()), valid: /^[a-z0-9][a-z0-9-]{0,63}\/[a-zA-Z0-9][a-zA-Z0-9._:-]{0,199}$/.test(model) };
 }
 export function aiFailureReason(status: number) {
   return status === 401 ? 'invalid-api-key' : status === 402 ? 'credits-exhausted' : status === 403 ? 'model-access-denied' : status === 429 ? 'rate-limited' : 'provider-unavailable';
@@ -25,8 +27,9 @@ export async function generateStructured(request: StructuredRequest): Promise<AI
       body: JSON.stringify({
         model: config.model, stream: false,
         messages: [{ role: 'system', content: request.system }, { role: 'user', content: JSON.stringify(request.context) }],
-        max_tokens: request.maxOutputTokens, temperature: 0.2,
-        reasoning: { effort: 'none', exclude: true },
+        // Let the Gateway translate the common request contract. Temperature
+        // and reasoning controls differ between models, so use their defaults.
+        max_tokens: request.maxOutputTokens,
         response_format: { type: 'json_schema', json_schema: { name: 'rethink_response', schema: request.schema } },
       }),
     });
