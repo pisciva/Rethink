@@ -3,7 +3,14 @@
   <h1>Rethink</h1>
   <p><strong>Temukan hambatannya. Pahami konsepnya. Coba secara mandiri.</strong></p>
   <p>Aplikasi iOS untuk pemulihan pemahaman konsep matematika berbasis bukti.</p>
-  <p><a href="#mulai-di-sini">Mulai</a> · <a href="#frontend-ios">Frontend</a> · <a href="#backend-recovery-api">Backend</a> · <a href="#status-dan-batas-integrasi">Status integrasi</a></p>
+  <p>
+    <img src="https://img.shields.io/badge/iOS-26%2B-111827?style=flat-square&amp;logo=apple&amp;logoColor=white" alt="iOS 26 ke atas" />
+    <img src="https://img.shields.io/badge/SwiftUI-MVVM-F05138?style=flat-square&amp;logo=swift&amp;logoColor=white" alt="SwiftUI dan MVVM" />
+    <img src="https://img.shields.io/badge/Next.js-16.4.2-111827?style=flat-square&amp;logo=nextdotjs&amp;logoColor=white" alt="Next.js 16.4.2" />
+    <img src="https://img.shields.io/badge/Supabase-PostgreSQL-287D59?style=flat-square&amp;logo=supabase&amp;logoColor=white" alt="Supabase PostgreSQL" />
+    <img src="https://img.shields.io/badge/Status-In%20Development-806A32?style=flat-square" alt="Status dalam pengembangan" />
+  </p>
+  <p><a href="#getting-started">Getting Started</a> · <a href="#ios-frontend">Frontend</a> · <a href="#backend-recovery-api">Backend</a> · <a href="#integration-status">Integration Status</a></p>
 </div>
 
 ---
@@ -12,15 +19,15 @@ Rethink membantu siswa memeriksa kemungkinan hambatan konsep saat mengerjakan **
 
 Repository ini memuat **frontend SwiftUI**, **backend HTTP Next.js**, serta dokumentasi produk. Backend bukan website pembelajaran. Beberapa layar frontend masih berupa prototipe lokal dan belum menggunakan penilaian server.
 
-## Mulai di sini
+## Getting Started
 
 | Tujuan | Buka |
 |---|---|
-| Mengembangkan aplikasi iOS | [frontend/Rethink.xcodeproj](frontend/Rethink.xcodeproj) dan [panduan frontend](frontend/README.md) |
-| Menjalankan API lokal | [panduan backend](backend/README.md) dan [konfigurasi Supabase/Vercel](backend/SETUP.md) |
-| Menghubungkan alur PRD terbaru | [kontrak HTTP v3](backend/docs/API-V3.md) |
-| Memahami requirement produk | [indeks PRD](docs/prd/README.md) |
-| Memahami fitur lokal yang belum terintegrasi | [status dan batas integrasi](#status-dan-batas-integrasi) |
+| 📱 Mengembangkan aplikasi iOS | [frontend/Rethink.xcodeproj](frontend/Rethink.xcodeproj) dan [panduan frontend](frontend/README.md) |
+| ⚙️ Menjalankan API lokal | [panduan backend](backend/README.md) dan [konfigurasi Supabase/Vercel](backend/SETUP.md) |
+| 🔗 Menghubungkan alur PRD terbaru | [kontrak HTTP v3](backend/docs/API-V3.md) |
+| 📚 Memahami requirement produk | [indeks PRD](docs/prd/README.md) |
+| Memahami fitur lokal yang belum terintegrasi | [status dan batas integrasi](#integration-status) |
 
 **Prasyarat:** macOS dan Xcode dengan SDK iOS 26 untuk frontend; Node.js **24.x**, npm, serta proyek Supabase dengan Anonymous Sign-Ins untuk backend. Vercel diperlukan hanya untuk deployment.
 
@@ -31,9 +38,9 @@ cd Rethink
 
 Frontend dan backend memiliki konfigurasi masing-masing. Tidak ada perintah install atau development server bersama di root.
 
-## Pengalaman belajar
+## Learning Experience
 
-### Alur berbasis backend
+### Backend Learning Flow
 
 ```text
 Pilih SPL → Diagnosis 10 soal → Hasil per konsep
@@ -56,7 +63,7 @@ Pilih SPL → Diagnosis 10 soal → Hasil per konsep
 - Validasi konsep menghasilkan **Understood**, **Procedural Only**, atau **Needs Reinforcement**; hasil tes SPL tetap terpisah.
 - Jawaban benar, pelajaran selesai, dan lulus tes topik tidak otomatis membuktikan penguasaan seluruh SPL.
 
-### Status dan batas integrasi
+### Integration Status
 
 | Bagian | Kondisi kode saat ini | Batas |
 |---|---|---|
@@ -72,7 +79,7 @@ Pilih SPL → Diagnosis 10 soal → Hasil per konsep
 
 > **Penting:** mengaktifkan `RETHINK_PRD_V2=1` mengganti endpoint pada `APIClient`. Flag ini tidak mengubah `SPLPretestView` lokal menjadi asesmen server. Kedua jalur tersebut masih perlu diselaraskan.
 
-## Struktur repository
+## Repository Structure
 
 ```text
 Rethink/
@@ -104,9 +111,9 @@ Rethink/
 
 Cache seperti `.build`, `.swiftpm`, `node_modules`, dan `.next` bukan source aplikasi. `backend/archive/` dapat ada pada workspace lokal, tetapi tidak diperlukan untuk install, build, atau deployment backend aktif.
 
-## Frontend iOS
+## iOS Frontend
 
-### Teknologi dan arsitektur
+### Technology & Architecture
 
 | Bagian | Implementasi |
 |---|---|
@@ -131,7 +138,7 @@ File awal yang paling berguna:
 - [AuthStore.swift](frontend/Rethink/ViewModels/Remote/AuthStore.swift): guest session dan refresh token.
 - [JourneyStore.swift](frontend/Rethink/ViewModels/Remote/JourneyStore.swift): load/save, revision, pergantian identitas, kewajiban reload.
 
-### Setup Xcode
+### Xcode Setup
 
 1. Buka `frontend/Rethink.xcodeproj`; gunakan scheme **Rethink**.
 2. Biarkan Xcode menyelesaikan dependency SwiftMath.
@@ -163,7 +170,7 @@ SwiftUI Canvas tersedia pada sejumlah view. Preview tetap membutuhkan kompilasi 
 
 ## Backend Recovery API
 
-### Teknologi dan struktur
+### Technology & Structure
 
 **Node.js 24.x · Next.js 16.4.2 · TypeScript · Supabase JS · PostgreSQL · Vercel AI Gateway**
 
@@ -179,7 +186,7 @@ React 19.2.8 tersedia sebagai dependency Next.js; backend aktif tidak menyediaka
 | `src/http/` | CORS, handler progress, pengakuan persistence |
 | `src/prdv2/` | Bank, types, engine/event replay, handler PRD v2 melalui HTTP v3 |
 
-### Setup lokal
+### Local Setup
 
 Dari root repository:
 
@@ -208,7 +215,7 @@ API lokal menggunakan **port 3001**. `.env.local` dan credential hanya disimpan 
 
 Bank PRD v2 saat ini memiliki `BANK_APPROVED = true`. Gate ini berada di source, bukan parameter yang boleh ditentukan client. Persetujuan implementasi tidak sama dengan validasi pedagogis instrumen.
 
-### Kontrak HTTP
+### HTTP API
 
 | Endpoint | Metode | Akses | Fungsi |
 |---|---|---|---|
@@ -233,7 +240,7 @@ Contoh memilih SPL melalui v3, dengan revision dari GET terakhir:
 
 Client mengirim `Authorization: Bearer <access_token>` dan `Content-Type: application/json`. Revision `0` hanya sesuai untuk journey baru; jangan menggunakannya ulang pada setiap command.
 
-### Integritas state dan AI
+### State Integrity & AI Boundaries
 
 - Backend memverifikasi identitas; client tidak boleh menentukan pemilik, skor, diagnosis, atau learner state.
 - `learning_journeys` bersifat service-only. RPC `save_learning_journey` menerapkan revision check secara atomik.
@@ -249,7 +256,7 @@ Deploy repository yang sama ke Vercel dengan **Root Directory `backend`**, Node.
 
 Dokumen handoff mencatat API di **https://rethink-recovery-api.vercel.app** sudah dideploy dan diperiksa pada 23 Oktober 2026. README ini tidak melakukan verifikasi ulang layanan live. Panduan lengkap: [backend/SETUP.md](backend/SETUP.md).
 
-## Pemeriksaan pengembangan
+## Development Checks
 
 Perintah berikut disediakan untuk dijalankan ketika diperlukan; penulisan README ini tidak menjalankannya.
 
@@ -273,7 +280,7 @@ xcodebuild -project Rethink.xcodeproj -scheme Rethink \
 Swift Package menguji model/service terpilih, bukan seluruh UI. Backend menggunakan fixtures, mock HTTP, serta embedded PostgreSQL; hasilnya tidak membuktikan efektivitas belajar. [Workflow CI](.github/workflows/recovery.yml) menyiapkan pemeriksaan backend dan Swift, tetapi keberadaan workflow bukan bukti bahwa run terakhir lulus.
 
 <details>
-<summary><strong>Masalah setup yang sering ditemui</strong></summary>
+<summary><strong>🛠 Troubleshooting</strong></summary>
 
 | Gejala | Periksa |
 |---|---|
@@ -290,7 +297,7 @@ Swift Package menguji model/service terpilih, bukan seluruh UI. Backend mengguna
 
 </details>
 
-## Dokumentasi dan kolaborasi
+## Documentation & Collaboration
 
 Folder `docs/` menyimpan PRD, desain, keputusan, dan catatan implementasi. Mulai dari [indeks](docs/INDEX.md), [PRD aktif](docs/prd/README.md), dan [pemetaan implementasi PRD v2](docs/implementation/PRD-V2-TRACEABILITY.md). Dokumen historis/proposal memiliki status sendiri; jangan menganggap semua perilaku lama masih aktif.
 

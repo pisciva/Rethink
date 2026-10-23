@@ -1,10 +1,12 @@
 # Rethink iOS
 
+![iOS](https://img.shields.io/badge/iOS-26%2B-111827?style=flat-square&logo=apple&logoColor=white) ![SwiftUI](https://img.shields.io/badge/SwiftUI-MVVM-F05138?style=flat-square&logo=swift&logoColor=white)
+
 Frontend SwiftUI untuk Rethink. Target aplikasi **iOS 26.0**, arsitektur **MVVM** dengan folder per fitur, dan dependency **SwiftMath 1.7.3** untuk rumus matematika.
 
 [README utama](../README.md) · [Konfigurasi aplikasi](Rethink/App/AppConfig.swift) · [Kontrak backend terbaru](../backend/docs/API-V3.md)
 
-## Mulai
+## Getting Started
 
 1. Buka `Rethink.xcodeproj` dengan Xcode yang menyediakan SDK iOS 26 atau lebih baru.
 2. Gunakan scheme `Rethink`; resolve dependency Swift Package.
@@ -20,7 +22,7 @@ RETHINK_PRD_V2=1
 
 Backend dan frontend harus memakai proyek Supabase yang sama dengan Anonymous Sign-Ins aktif. Jangan memasukkan secret/service-role key atau AI key ke aplikasi. Simulator pada Mac yang sama dapat memakai localhost; perangkat fisik memerlukan URL yang dapat dijangkau.
 
-## Struktur MVVM
+## MVVM Structure
 
 | Folder | Isi |
 |---|---|
@@ -35,7 +37,7 @@ Backend dan frontend harus memakai proyek Supabase yang sama dengan Anonymous Si
 | `Rethink/Tests/DiagnosisCoreTests` | Regression fixtures model/service |
 | `Package.swift` | Test harness `DiagnosisCore`; bukan entry point UI aplikasi |
 
-## Dua jalur yang harus dibedakan
+## Remote Flow & Local Prototypes
 
 **Remote recovery:** `Views/Remote/JourneyFlowView.swift` membaca `JourneyStore` dan command server. `RETHINK_PRD_V2=1` memilih `/api/v3`; default memilih `/api/v2`.
 
@@ -43,7 +45,7 @@ Backend dan frontend harus memakai proyek Supabase yang sama dengan Anonymous Si
 
 Chatbot mandiri memakai `ChatViewModel`: balasan simulasi, proses yang dapat dihentikan, tiga riwayat contoh, serta riwayat di UserDefaults. Ia bukan integrasi tutor Socratic backend. Foto profil juga disimpan lokal. Progres dummy pada kartu/header tidak menjadi bukti penguasaan konsep.
 
-## Onboarding dan preview
+## Onboarding & Previews
 
 - DEBUG membuka Beranda secara default. Gunakan `RETHINK_SKIP_ONBOARDING=0` untuk menguji onboarding pertama.
 - `RETHINK_REPLAY_ONBOARDING=1` mengulang onboarding untuk testing.
@@ -51,7 +53,7 @@ Chatbot mandiri memakai `ChatViewModel`: balasan simulasi, proses yang dapat dih
 - Release memakai status completion yang tersimpan.
 - `#Preview` tersedia di entry point dan beberapa layar; Canvas tetap melakukan kompilasi dan sebagian view membutuhkan environment store.
 
-## Pemeriksaan
+## Development Checks
 
 Dari folder `frontend`:
 

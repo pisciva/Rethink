@@ -1,10 +1,12 @@
 # Rethink Recovery API
 
+![Node.js](https://img.shields.io/badge/Node.js-24.x-397A36?style=flat-square&logo=nodedotjs&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?style=flat-square&logo=typescript&logoColor=white) ![Vercel](https://img.shields.io/badge/Deploy-Vercel-111827?style=flat-square&logo=vercel&logoColor=white)
+
 Backend HTTP untuk aplikasi SwiftUI Rethink, menggunakan **Next.js 16.4.2**, **TypeScript**, **Node.js 24.x**, Supabase dan Vercel AI Gateway. Backend aktif bersifat API-only; tidak menyediakan website pembelajaran.
 
 [README utama](../README.md) · [Setup lengkap](SETUP.md) · [API v2](docs/API-V2.md) · [API v3 / PRD v2](docs/API-V3.md)
 
-## Setup lokal
+## Local Setup
 
 Dari `backend/`:
 
@@ -32,7 +34,7 @@ Server lokal: `http://localhost:3001`. Pada PowerShell, gunakan `Copy-Item .env.
 
 Konfigurasi model mendukung ID provider/model, tetapi akses akun dan kemampuan structured output harus diperiksa terpisah. Kegagalan provider memakai fallback yang dibatasi, bukan diagnosis atau penilaian matematika buatan.
 
-## Struktur
+## Project Structure
 
 ```text
 app/api/             Route HTTP: health, v2 catalog/progress, v3 catalog/progress
@@ -50,7 +52,7 @@ archive/             Salinan lokal historis; dikecualikan dari source aktif
 
 `archive/` dapat ada di workspace tertentu dan tidak dibutuhkan untuk runtime. Backend lama untuk kurikulum 37 pelajaran, video/transkrip dan chat umum tidak menjadi API aktif saat ini. Jangan menyalin dokumentasi endpoint lama sebagai kontrak layanan terbaru.
 
-## Versi dan kemampuan
+## API Versions & Capabilities
 
 | Kontrak | Cakupan |
 |---|---|
@@ -61,7 +63,7 @@ archive/             Salinan lokal historis; dikecualikan dari source aktif
 
 Hanya distributif memiliki complete guided-learning/concept-validation package. Representation tetap ditandai dengan cakupan diagnosis tidak memadai. Tes akhir SPL lulus pada 3/5 atau lebih, boleh diulang setelah gagal, dan tidak mengubah seluruh prerequisite menjadi Understood.
 
-## HTTP dan persistence
+## HTTP & Persistence
 
 - Publik: `GET /`, `GET /api/health`, `GET /api/v2/catalog`, `GET /api/v3/catalog`.
 - Authenticated: `GET/POST /api/v2/progress` dan `GET/POST /api/v3/progress`.
@@ -75,7 +77,7 @@ Hanya distributif memiliki complete guided-learning/concept-validation package. 
 
 Payload lengkap dan daftar command: [API-V2.md](docs/API-V2.md), [API-V3.md](docs/API-V3.md).
 
-## Deployment dan pemeriksaan
+## Deployment & Verification
 
 Vercel: Root Directory **`backend`**, Node.js **24.x**, `npm ci`, `npm run build`, framework Next.js. `vercel.json` mencatat install/build; Root Directory tetap diatur pada Vercel project. Simpan secret di environment backend dan redeploy setelah mengubahnya.
 
