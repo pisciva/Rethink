@@ -1,4 +1,6 @@
-# PRD v2 local implementation and verification — 23 October 2026
+# PRD v2 implementation and verification — 23 October 2026
+
+> **Current hosting update:** backend commit `9edd5cb` is deployed and verified on the production API. Earlier local-only statements below describe the pre-deployment implementation/approval phases; see the hosted verification section at the end.
 
 ## Result and release boundary
 
@@ -46,3 +48,20 @@ Remaining work: run Mac package/simulator/device and UX checks; review content w
 ## Approval activation follow-up
 
 The user selected “Use the proposed bank and rules.” Enabled the exact reviewed bank and maximum-one-probe policy locally; canonical per-concept outcomes and the all-correct mapping are included in that implementation decision. The full 84-test backend suite passed again through the actual enabled route exports, production build/TypeScript passed, and built HTTP smoke verified the active reviewed catalog, unavailable learning restrictions and 401 authentication guards for both API versions. The separately injected disabled-gate test still passes. The default Swift API and production hosting remain unchanged pending rollout; Mac/device and expert accuracy/pedagogy checks remain unrun.
+
+## Production push and deployment
+
+User instruction: “push and deploy it.” Pushed implementation commit `9edd5cb` to `codex/recovery-api-mvp-20261023`. Existing `main` and its unrelated frontend changes were preserved. Staged private-configuration/credential scan and diff check passed. The pre-existing unrelated deletion of `backend/HansenGantenk.txt` was excluded.
+
+Production: **https://rethink-recovery-api.vercel.app**. Deployment `rethink-recovery-uin2qryow-hansens-projects-6e7d42c5.vercel.app` reached Ready. Fresh cloud installation reported zero vulnerabilities; build and TypeScript passed. No new environment values, credentials or database migration were required.
+
+Hosted verification passed:
+
+- Public health and old/new catalogs returned JSON 200; new progress without authentication returned 401. V3 catalog exposed the approved scope.
+- Two synthetic anonymous guests in the selected project exercised ten-question diagnosis, distribution Supported, representation Insufficiently Assessed, and persisted save/resume.
+- SPL Final Assessment started before learning; five wrong answers yielded Not Passed with no concept state; retry with five correct answers yielded Passed and preserved both attempts without assigning concept understanding.
+- Confirmed recovery, curated contextual hint, linear learning, active practice, Independent Retry, Transfer, concept Understood, map projection and result-backed recognition passed. Topic history stayed intact.
+- Stale revision returned 409; the second guest had no access to the first guest's journey. Legacy v2 recovery stayed independent, and a legacy reset preserved new topic/concept evidence.
+- Both synthetic guests were deleted afterward, cascading only their temporary evidence. No live AI generation was needed for this smoke; model-failure/selection cases remain covered by the offline tests.
+
+The pushed Swift integration remains opt-in with `RETHINK_PRD_V2=1`; its default continues to use the compatible existing v2 API. Mac package/simulator/device, accessibility and expert pedagogical/diagnostic acceptance remain unrun. No iOS binary was distributed by the Vercel backend deployment.

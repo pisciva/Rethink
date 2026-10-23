@@ -1,6 +1,6 @@
 # PRD v2 API (HTTP v3)
 
-**Status:** implemented locally; the user approved the bank and rules on 23 October 2026 (“Use the proposed bank and rules”). `BANK_APPROVED` in `src/prdv2/content.ts` is true. Expert pedagogical/accuracy acceptance remains separate. This is a source-controlled release gate, not a request parameter or publicly writable flag. No new production deployment is claimed. Existing `/api/v2/*` continues to serve the previously approved recovery flow.
+**Status:** implemented locally; the user approved the bank and rules on 23 October 2026 (“Use the proposed bank and rules”). `BANK_APPROVED` in `src/prdv2/content.ts` is true. Expert pedagogical/accuracy acceptance remains separate. This is a source-controlled release gate, not a request parameter or publicly writable flag. Deployed and verified at `https://rethink-recovery-api.vercel.app` on 23 October 2026 (backend commit `9edd5cb`). Existing `/api/v2/*` continues to serve the previously approved recovery flow.
 
 PRD v2 is the product version; `/api/v3` is the new HTTP contract. These version numbers serve different purposes.
 
