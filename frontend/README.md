@@ -17,7 +17,6 @@ Frontend SwiftUI untuk Rethink. Target aplikasi **iOS 26.0**, arsitektur **MVVM*
 RETHINK_API_BASE_URL=http://localhost:3001
 RETHINK_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
 RETHINK_SUPABASE_PUBLISHABLE_KEY=YOUR_PUBLIC_KEY
-RETHINK_PRD_V2=1
 ```
 
 Backend dan frontend harus memakai proyek Supabase yang sama dengan Anonymous Sign-Ins aktif. Jangan memasukkan secret/service-role key atau AI key ke aplikasi. Simulator pada Mac yang sama dapat memakai localhost; perangkat fisik memerlukan URL yang dapat dijangkau.
@@ -39,11 +38,11 @@ Backend dan frontend harus memakai proyek Supabase yang sama dengan Anonymous Si
 
 ## Remote Flow & Local Prototypes
 
-**Remote recovery:** `Views/Remote/JourneyFlowView.swift` membaca `JourneyStore` dan command server. `RETHINK_PRD_V2=1` memilih `/api/v3`; default memilih `/api/v2`.
+**Alur belajar:** `Views/Remote/JourneyFlowView.swift` membaca `JourneyStore` dan mengirim aksi ke server melalui `APIClient`. Konfigurasi koneksi dan pengaktifan alur asesmen mengikuti [panduan integrasi backend](../backend/docs/API-V3.md).
 
-**Prototipe UI lokal:** katalog kelas menggunakan `GradeCourse` dan membuka `SPLPretestView`. Pre-test ini memakai bank 10 soal dari brief desain, pilihan ganda dan pertanyaan lanjutan statis; jawaban hanya tersimpan selama sesi. Bank tersebut belum disinkronkan dengan `backend/src/prdv2/content.ts` dan tidak dinilai oleh server.
+**Prototipe UI lokal:** katalog kelas menggunakan `GradeCourse` dan membuka `SPLPretestView`. Pre-test ini memakai bank 10 soal dari brief desain, pilihan ganda dan pertanyaan lanjutan statis; jawaban hanya tersimpan selama sesi. Jawaban belum dikirim ke server.
 
-Chatbot mandiri memakai `ChatViewModel`: balasan simulasi, proses yang dapat dihentikan, tiga riwayat contoh, serta riwayat di UserDefaults. Ia bukan integrasi tutor Socratic backend. Foto profil juga disimpan lokal. Progres dummy pada kartu/header tidak menjadi bukti penguasaan konsep.
+Chatbot memakai `ChatViewModel`: balasan simulasi, tombol Stop, tiga riwayat contoh, serta riwayat di UserDefaults. Foto profil disimpan di perangkat. Indikator progres pada header dan kartu masih dummy.
 
 ## Onboarding & Previews
 
@@ -64,4 +63,4 @@ xcodebuild -project Rethink.xcodeproj -scheme Rethink \
   CODE_SIGNING_ALLOWED=NO build
 ```
 
-Swift Package berplatform macOS 13 untuk core/test harness; itu tidak menurunkan target aplikasi iOS. Pemeriksaan UI, keyboard, Liquid Glass, VoiceOver dan perangkat tetap diperlukan terpisah. Tidak ada build atau tes dijalankan ketika README ini ditulis.
+Swift Package membutuhkan macOS 13+. Target aplikasi tetap iOS 26. Uji UI, keyboard, Liquid Glass, dan VoiceOver di simulator atau perangkat.
