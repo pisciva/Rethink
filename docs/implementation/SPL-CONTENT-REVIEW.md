@@ -1,5 +1,7 @@
 # SPL recovery content review — 22 October 2026
 
+> **Current implementation:** recovery modules and equivalent fixtures moved into `backend/src/` and `backend/tests/` during the [23 October rebuild](BACKEND-REBUILD.md). Older paths and test totals below describe the prior revision. Current suite: 50 passing tests; no deployment or final OI/OPS acceptance.
+
 **Status: engineering review and proposed changes; not product or mathematics approval.**
 
 **Current item revision:** the user subsequently approved the Q2/Q3 replacement in this conversation. It is implemented as `spl-distribution-draft-3`; see [DEC-2026-10-22-Q2Q3](../decisions.md#dec-2026-10-22-q2q3--separate-diagnostic-expressions-and-remove-answer-disclosure). This is scoped implementation approval, not full mathematics/rubric acceptance. Earlier findings and test runs below describe the reviewed draft-2 bank; the latest verification is recorded at the end.

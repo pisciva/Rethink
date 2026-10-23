@@ -9,6 +9,10 @@ final class OnboardingPreferenceStore {
     var hasFinished: Bool { defaults.bool(forKey: prefix + "completed") || wasSkipped }
     var wasSkipped: Bool { defaults.bool(forKey: prefix + "skipped") }
 
+    func shouldPresent(replay: Bool = false, preview: Bool = false, developmentBypass: Bool = false) -> Bool {
+        replay || preview || (!developmentBypass && !hasFinished)
+    }
+
     var audioEnabled: Bool {
         get {
             if defaults.object(forKey: prefix + "audioEnabled") == nil { return true }

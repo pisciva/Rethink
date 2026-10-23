@@ -321,6 +321,8 @@ struct HomeView: View {
         case .reviewComplete: return "Ulasan konsep telah selesai"
         case .retry, .transfer: return "Saatnya mencoba secara mandiri"
         case .validationResult: return "Lihat hasil validasi konsep"
+        case .finalAssessment: return "Lanjutkan asesmen akhir SPL"
+        case .finalResult: return "Lihat hasil asesmen akhir SPL"
         }
     }
 }

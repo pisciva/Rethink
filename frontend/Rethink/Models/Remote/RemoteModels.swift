@@ -12,6 +12,8 @@ enum RemotePhase: String, Decodable, Equatable {
     case retry
     case transfer
     case validationResult = "validation-result"
+    case finalAssessment = "final-assessment"
+    case finalResult = "final-result"
 }
 
 enum RemoteDiagnosticOutcome: String, Decodable, Equatable {
@@ -40,6 +42,11 @@ enum RemoteAction: String, Equatable {
     case startValidation = "start-validation"
     case reinforce
     case reset
+    case startLearning = "start-learning"
+    case showResults = "show-results"
+    case startFinalAssessment = "start-final-assessment"
+    case requestHint = "request-hint"
+    case restartDiagnosis = "restart-diagnosis"
 }
 
 enum RemoteQuestionFormat: String, Decodable, Equatable {
@@ -56,6 +63,7 @@ struct RemoteOption: Decodable, Identifiable {
 
 struct RemoteQuestion: Decodable, Identifiable {
     let id: String
+    let version: String?
     let role: String
     let prompt: String
     let math: String?
@@ -113,6 +121,71 @@ struct RemoteJourney: Decodable {
     let attempts: [RemoteAttempt]
     let map: RemoteMap
     let operationalStatus: String
+    let presentation: RemoteJourneyPresentation?
+    let diagnosticResults: [RemoteConceptEvidence]?
+    let finalAssessment: RemoteFinalAssessment?
+    let hints: [RemoteLearningHint]?
+}
+
+struct RemoteConceptEvidence: Decodable, Identifiable {
+    let id: String
+    let title: String
+    let status: String
+    let learningAvailable: Bool
+    let priority: String
+    let coverage: RemoteConceptCoverage
+    let learnerState: RemoteLearnerState?
+}
+
+struct RemoteConceptCoverage: Decodable {
+    let administered: Int
+    let evaluable: Int
+    let adequate: Bool
+}
+
+struct RemoteLearningHint: Decodable, Identifiable {
+    let id: String
+    let text: String
+    let source: String
+}
+
+struct RemoteFinalAssessment: Decodable {
+    let canStart: Bool
+    let attempts: [RemoteFinalAttempt]
+}
+
+struct RemoteFinalAttempt: Decodable, Identifiable {
+    let id: Int
+    let startedAt: String
+    let completedAt: String?
+    let answered: Int
+    let score: Int?
+    let result: String?
+}
+
+struct RemoteJourneyPresentation: Decodable {
+    let stages: [RemoteJourneyStage]
+    let activity: String
+    let context: RemoteOrigin?
+    let validation: RemoteValidationEvidence?
+    let achievement: RemoteConceptAchievement?
+}
+
+struct RemoteJourneyStage: Decodable, Identifiable {
+    let id: String
+    let label: String
+    let state: String
+}
+
+struct RemoteValidationEvidence: Decodable {
+    let retry: String
+    let transfer: String
+}
+
+struct RemoteConceptAchievement: Decodable, Identifiable {
+    let id: String
+    let concept: String
+    let earnedAt: String
 }
 
 struct RemoteJourneyEnvelope: Decodable {

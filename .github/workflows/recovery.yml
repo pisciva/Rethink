@@ -1,0 +1,47 @@
+name: Recovery checks
+
+on:
+  push:
+    paths: ['backend/**', 'frontend/**', '.github/workflows/recovery.yml']
+  pull_request:
+    paths: ['backend/**', 'frontend/**', '.github/workflows/recovery.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+
+  swift:
+    runs-on: macos-latest
+    env:
+      RETHINK_REPLAY_ONBOARDING: '0'
+      RETHINK_SKIP_ONBOARDING: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain
+        run: xcodebuild -version
+      - name: Swift model, networking and session tests
+        working-directory: frontend
+        run: swift test
+      - name: Compile the SwiftUI app for Simulator
+        run: >-
+          xcodebuild -project frontend/Rethink.xcodeproj -scheme Rethink
+          -destination 'generic/platform=iOS Simulator'
+          -derivedDataPath /tmp/rethink-derived-data
+          CODE_SIGNING_ALLOWED=NO build

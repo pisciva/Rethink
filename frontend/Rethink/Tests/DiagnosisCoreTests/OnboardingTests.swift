@@ -17,7 +17,11 @@ final class OnboardingTests: XCTestCase {
         model.visitConceptStep(2)
         model.next()
 
-        model.chooseMath("3x + 6")
+        for index in OnboardingQuickCheckItem.examples.indices {
+            model.recordFamiliarity(.unsure)
+            model.advanceQuickCheck(from: index)
+        }
+        model.confirmFamiliarity()
         model.next()
 
         model.useChatbot()
@@ -47,22 +51,14 @@ final class OnboardingTests: XCTestCase {
         XCTAssertEqual(model.selectedPage, 1)
     }
 
-    func testConceptRequiresAllThreeVisitsInOrder() {
+    func testRevisedConceptSlideIsInformationalWithoutATokenGate() {
         let model = OnboardingViewModel(preferences: preferences(), audio: AudioSpy())
         model.learnerName = "Akbar"
         model.next()
 
-        model.visitConceptStep(1)
-        XCTAssertEqual(model.visitedConceptSteps.count, 0)
-        model.visitConceptStep(0)
-        model.visitConceptStep(2)
-        XCTAssertEqual(model.visitedConceptSteps.count, 1)
-        XCTAssertFalse(model.canAdvance)
-        model.visitConceptStep(1)
-        XCTAssertEqual(model.visitedConceptSteps.count, 2)
-        model.visitConceptStep(2)
-        XCTAssertEqual(model.visitedConceptSteps.count, 3)
         XCTAssertTrue(model.canAdvance)
+        model.next()
+        XCTAssertEqual(model.currentPage, .quickCheck)
     }
 
     func testQuickCheckAndChatbotGates() {
@@ -76,6 +72,13 @@ final class OnboardingTests: XCTestCase {
 
         XCTAssertFalse(model.canAdvance)
         model.chooseMath("3x + 6")
+        XCTAssertFalse(model.canAdvance, "legacy MCQ must not bypass the revised five-example gate")
+        for index in OnboardingQuickCheckItem.examples.indices {
+            model.recordFamiliarity(.unsure)
+            model.advanceQuickCheck(from: index)
+        }
+        XCTAssertFalse(model.canAdvance, "all five responses still require explicit confirmation")
+        model.confirmFamiliarity()
         XCTAssertTrue(model.canAdvance)
         model.next()
 
@@ -109,7 +112,7 @@ final class OnboardingTests: XCTestCase {
         model.select(1)
         model.select(2)
         model.select(2)
-        XCTAssertEqual(audio.plays, 3)
+        XCTAssertEqual(audio.plays, 2, "revised concept slide must not play obsolete token instructions")
         XCTAssertEqual(audio.overlaps, 0)
         model.suspendAudio()
         XCTAssertFalse(audio.isPlaying)
@@ -170,6 +173,28 @@ final class OnboardingTests: XCTestCase {
         model.begin()
         XCTAssertFalse(audio.isPlaying)
         XCTAssertEqual(audio.plays, 1)
+    }
+
+    func testFirstLaunchCompletionAndExplicitDevelopmentOverrides() {
+        let store = preferences()
+        XCTAssertTrue(store.shouldPresent())
+        XCTAssertFalse(store.shouldPresent(developmentBypass: true))
+        XCTAssertTrue(store.shouldPresent(replay: true, developmentBypass: true))
+        store.finish(skipped: false)
+        XCTAssertFalse(store.shouldPresent())
+        XCTAssertTrue(store.shouldPresent(preview: true))
+        XCTAssertTrue(store.shouldPresent(replay: true))
+    }
+
+    func testNameSurvivesInterruptedOnboardingBeforeCompletion() {
+        let store = preferences()
+        let model = OnboardingViewModel(preferences: store, audio: AudioSpy())
+        model.learnerName = "  Akbar  "
+        model.next()
+        let restored = OnboardingViewModel(preferences: store, audio: AudioSpy())
+        XCTAssertEqual(restored.learnerName, "Akbar")
+        XCTAssertEqual(restored.currentPage, .concept)
+        XCTAssertFalse(store.hasFinished)
     }
 }
 

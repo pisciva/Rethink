@@ -15,6 +15,9 @@ struct JourneyFlowView: View {
             } else {
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 22) {
+                        if let presentation = journeyStore.journey?.presentation, !journeyStore.resetRequired {
+                            JourneyProgressView(presentation: presentation)
+                        }
                         if journeyStore.isLoading && journeyStore.journey == nil {
                             ProgressView("Membuka sesi belajarmu...")
                                 .frame(maxWidth: .infinity, minHeight: 250)
@@ -55,7 +58,9 @@ struct JourneyFlowView: View {
             Button("Mulai ulang", role: .destructive) { Task { await journeyStore.reset(auth: auth) } }
             Button("Batal", role: .cancel) {}
         } message: {
-            Text("Jawaban dan kemajuan sesi saat ini akan diganti dengan sesi baru.")
+            Text(journeyStore.journey?.version == 3
+                 ? "Pemeriksaan dan konteks belajar akan dimulai ulang. Riwayat asesmen akhir SPL tetap disimpan."
+                 : "Jawaban dan kemajuan sesi saat ini akan diganti dengan sesi baru.")
         }
     }
 
@@ -64,6 +69,7 @@ struct JourneyFlowView: View {
         case .visual, .worked, .practice: "Belajar konsep"
         case .retry, .transfer: "Coba mandiri"
         case .validationResult, .diagnosticResult: "Hasil belajarmu"
+        case .finalAssessment, .finalResult: "Asesmen akhir SPL"
         default: "Pemeriksaan konsep"
         }
     }
@@ -79,7 +85,7 @@ struct JourneyFlowView: View {
     private var resetCard: some View {
         LearningCard {
             LearningStepHeader(stage: "Sesi", progress: "", title: "Sesi lama perlu dimulai ulang")
-            Text("Materi telah diperbarui sejak sesi terakhirmu. Mulai sesi baru agar jawabanmu dinilai dengan materi yang sesuai.")
+            Text("Materi atau aturan sesi telah berubah, atau bukti tersimpan tidak dapat dilanjutkan. Mulai sesi baru untuk melanjutkan pemeriksaan.")
                 .font(.system(size: 15))
                 .foregroundStyle(HomeStyle.body)
             LearningPrimaryButton(title: "Mulai ulang sesi") {
@@ -115,10 +121,10 @@ struct JourneyFlowView: View {
         case .diagnosticResult:
             resultCard(
                 stage: "Hasil pemeriksaan",
-                title: diagnosticTitle(journey.diagnosticOutcome),
+                title: journey.version >= 3 ? "Hasil tiap konsep" : diagnosticTitle(journey.diagnosticOutcome),
                 explanation: journey.resultExplanation,
                 actions: journey.availableActions,
-                showMap: false
+                showMap: true
             )
         case .visual, .worked:
             learningContentCard(journey)
@@ -127,8 +133,8 @@ struct JourneyFlowView: View {
                 stage: "Ulasan selesai",
                 title: "Ulasan konsep selesai",
                 explanation: journey.resultExplanation,
-                actions: [],
-                showMap: false
+                actions: journey.availableActions,
+                showMap: true
             )
         case .validationResult:
             resultCard(
@@ -136,9 +142,17 @@ struct JourneyFlowView: View {
                 title: learnerTitle(journey.learnerState),
                 explanation: journey.resultExplanation,
                 actions: journey.availableActions,
-                showMap: journey.learnerState == .understood
+                showMap: true
             )
-        case .diagnosis, .practice, .retry, .transfer:
+        case .finalResult:
+            resultCard(
+                stage: "Asesmen akhir SPL",
+                title: journey.finalAssessment?.attempts.last?.result == "passed" ? "Lulus pada asesmen ini" : "Belum lulus pada asesmen ini",
+                explanation: journey.resultExplanation,
+                actions: journey.availableActions,
+                showMap: true
+            )
+        case .diagnosis, .practice, .retry, .transfer, .finalAssessment:
             emptyCard
         }
     }
@@ -146,12 +160,15 @@ struct JourneyFlowView: View {
     private var entryCard: some View {
         LearningCard {
             LearningStepHeader(stage: "Pemeriksaan", progress: "", title: "Mulai pemeriksaan konsep")
-            Text("Pemeriksaan akan berfokus pada Sifat Distributif dalam konteks Sistem Persamaan Linear.")
+            Text(journeyStore.journey?.version == 3
+                 ? "Jawab sepuluh soal untuk memeriksa bukti beberapa konsep dalam konteks SPL. Materi belajar lengkap tersedia untuk Sifat Distributif."
+                 : "Pemeriksaan akan berfokus pada Sifat Distributif dalam konteks Sistem Persamaan Linear.")
                 .font(.system(size: 15))
                 .foregroundStyle(HomeStyle.body)
             LearningPrimaryButton(title: "Mulai pemeriksaan") {
                 Task { await journeyStore.selectTopic("spl", auth: auth) }
             }
+            .disabled(!journeyStore.canMutate)
         }
     }
 
@@ -159,13 +176,10 @@ struct JourneyFlowView: View {
         LearningCard {
             BrandIllustration(name: "asset 02", size: 115, tilt: -6)
                 .frame(maxWidth: .infinity)
-            LearningStepHeader(stage: "Hasil pemeriksaan", progress: "", title: "Hasilmu perlu ditinjau")
-            Text(journey.resultExplanation ?? "Pemetaan hasil belum tersedia.")
+            LearningStepHeader(stage: "Hasil pemeriksaan", progress: "", title: "Sesi perlu dimulai ulang")
+            Text("Aturan sesi ini telah diperbarui. Mulai ulang pemeriksaan untuk melanjutkan.")
                 .font(.system(size: 15))
                 .foregroundStyle(HomeStyle.body)
-            Text("Aturan hasil untuk semua jawaban inti benar masih dalam peninjauan. Belum ada kesimpulan diagnosis untuk sesi ini.")
-                .font(.system(size: 13))
-                .foregroundStyle(HomeStyle.muted)
             LearningPrimaryButton(title: "Mulai ulang pemeriksaan") {
                 showResetConfirmation = true
             }
@@ -236,11 +250,13 @@ struct JourneyFlowView: View {
                     .foregroundStyle(HomeStyle.body)
             }
 
-            ForEach(actionValues(journey.availableActions), id: \.rawValue) { action in
+            if journey.version >= 3 { SocraticHelpView(journey: journey) }
+
+            ForEach(actionValues(journey.availableActions).filter { $0 != .requestHint }, id: \.rawValue) { action in
                 LearningPrimaryButton(title: actionLabel(action)) {
                     Task { await journeyStore.perform(action, auth: auth) }
                 }
-                .disabled(journeyStore.isWorking)
+                .disabled(!journeyStore.canMutate)
             }
         }
     }
@@ -262,15 +278,31 @@ struct JourneyFlowView: View {
                     .font(.system(size: 16))
                     .foregroundStyle(HomeStyle.body)
             }
-            Text("Hasil ini berlaku untuk konsep yang diuji, bukan penguasaan seluruh Sistem Persamaan Linear.")
+            Text(stage == "Asesmen akhir SPL"
+                 ? "Hasil topik ini terpisah dari status pemahaman konsep prasyarat."
+                 : "Hasil ini berlaku untuk konsep yang diuji, bukan penguasaan seluruh Sistem Persamaan Linear.")
                 .font(.system(size: 13))
                 .foregroundStyle(HomeStyle.muted)
+
+            if let journey = journeyStore.journey, journey.phase == .validationResult,
+               let evidence = journey.presentation?.validation {
+                ValidationEvidenceView(evidence: evidence)
+            }
+            if let journey = journeyStore.journey {
+                if journey.phase == .diagnosticResult, let concepts = journey.diagnosticResults {
+                    ConceptEvidenceList(concepts: concepts)
+                }
+                if let assessment = journey.finalAssessment, !assessment.attempts.isEmpty {
+                    FinalAssessmentHistory(assessment: assessment)
+                }
+                ConceptAchievementView(journey: journey)
+            }
 
             ForEach(actionValues(actions), id: \.rawValue) { action in
                 LearningPrimaryButton(title: actionLabel(action)) {
                     Task { await journeyStore.perform(action, auth: auth) }
                 }
-                .disabled(journeyStore.isWorking)
+                .disabled(!journeyStore.canMutate)
             }
 
             if showMap {
@@ -279,6 +311,14 @@ struct JourneyFlowView: View {
                     dismiss()
                 }
             }
+
+            Button("Jelajahi katalog") {
+                dismiss()
+                navigation.showCatalog()
+            }
+            .font(.system(size: 15, weight: .medium))
+            .foregroundStyle(HomeStyle.blue)
+            .frame(maxWidth: .infinity, minHeight: 44)
 
             Button("Kembali") { dismiss() }
                 .font(.system(size: 15, weight: .medium))
@@ -310,6 +350,11 @@ struct JourneyFlowView: View {
         case .selectTopic: return "Mulai pemeriksaan"
         case .startValidation: return "Mulai validasi"
         case .submit: return "Kirim jawaban"
+        case .startLearning: return "Buka materi Sifat Distributif"
+        case .showResults: return "Pilih langkah berikutnya"
+        case .startFinalAssessment: return "Buka asesmen akhir SPL"
+        case .requestHint: return "Bantu aku berpikir"
+        case .restartDiagnosis: return "Mulai ulang pemeriksaan"
         }
     }
 
@@ -410,6 +455,7 @@ private struct RemoteQuestionCard: View {
     let question: RemoteQuestion
     @State private var answer = ""
     @State private var selectedOptionID: String?
+    @State private var showResetConfirmation = false
     @FocusState private var isAnswerFocused: Bool
 
     private var submittedAnswer: String {
@@ -419,12 +465,16 @@ private struct RemoteQuestionCard: View {
     private var canSubmit: Bool {
         !submittedAnswer.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             && submittedAnswer.count <= (question.format == .explanation ? 1200 : 160)
-            && !journeyStore.isWorking && !journeyStore.isLoading
+            && journeyStore.canMutate
+            && !(journeyStore.journey?.availableActions.contains("reset") ?? false)
     }
 
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 24) {
+                if let presentation = journeyStore.journey?.presentation {
+                    JourneyProgressView(presentation: presentation)
+                }
                 HStack(alignment: .center) {
                     BrandTag(text: stageLabel, symbol: question.role == "practice" ? "pencil" : "magnifyingglass", fill: .white)
                     Spacer(minLength: 8)
@@ -461,7 +511,35 @@ private struct RemoteQuestionCard: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .brandSurface()
 
+                if let journey = journeyStore.journey, journey.version >= 3 {
+                    if journey.phase == .practice { SocraticHelpView(journey: journey) }
+                    if journey.availableActions.contains(RemoteAction.showResults.rawValue) {
+                        Button("Pilih langkah berikutnya") {
+                            Task { await journeyStore.perform(.showResults, auth: auth) }
+                        }
+                        .buttonStyle(DarkCapsuleStyle())
+                        .disabled(!journeyStore.canMutate)
+                    }
+                }
+
                 JourneyErrorNotice()
+                if journeyStore.journey?.availableActions.contains("reset") == true {
+                    Text("Batas teknis jawaban sesi ini tercapai. Ini bukan hasil penilaian matematika.")
+                        .font(.subheadline)
+                        .foregroundStyle(HomeStyle.body)
+                    Button("Mulai ulang sesi") { showResetConfirmation = true }
+                        .buttonStyle(DarkCapsuleStyle())
+                        .disabled(!journeyStore.canMutate)
+                }
+                if question.role == "practice", let feedback = journeyStore.feedback {
+                    Label(feedback, systemImage: "text.bubble")
+                        .font(.subheadline)
+                        .foregroundStyle(HomeStyle.blue)
+                        .padding(18)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .brandSurface(HomeStyle.powder, radius: 22)
+                        .accessibilityAddTraits(.updatesFrequently)
+                }
                 if question.role.hasPrefix("q") {
                     Label("Jawab sesuai pemahamanmu. Hasil muncul setelah pemeriksaan selesai.", systemImage: "lock.open")
                         .font(.caption)
@@ -479,6 +557,12 @@ private struct RemoteQuestionCard: View {
             .frame(maxWidth: .infinity)
         }
         .scrollDismissesKeyboard(.interactively)
+        .confirmationDialog("Mulai ulang sesi belajar?", isPresented: $showResetConfirmation, titleVisibility: .visible) {
+            Button("Mulai ulang", role: .destructive) { Task { await journeyStore.reset(auth: auth) } }
+            Button("Batal", role: .cancel) {}
+        } message: {
+            Text("Jawaban dan kemajuan sesi saat ini akan diganti dengan sesi baru.")
+        }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             Button {
                 isAnswerFocused = false
@@ -599,12 +683,16 @@ private struct RemoteQuestionCard: View {
         case "practice": "Latihan terbimbing"
         case "retry": "Uji mandiri"
         case "transfer": "Soal transfer"
+        case "final-assessment": "Asesmen akhir SPL"
         default: "Kenali konsep"
         }
     }
 
     private var roleLabel: String {
-        switch question.role {
+        if journeyStore.journey?.version == 3 {
+            return question.role == "follow-up" ? "Pemeriksaan tambahan" : ""
+        }
+        return switch question.role {
         case "q1-target": "Soal inti 1 dari 3"
         case "q2-application": "Soal inti 2 dari 3"
         case "q3-reasoning": "Soal inti 3 dari 3"
@@ -617,11 +705,11 @@ private struct RemoteQuestionCard: View {
     }
 
     private var formatHint: String {
-        switch question.role {
-        case "q2-application", "retry", "transfer": "Tuliskan ekspresi setara dalam bentuk tanpa tanda kurung."
-        case "q4-trace", "practice": "Masukkan satu bilangan."
-        case "q3-reasoning": "Jelaskan alasan matematikanya secara singkat."
-        default: "Pilih satu jawaban yang paling sesuai."
+        switch question.format {
+        case .expression: "Tuliskan ekspresi setara dalam bentuk tanpa tanda kurung."
+        case .number: "Masukkan satu bilangan."
+        case .explanation: "Jelaskan alasan matematikanya secara singkat."
+        case .choice: "Pilih satu jawaban yang paling sesuai."
         }
     }
 }

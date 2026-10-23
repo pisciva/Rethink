@@ -197,4 +197,3 @@ private struct LockedGradeCourse: View {
 #Preview {
     NavigationStack { GradeCatalogView() }
 }
-

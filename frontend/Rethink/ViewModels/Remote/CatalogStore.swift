@@ -4,7 +4,7 @@ import Foundation
 @MainActor
 final class CatalogStore: ObservableObject {
     @Published private(set) var catalog: RemoteCatalog?
-    @Published private(set) var subjects: [SubjectSummary] = [CatalogCurriculum.algebraSubject]
+    @Published private(set) var subjects: [SubjectSummary] = []
     @Published private(set) var isLoading = false
     @Published private(set) var errorMessage: String?
 
@@ -36,7 +36,6 @@ final class CatalogStore: ObservableObject {
             } else {
                 subjects = remote.subjects.map(mapSubject)
             }
-            if subjects.isEmpty { subjects = [CatalogCurriculum.algebraSubject] }
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -63,29 +62,9 @@ final class CatalogStore: ObservableObject {
 
     private func curriculum(for id: String, nodes: [RemoteCurriculumNode], legacy: RemoteSubject?) -> [TopicSummary] {
         if !nodes.isEmpty { return nodes.map(mapCurriculumNode) }
-        guard id == "algebra" else { return [] }
-        return CatalogCurriculum.algebra.map { branch in
-            var result = branch
-            result.subtopics = branch.subtopics.map { leaf in
-                let activeSPL = leaf.id == "spl" && legacy?.topics.contains {
-                    $0.id == "spl" && topicAvailability($0) == .available
-                } == true
-                let activeDistribution = leaf.id == "distribution" && legacy?.topics.contains { topic in
-                    topic.id == "spl" && topicAvailability(topic) == .available && topic.concepts.contains {
-                        $0.id == "distribution" && $0.availability == "active-recovery" && $0.capabilities?.guidedLearning == "active"
-                    }
-                } == true
-                return TopicSummary(
-                    id: leaf.id, title: leaf.title,
-                    description: activeSPL ? description(for: "spl")
-                        : activeDistribution ? "Konsep ini dapat ditinjau melalui alur Sistem Persamaan Linear." : leaf.description,
-                    illustrationName: leaf.illustrationName,
-                    availability: activeSPL ? .available : activeDistribution ? .preview : .unavailable,
-                    entryTopicID: activeSPL || activeDistribution ? "spl" : nil
-                )
-            }
-            return result
-        }
+        // Subject/topic APIs do not imply an additional local curriculum tree.
+        // Empty subtopics intentionally use the direct topic list in the view.
+        return []
     }
 
     private func mapCurriculumNode(_ node: RemoteCurriculumNode) -> TopicSummary {
@@ -107,7 +86,7 @@ final class CatalogStore: ObservableObject {
     }
 
     private func topicAvailability(_ topic: RemoteTopic) -> SubjectAvailability {
-        guard topic.availability == "active", topic.capabilities?.diagnosis == "active" else {
+        guard topic.id == "spl", topic.availability == "active", topic.capabilities?.diagnosis == "active" else {
             return .unavailable
         }
         return .available

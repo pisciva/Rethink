@@ -11,8 +11,8 @@ enum APIClientError: Error, LocalizedError {
         switch self {
         case .invalidResponse:
             return "Respons server tidak valid."
-        case .network(let message):
-            return "Tidak dapat terhubung ke backend: \(message)"
+        case .network:
+            return "Tidak dapat terhubung ke layanan. Periksa koneksi lalu coba lagi."
         case .unauthorized:
             return "Sesi berakhir. Silakan masuk lagi."
         case .http(_, _, let message, _):
@@ -41,7 +41,9 @@ private struct APIErrorBody: Decodable {
 }
 
 private struct RemoteCommand: Encodable {
-    let concept = "distribution"
+    let concept: String?
+    let conceptId: String?
+    let message: String?
     let action: String
     let expectedRevision: Int
     let topicId: String?
@@ -49,12 +51,14 @@ private struct RemoteCommand: Encodable {
     let answer: String?
 
     enum CodingKeys: String, CodingKey {
-        case concept, action, expectedRevision, topicId, questionId, answer
+        case concept, conceptId, message, action, expectedRevision, topicId, questionId, answer
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(concept, forKey: .concept)
+        try container.encodeIfPresent(concept, forKey: .concept)
+        try container.encodeIfPresent(conceptId, forKey: .conceptId)
+        try container.encodeIfPresent(message, forKey: .message)
         try container.encode(action, forKey: .action)
         try container.encode(expectedRevision, forKey: .expectedRevision)
         try container.encodeIfPresent(topicId, forKey: .topicId)
@@ -66,18 +70,20 @@ private struct RemoteCommand: Encodable {
 struct APIClient {
     let baseURL: URL
     private let session: URLSession
+    private let usesPRDV2: Bool
 
-    init(baseURL: URL = AppConfig.backendBaseURL, session: URLSession = .shared) {
+    init(baseURL: URL = AppConfig.backendBaseURL, session: URLSession = .shared, usesPRDV2: Bool = AppConfig.usesPRDV2) {
         self.baseURL = baseURL
         self.session = session
+        self.usesPRDV2 = usesPRDV2
     }
 
     func catalog() async throws -> RemoteCatalog {
-        try await request(path: "/api/v2/catalog", method: "GET", token: nil)
+        try await request(path: usesPRDV2 ? "/api/v3/catalog" : "/api/v2/catalog", method: "GET", token: nil)
     }
 
     func journey(token: String) async throws -> RemoteJourneyEnvelope {
-        try await request(path: "/api/v2/progress", method: "GET", token: token)
+        try await request(path: usesPRDV2 ? "/api/v3/progress" : "/api/v2/progress", method: "GET", token: token)
     }
 
     func submit(
@@ -86,17 +92,24 @@ struct APIClient {
         token: String,
         topicId: String? = nil,
         questionId: String? = nil,
-        answer: String? = nil
+        answer: String? = nil,
+        message: String? = nil
     ) async throws -> RemoteJourneyEnvelope {
+        let startsLearning = [RemoteAction.startLearning, .startRecovery, .startReview, .reinforce].contains(action)
+        let selectedAction = usesPRDV2 && action == .reset ? "restart-diagnosis"
+            : usesPRDV2 && startsLearning ? "start-learning" : action.rawValue
         let command = RemoteCommand(
-            action: action.rawValue,
+            concept: usesPRDV2 ? nil : "distribution",
+            conceptId: usesPRDV2 && startsLearning ? "distribution" : nil,
+            message: usesPRDV2 && action == .requestHint ? message : nil,
+            action: selectedAction,
             expectedRevision: expectedRevision,
             topicId: topicId,
             questionId: questionId,
             answer: answer
         )
         let body = try JSONEncoder().encode(command)
-        return try await request(path: "/api/v2/progress", method: "POST", token: token, body: body)
+        return try await request(path: usesPRDV2 ? "/api/v3/progress" : "/api/v2/progress", method: "POST", token: token, body: body)
     }
 
     private func request<T: Decodable>(

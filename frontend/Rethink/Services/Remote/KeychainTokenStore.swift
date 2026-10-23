@@ -1,9 +1,21 @@
 import Foundation
 import Security
 
-struct KeychainTokenStore {
+protocol SessionTokenStore {
+    func load() -> Data?
+    func save(_ data: Data)
+    func clear()
+}
+
+struct KeychainTokenStore: SessionTokenStore {
     private let service = "com.rethink.auth"
-    private let account = "supabase-session"
+    private let account: String
+
+    init(projectURL: URL = AppConfig.supabaseURL) {
+        // Never restore or refresh another Supabase project's guest tokens.
+        // Keep the old unscoped record intact for rollback; do not migrate it blindly.
+        account = "supabase-session:\(projectURL.host?.lowercased() ?? projectURL.absoluteString)"
+    }
 
     func load() -> Data? {
         let query: [String: Any] = [

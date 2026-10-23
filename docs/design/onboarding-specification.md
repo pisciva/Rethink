@@ -360,3 +360,9 @@ User explicitly requested stronger card shadows as a visibility exception to DES
 ### Semantic choices and viewport boundaries — user direction, 19 October 2026
 
 Slide 3 Belum uses a soft red asset; Ragu uses amber; Bisa retains Mint. User explicitly authorizes this semantic-color exception. These are self-report choices, not correct/incorrect grades. Slides 3–4 use screen-width scroll viewports with inset card content and vertical shadow space. Scroll clipping is restored to prevent history/chat from painting over headers or controls. Earlier two-wash and unclipped-scroll guidance is superseded. Verification NOT RUN.
+
+## Release activation and verification update — 23 October 2026
+
+Release builds now present the existing onboarding on first launch and use persisted completion on later launches. The earlier preference to open Home is retained only for DEBUG development: set `RETHINK_SKIP_ONBOARDING=0` to exercise the first-launch route there, or use the explicit replay/preview flags. Replay and preview take precedence over the development bypass. No release skip route or account wall was introduced. The name is now saved when leaving a screen, so an interrupted pre-completion flow does not lose the greeting name.
+
+Swift test expectations were updated to the user-approved 19 October revisions: informational slide 2; five familiarity responses plus explicit confirmation on slide 3; preview-only chatbot. The older MCQ/three-token gate assertions are historical and no longer specify the active flow. These Swift tests are prepared for the macOS workflow; execution is NOT RUN in the Windows workspace. Missing narration remains optional/silent; no new recording or synchronization review is claimed.

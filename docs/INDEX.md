@@ -1,5 +1,7 @@
 # Rethink — Documentation Index & Source-of-Truth Map
 
+> **Current implementation reconciliation (23 October 2026):** PRD v2 docs imported from `origin/main` at `d107a04`. The deployed recovery API and its 59-test baseline remain intact. New v2 work, approved bank/rules and test evidence are tracked in [PRD-V2-EXECUTION.md](implementation/PRD-V2-EXECUTION.md) and [PRD-V2-PLAN.md](implementation/PRD-V2-PLAN.md) and the [43-requirement inventory](implementation/PRD-V2-TRACEABILITY.md). Earlier approved implementation rules remain recorded in [decisions.md](decisions.md), with v2 scope changes identified separately.
+
 **Purpose:** This is the front door for Codex. Use selective retrieval; do not paste or ingest the full archive for every task. The linked main files are detailed *working derivatives*, while `source/` preserves all 133 uploaded pages for completeness and dispute resolution.
 
 ## Essential files
@@ -105,7 +107,11 @@ This conversion includes **all 133 PDF pages**, grouped into independent, naviga
 - Section headings may continue onto the following PDF page; grouping follows actual source document transitions.
 - The **original PDF** contains no complete standalone design requirements tab or final physical backend specification despite the original proposed folder view. A separate `design/DESIGN.md` has since been supplied and preserves the visual style reference; gamification specifications have also been added as **PROPOSED**. Neither is part of the archival PDF or proof that full app-screen interaction design and operational decisions are approved.
 
-## Requirement registry
+## Active PRD v2 requirement registry
+
+C1: 5 · C2: 5 · C3: 10 · C4: 9 · C5: 11 · FR-X: 3 = **43**. See [the v2 inventory](implementation/PRD-V2-TRACEABILITY.md). Imported source approval does not mean all requirements are verified or production rollout is complete.
+
+### Historical v1 registry
 
 | Group | Count | IDs | Owner |
 |---|---:|---|---|
@@ -115,7 +121,7 @@ This conversion includes **all 133 PDF pages**, grouped into independent, naviga
 | C4 | 8 | FR-C4-01–FR-C4-08 | Targeted Guided Learning |
 | C5 | 8 | FR-C5-01–FR-C5-08 | Knowledge Validation & Learning Outcomes |
 | X | 3 | FR-X-01–FR-X-03 | Cross-Capability Integrity |
-| **Total** | **39** | All **Must Have / source Approved** | **Not necessarily verified** |
+| **Legacy total** | **39** | Historical v1 registry | **Not the v2 inventory** |
 
 ### Cross-cutting reference tags
 

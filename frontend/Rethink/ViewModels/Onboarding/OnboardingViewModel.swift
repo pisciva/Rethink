@@ -60,6 +60,7 @@ final class OnboardingViewModel: ObservableObject {
     func select(_ index: Int) {
         guard pages.indices.contains(index), index != selectedPage else { return }
         audio.stop()
+        preferences.learnerName = learnerName.trimmingCharacters(in: .whitespacesAndNewlines)
         selectedPage = index
         preferences.lastScreen = index
         playAudioIfEnabled()

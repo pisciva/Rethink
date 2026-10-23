@@ -41,5 +41,7 @@ final class CatalogSupportTests: XCTestCase {
         XCTAssertNil(store.errorMessage)
         XCTAssertEqual(store.subjects.first?.availability, .unavailable)
         XCTAssertEqual(store.subjects.first?.topics.first?.availability, .unavailable)
+        XCTAssertTrue(store.subjects.first?.subtopics.isEmpty == true,
+                      "subject/topic API must not grow a fabricated local curriculum")
     }
 }

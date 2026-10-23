@@ -83,6 +83,11 @@ struct ProfileView: View {
 
                 if let error = journeyStore.errorMessage {
                     Text(error).font(.subheadline).foregroundStyle(.red)
+                    if journeyStore.requiresReload {
+                        Button("Muat ulang kemajuan") { Task { await journeyStore.load(auth: auth) } }
+                            .buttonStyle(DarkCapsuleStyle())
+                            .disabled(journeyStore.isLoading || journeyStore.isWorking)
+                    }
                 }
 
                 Button { showResetConfirmation = true } label: {
@@ -98,7 +103,7 @@ struct ProfileView: View {
                     .brandSurface()
                 }
                 .buttonStyle(GentlePressStyle())
-                .disabled(journeyStore.isWorking || journeyStore.isLoading)
+                .disabled(!journeyStore.canMutate)
 
                 Text("Rethink · Satu konsep, satu langkah.")
                     .font(.caption)
@@ -148,7 +153,9 @@ struct ProfileView: View {
             Button("Mulai ulang", role: .destructive) { Task { await journeyStore.reset(auth: auth) } }
             Button("Batal", role: .cancel) {}
         } message: {
-            Text("Jawaban dan kemajuan sesi saat ini akan diganti dengan sesi baru.")
+            Text(journeyStore.journey?.version == 3
+                 ? "Pemeriksaan dan konteks belajar akan dimulai ulang. Riwayat asesmen akhir SPL tetap disimpan."
+                 : "Jawaban dan kemajuan sesi saat ini akan diganti dengan sesi baru.")
         }
     }
 
@@ -162,6 +169,8 @@ struct ProfileView: View {
         case .reviewComplete: "Ulasan konsep selesai"
         case .retry, .transfer: "Sedang mencoba secara mandiri"
         case .validationResult: "Hasil validasi tersedia"
+        case .finalAssessment: "Asesmen akhir SPL sedang berlangsung"
+        case .finalResult: "Hasil asesmen akhir SPL tersedia"
         }
     }
 }

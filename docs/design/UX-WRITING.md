@@ -1,5 +1,7 @@
 # Rethink — UX Writing & Conversation Design Guidelines
 
+> **Implementation update (23 October 2026):** the user approved the three presentation mechanisms and concrete OI/OPS implementation rules in [the current decision record](../decisions.md#current-implementation-decisions--23-october-2026). Source/proposal status statements below are preserved as provenance. Approval is not evidence that UI, expert pedagogy or user-comprehension checks passed.
+
 > **Status:** PROPOSED / working design standard; requires Product + UX approval before being binding.  
 > **Version:** 1.0 · **Prepared:** 19 October 2026  
 > **Language:** Indonesian (`id-ID`) · **Audience:** Indonesian high-school students, target profile not yet fully validated.  

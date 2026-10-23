@@ -1,10 +1,12 @@
 # Rethink — MVP Scope, Behavioral Definition & Boundaries
 
+> **Current implementation decision (23 October 2026):** the user approved the concrete ten-item bank, conservative per-concept policy, all-correct mapping, five-item final assessment and maximum one curated follow-up in [PRD-V2-PLAN.md](../implementation/PRD-V2-PLAN.md). Original source Open/Pending references below preserve provenance; this approval does not establish expert/empirical acceptance.
+
 > **Authority:** PRD v2 Product Requirements and Detailed Requirements tabs, verified 23 October 2026. `docs/source/` remains the historical PRD v1 archive. Target behavior below is separate from implementation status.
 
 ## 1. MVP contract
 
-Rethink MVP demonstrates **one complete evidence-grounded conceptual recovery loop**, not a broad mathematics education application. The learner selects **Sistem Persamaan Linear (SPL)** under **Algebra** as the supported topic. The single supported diagnostic and recovery concept is **Distributive Property** (property of distribution in algebra). Assess it in (a) isolated algebraic applications and (b) transformation within SPL; both yield evidence about the **same concept**, not separate diagnosed competencies or blockers.
+Rethink MVP demonstrates **one complete evidence-grounded conceptual recovery loop**, not a broad mathematics education application. The learner selects **Sistem Persamaan Linear (SPL)** under **Algebra** as the supported topic. Diagnosis screens bounded candidate prerequisite concepts with explicit per-concept coverage and rubrics. **Distributive Property** remains the only complete guided-learning and concept-validation package. Its isolated algebraic application and transformation within SPL concern the same concept, not separate diagnosed competencies.
 
 The MVP must prove bounded multi-concept screening, per-concept evidence synthesis, open learning choice, and one complete recovery loop for Distributive Property. *Feature shown in navigation* is not the same as *feature supported*. No full diagnosis of every prerequisite, no probabilistic mastery score, no complete curriculum, no unrestricted tutoring or long-term retention claim.
 
@@ -95,7 +97,9 @@ The MVP must prove bounded multi-concept screening, per-concept evidence synthes
 
 **Q1–Q10 are primary items.** Follow-up probes are additional, separately identified diagnostic evidence. Student answer correctness is outcome evidence; a visible operation is transformation evidence; verbal reasoning is explanatory evidence. Classifications must be conservative. No arbitrary LLM confidence percentage is a probability.
 
-### Supported outcomes
+### Historical v1 outcome vocabulary
+
+The table below is retained for legacy implementation mapping. The active v2 vocabulary is **Supported / Not Supported / Uncertain / Insufficiently Assessed** per concept (DOCX §4.2.3). Current implementation approvals are tracked separately in `../decisions.md`; the new bank and multi-concept policy require their own review.
 
 | C3 result | Meaning | Acceptable communication/next step | Never infer |
 |---|---|---|---|
