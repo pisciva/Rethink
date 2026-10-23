@@ -89,7 +89,7 @@ struct GradeCatalogView: View {
             ForEach(courses) { course in
                 if course.isUnlocked {
                     NavigationLink {
-                        LinearSystemsSelectionView()
+                        SPLPretestView()
                     } label: {
                         GradeCourseRow(course: course)
                     }

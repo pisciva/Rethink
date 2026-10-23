@@ -180,7 +180,7 @@ struct ChatView: View {
                     .accessibilityHidden(true)
                     .allowsHitTesting(false)
 
-                Image("JimmyMascot")
+                Image("AppLogo")
                     .resizable().scaledToFit()
                     .frame(width: width * 0.34, height: width * 0.36)
                     .offset(y: -30)

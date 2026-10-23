@@ -1,50 +1,85 @@
 # Rethink Recovery API
 
-API-only Next.js backend for the **Swift iOS app**, deployed on **Vercel** at https://rethink-recovery-api.vercel.app. Active scope: Catalog → SPL diagnosis → Distributive Property recovery → eligible validation → Learning Map.
+Backend HTTP untuk aplikasi SwiftUI Rethink, menggunakan **Next.js 16.4.2**, **TypeScript**, **Node.js 24.x**, Supabase dan Vercel AI Gateway. Backend aktif bersifat API-only; tidak menyediakan website pembelajaran.
 
-The old website backend, grade-based curriculum, broad pretest, chat/transcript services and packaged media were removed at the user's request. Git history is the rollback source; no legacy archive is retained in the workspace. Reviewed recovery code, approved Q2/Q3 items, bounded mathematical checking and saved-evidence safeguards were carried into separate modules.
+[README utama](../README.md) · [Setup lengkap](SETUP.md) · [API v2](docs/API-V2.md) · [API v3 / PRD v2](docs/API-V3.md)
 
-## Run
+## Setup lokal
 
-Requires Node.js 24.x. From `backend/`:
+Dari `backend/`:
 
 ```sh
 npm ci
 cp .env.example .env.local
-# Fill in the Supabase URL, public key and backend-only secret key.
+```
+
+Isi konfigurasi privat, aktifkan Supabase **Anonymous Sign-Ins**, dan terapkan `supabase/migrations/202610220001_spl_recovery_journeys.sql` pada proyek yang sama dengan frontend. Kemudian:
+
+```sh
 npm run dev
 ```
 
-API: `http://localhost:3001`. PowerShell: `Copy-Item .env.example .env.local`; use `npm.cmd` if PowerShell blocks npm scripts. Enable Supabase Anonymous Sign-Ins for the Swift guest session and apply the single migration in `supabase/migrations/` before using progress. No old account/profile/curriculum migrations are required.
+Server lokal: `http://localhost:3001`. Pada PowerShell, gunakan `Copy-Item .env.example .env.local`; bila diperlukan, panggil `npm.cmd`.
 
-AI Gateway is optional and only advises on unclear Q3 reasoning. It never generates curriculum or grades independent retry/transfer. Configuration presence is not proof of live provider access.
+| Variable | Fungsi |
+|---|---|
+| `SUPABASE_URL` | Proyek auth dan database |
+| `SUPABASE_PUBLISHABLE_KEY` | Public project key; alias anon lama didukung |
+| `SUPABASE_SECRET_KEY` | Backend-only database access; alias service-role didukung |
+| `AI_GATEWAY_API_KEY` | Opsional untuk bounded reasoning/hint selection |
+| `AI_GATEWAY_MODEL` | Gateway `provider/model`; default di `src/infrastructure/gateway.ts` |
+| `ALLOWED_ORIGINS` | Browser origins dipisahkan koma; native client tidak perlu Origin |
 
-## Native API
+Konfigurasi model mendukung ID provider/model, tetapi akses akun dan kemampuan structured output harus diperiksa terpisah. Kegagalan provider memakai fallback yang dibatasi, bukan diagnosis atau penilaian matematika buatan.
 
-- `GET /api/health`: configuration presence, not a database/provider readiness guarantee.
-- `GET /api/v2/catalog`: public subject/topic catalog and explicit capability coverage.
-- `GET/POST /api/v2/progress`: Supabase bearer token; account-owned, revision-protected journey.
-
-The `/api/v2` names and Codable journey shape remain compatible with the existing Swift `APIClient`. Native URLSession sends no browser Origin header. Backend secrets stay in Vercel. No website frontend is hosted here.
-
-See [Vercel and Swift setup](SETUP.md), [API contract](docs/API-V2.md) and [architecture/verification](../docs/implementation/BACKEND-REBUILD.md).
-
-## Layout
+## Struktur
 
 ```text
-app/                    HTTP route entrypoints only
-src/content/            Catalog, curated draft items and fixed result copy
-src/domain/             C2 map; C3 diagnosis; C4 learning; C5 validation;
-                        shared evaluation, journey and history checks
-src/application/        Command contract and orchestration
-src/infrastructure/     Supabase auth/storage and optional bounded AI adapter
-src/http/               HTTP, CORS and persistence acknowledgments
-supabase/migrations/    Private, account-owned recovery evidence
+app/api/             Route HTTP: health, v2 catalog/progress, v3 catalog/progress
+src/content/         Item recovery, versi, katalog dan pesan hasil
+src/domain/          Math, evidence, diagnosis, belajar, validasi, map, snapshot
+src/application/     Command recovery dan koordinasi
+src/infrastructure/  Auth Supabase, storage, Gateway dan reasoning guards
+src/http/            CORS dan handler progress
+src/prdv2/           Bank, types, engine/event replay, handler PRD v2
+supabase/migrations/  Schema dan RPC private journey
+tests/               Unit/API/HTTP/persistence/embedded PostgreSQL
+docs/                Kontrak HTTP
+archive/             Salinan lokal historis; dikecualikan dari source aktif
 ```
 
-Logical responsibilities are modules, not separate microservices. The stack is an engineering choice, not a claim that the PDF mandates Next.js or a particular AI model.
+`archive/` dapat ada di workspace tertentu dan tidak dibutuhkan untuk runtime. Backend lama untuk kurikulum 37 pelajaran, video/transkrip dan chat umum tidak menjadi API aktif saat ini. Jangan menyalin dokumentasi endpoint lama sebagai kontrak layanan terbaru.
 
-## Verify
+## Versi dan kemampuan
+
+| Kontrak | Cakupan |
+|---|---|
+| `/api/v2` | Recovery kompatibel: Q1–Q3, maksimal satu Q4, distributif, retry/transfer, hasil konsep |
+| `/api/v3` | PRD v2: 10 primary items, per-concept evidence, bounded follow-up, open learning, contextual hints, lima soal final SPL |
+
+`BANK_APPROVED = true` pada `src/prdv2/content.ts` mengaktifkan bank/rules yang disetujui untuk implementasi. Ini tidak membuktikan validitas psikometrik atau penerimaan ahli. Bank UI lokal frontend bukan bank server ini.
+
+Hanya distributif memiliki complete guided-learning/concept-validation package. Representation tetap ditandai dengan cakupan diagnosis tidak memadai. Tes akhir SPL lulus pada 3/5 atau lebih, boleh diulang setelah gagal, dan tidak mengubah seluruh prerequisite menjadi Understood.
+
+## HTTP dan persistence
+
+- Publik: `GET /`, `GET /api/health`, `GET /api/v2/catalog`, `GET /api/v3/catalog`.
+- Authenticated: `GET/POST /api/v2/progress` dan `GET/POST /api/v3/progress`.
+- Auth menggunakan Supabase Bearer token; native URLSession tidak mengirim Origin.
+- Command membawa `expectedRevision` terbaru. Unknown fields dan hasil penilaian buatan client ditolak.
+- `learning_journeys` hanya diakses service role; RPC save memakai revision check atomik.
+- PRD v2 event history berada di `session.prdV2`. V2/v3 berbagi revision dan tidak boleh menimpa hasil secara buta.
+- `409 revision_conflict`: reload. `409 reset_required`: restart eksplisit. Gagal save bukan jawaban salah.
+- API v3 membatasi contextual hints ke visual/worked/practice. Tidak ada hint untuk retry, transfer atau final assessment.
+- Kesehatan konfigurasi `/api/health` bukan pemeriksaan readiness database atau kualitas provider.
+
+Payload lengkap dan daftar command: [API-V2.md](docs/API-V2.md), [API-V3.md](docs/API-V3.md).
+
+## Deployment dan pemeriksaan
+
+Vercel: Root Directory **`backend`**, Node.js **24.x**, `npm ci`, `npm run build`, framework Next.js. `vercel.json` mencatat install/build; Root Directory tetap diatur pada Vercel project. Simpan secret di environment backend dan redeploy setelah mengubahnya.
+
+Dokumen implementasi mencatat deployment `https://rethink-recovery-api.vercel.app` dan pemeriksaan hosted pada 23 Oktober 2026. Status live tidak diperiksa ulang saat README ini ditulis.
 
 ```sh
 npm test
@@ -52,4 +87,4 @@ npm run typecheck
 npm run build
 ```
 
-Tests use deterministic fixtures, mocked account/provider APIs and isolated embedded PostgreSQL. No live credentials or data writes are required. The user approved the OI-01..03 and OPS-01..05 implementation rules on 23 October 2026, including all-correct Rejected and no C5 after Optional Review. See [completion contract and executed checks](../docs/implementation/MVP-COMPLETION.md). The item bank remains labeled draft pending separate expert mathematical/pedagogical acceptance. Passing engineering checks is not full product/mathematics/usability acceptance.
+Suite menggunakan mocks dan embedded PostgreSQL. Hasil engineering tidak sama dengan pembuktian ketepatan diagnosis pada populasi siswa. CI ada di `../.github/workflows/recovery.yml`; tidak ada tes, server, build atau deployment dijalankan dalam tugas dokumentasi ini.
