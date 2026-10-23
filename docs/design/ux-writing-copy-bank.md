@@ -375,3 +375,37 @@ Behavior is authorized by DEC-2026-10-23-MVP-COMPLETION. These are original, sta
 | `sys.reset.evidence` | Materi atau aturan sesi telah berubah, atau bukti tersimpan tidak dapat dilanjutkan. Mulai sesi baru untuk melanjutkan pemeriksaan. | CONDITIONAL — server resetRequired |
 
 Reused IDs: `gam.achievement.concept/body/scope`, `sys.save.unknown.title/body`, `sys.session.expired.title/body`, `catalog.support.available/unavailable`, and the existing data-bound diagnosis/recovery/validation copy. Recognition uses no confetti, scoring, extra evidence or repeated notification.
+
+
+## PRD v2 implementation copy — 23 October 2026
+
+These original additions follow the active v2 scope. Editorial status: **REVIEW_NEEDED**; the user approved the bank/rules in `../implementation/PRD-V2-PLAN.md` on 23 October 2026. This is implementation approval, not expert/editorial or usability acceptance. They do not claim expert review or source approval. Existing safe-draft input/submit/error labels are reused. New draft item prompts are keyed by stable item IDs in the proposed bank, not presented as source-provided content.
+
+| Stable ID | Text / purpose | Status and condition |
+|---|---|---|
+| `v2.diag.entry.body` | Jawab sepuluh soal untuk memeriksa bukti beberapa konsep dalam konteks SPL. Materi belajar lengkap tersedia untuk Sifat Distributif. | CONDITIONAL — approved/enabled ten-item bank |
+| `v2.diag.result.title` | Hasil tiap konsep | SAFE-DRAFT |
+| `v2.diag.supported` | Hambatan didukung bukti | CONDITIONAL — supported only |
+| `v2.diag.not-supported` | Hambatan tidak didukung bukti | CONDITIONAL — not-supported only |
+| `v2.diag.uncertain` | Bukti belum konsisten | CONDITIONAL — uncertain only |
+| `v2.diag.insufficient` | Bukti penilaian belum cukup | CONDITIONAL — insufficiently-assessed only |
+| `v2.diag.coverage` | Cakupan: {administered} respons diperiksa · {evaluable} dengan bukti yang dapat digunakan | CONDITIONAL — server counts; not mastery |
+| `v2.learn.open` | Buka materi Sifat Distributif | CONDITIONAL — available supported package after diagnosis |
+| `v2.learn.hint.title` | Bantu aku berpikir | CONDITIONAL — visual/worked/practice only |
+| `v2.learn.hint.next` | Buka petunjuk berikutnya | CONDITIONAL — server hint budget not exhausted |
+| `v2.learn.hint.question` | Apa yang ingin kamu tanyakan? (opsional) | CONDITIONAL — contextual help; maximum 500 characters |
+| `v2.learn.hint.finished` | Coba gunakan petunjuk ini untuk melanjutkan langkahmu sendiri. | CONDITIONAL — stage hint budget exhausted |
+| `v2.learn.hint.{stage}-{level}` | Approved curated questions in `backend/src/prdv2/content.ts` | CONDITIONAL — one of visual/worked/practice, levels 1–3; never independent items |
+| `v2.final.open` | Buka asesmen akhir SPL | CONDITIONAL — diagnosis complete; new failed-attempt retry or incomplete resume |
+| `v2.final.passed` | Lulus pada asesmen ini | CONDITIONAL — exactly five evaluated items, score >= 3 |
+| `v2.final.not-passed` | Belum lulus pada asesmen ini | CONDITIONAL — exactly five evaluated items, score <= 2 |
+| `v2.final.history` | Riwayat asesmen akhir SPL | SAFE-DRAFT |
+| `v2.final.scope` | Hasil topik ini terpisah dari status pemahaman konsep prasyarat. | SAFE-DRAFT |
+| `v2.final.incomplete` | {answered}/5 jawaban tersimpan · Belum selesai | CONDITIONAL — acknowledged persisted record only |
+| `v2.review.complete` | Ulasan konsep selesai. Ulasan ini tidak membuka validasi konsep. Asesmen akhir SPL tetap tersedia secara terpisah. | CONDITIONAL — completed optional review only |
+| `v2.map.explore.scope` | Daftar ini menunjukkan hubungan materi, bukan hasil penilaianmu. | SAFE-DRAFT |
+| `v2.next` | Pilih langkah berikutnya | CONDITIONAL — show-results available |
+| `v2.reset` | Mulai ulang pemeriksaan | CONDITIONAL — explicit restart; preserve final-attempt history |
+| `v2.content.pending` | Soal dan aturan pemeriksaan baru belum diaktifkan. Sesi yang sudah tersedia tetap bisa digunakan. | CONDITIONAL — content review gate disabled |
+
+Content verification: backend scope/leakage checks executed separately; iOS visual/accessibility and student comprehension **NOT RUN**.

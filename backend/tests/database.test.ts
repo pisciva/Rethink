@@ -5,6 +5,7 @@ import { PGlite } from '@electric-sql/pglite';
 import { newJourney, submitAnswer, transition } from '../src/domain/journey.ts';
 import { readJourney } from '../src/domain/snapshot.ts';
 import { userA, userB } from './helpers.ts';
+import { newSession as newTopicSession, append as appendTopic, readSession as readTopicSession } from '../src/prdv2/engine.ts';
 
 test('FR-X-01/02/03: actual v2 migration protects evidence and enforces revision-safe saves', async t => {
   const db = new PGlite();
@@ -95,6 +96,18 @@ test('FR-X-01/02/03: actual v2 migration protects evidence and enforces revision
       }
       await db.exec('reset role');
       assert.equal((await db.query('select * from public.learning_journeys')).rows.length, 2);
+    });
+
+    await t.test('FR-X and FR-C5-10: current SQL schema persists independent PRD v2 history with owner/revision guards', async () => {
+      await db.exec('set role service_role');
+      const current = (await db.query<{ revision: number; session: ReturnType<typeof newJourney> }>('select revision,session from public.learning_journeys where user_id=$1', [userA])).rows[0];
+      const topic = appendTopic(newTopicSession(), { action: 'select-topic', topicId: 'spl', expectedRevision: 0 }, {}, '2026-10-23T07:00:00Z')!;
+      const combined = { ...current.session, prdV2: topic };
+      const saved = await db.query<{ revision: number; session: ReturnType<typeof newJourney> }>(save, [userA, 'distribution', current.revision, combined]);
+      assert.deepEqual(readTopicSession(saved.rows[0].session.prdV2), topic);
+      assert.deepEqual(readJourney(saved.rows[0].session), combined);
+      await assert.rejects(db.query(save, [userA, 'distribution', current.revision, current.session]), /revision_conflict/);
+      await db.exec('reset role');
     });
 
     await t.test('account deletion removes only its own v2 evidence', async () => {

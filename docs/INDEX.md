@@ -1,6 +1,6 @@
 # Rethink — Documentation Index & Source-of-Truth Map
 
-> **Current implementation update (23 October 2026):** the user explicitly approved OI-01..03 and OPS-01..05 implementation rules plus progress/feedback/concept recognition. See [the completion contract and evidence](implementation/MVP-COMPLETION.md) and [current decisions](decisions.md#current-implementation-decisions--23-october-2026). Source-status statements below retain PDF provenance; expert content review, iOS runtime and user studies remain distinct from implementation approval.
+> **Current implementation reconciliation (23 October 2026):** PRD v2 docs imported from `origin/main` at `d107a04`. The deployed recovery API and its 59-test baseline remain intact. New v2 work, approved bank/rules and test evidence are tracked in [PRD-V2-EXECUTION.md](implementation/PRD-V2-EXECUTION.md) and [PRD-V2-PLAN.md](implementation/PRD-V2-PLAN.md) and the [43-requirement inventory](implementation/PRD-V2-TRACEABILITY.md). Earlier approved implementation rules remain recorded in [decisions.md](decisions.md), with v2 scope changes identified separately.
 
 **Purpose:** This is the front door for Codex. Use selective retrieval; do not paste or ingest the full archive for every task. The linked main files are detailed *working derivatives*, while `source/` preserves all 133 uploaded pages for completeness and dispute resolution.
 
@@ -11,7 +11,7 @@
 | [`../AGENTS.md`](../AGENTS.md) | Agent operating guardrails, reading order, no-guessing requirements, testing | Derived across entire PDF |
 | [`prd/overview.md`](prd/overview.md) | Identity, positioning, problem evidence, users, hypotheses, goals, evaluation, risks, roadmap, governance | Mainly pp. 1–9, 15–39, 89–97 |
 | [`prd/mvp-definition.md`](prd/mvp-definition.md) | Exact bounded MVP coverage, C1–C5, diagnostic/learning/validation flows, exclusions | pp. 10–12, 40–51 |
-| [`prd/requirements.md`](prd/requirements.md) | All 39 FRs with original requirement language, priority, status, dependencies, verification and scenario coverage | pp. 52–84 |
+| [`prd/requirements.md`](prd/requirements.md) | Legacy 39-FR v1 traceability; v2 migration delta is indexed in the changelog until full 43-FR reconciliation | Historical derivative |
 | [`technical/architecture.md`](technical/architecture.md) | Conceptual/technical logical architecture, LC components, workflows, data/AI/methodology, technical handoff | pp. 85–88, 98–133 |
 | [`design/README.md`](design/README.md) | Design folder navigation and document status | Separate design add-ons, not in source PDF |
 | [`design/DESIGN.md`](design/DESIGN.md) | **User-provided Rethink visual style reference**: colors, typography, spacing, shape, imagery, motion and CSS/Tailwind tokens | Separate uploaded style guide, 18 Oct 2026; not part of the 133-page PDF |
@@ -24,20 +24,19 @@
 | [`design/ux-writing-copy-bank.md`](design/ux-writing-copy-bank.md) | Indonesian copy candidates with stable IDs and usage status (`SAFE-DRAFT`, `CONDITIONAL`, `BLOCKED`, `PREVIEW`) | Proposed copy bank; blocked IDs cannot ship |
 | [`design/ux-writing-acceptance-tests.md`](design/ux-writing-acceptance-tests.md) | Proposed UX-writing QA scenarios covering language, diagnosis copy, validation, errors, accessibility and governance | Proposed test suite; not executed results |
 | [`decisions.md`](decisions.md) | Approved baseline vs OI-01..03 Open, OPS-01..05 Pending, decision procedures and change log | pp. 17, 50–51, 57, 89–97, 103, 110–117, 127–133 |
-| [`implementation/FR-TRACEABILITY.md`](implementation/FR-TRACEABILITY.md) | Current SwiftUI and backend v2 implementation mapping for all 39 approved FRs, with remaining acceptance dependencies | Engineering audit; does not replace PRD approval or verification |
-| [`implementation/MVP-COMPLETION.md`](implementation/MVP-COMPLETION.md) | Approved completion rules, implemented feature inventory, live verification and remaining acceptance work | Current user decisions; original PRD archive unchanged |
-| [`implementation/BACKEND-REBUILD.md`](implementation/BACKEND-REBUILD.md) | Current Swift/Vercel recovery backend, removed legacy scope, module map and verification | User-authorized implementation replacement; OI/OPS remain unresolved |
+| [`source/v2/ReThink Documentation — PRD v2 Draft.docx`](source/v2/ReThink%20Documentation%20%E2%80%94%20PRD%20v2%20Draft.docx) | Local PRD v2 source snapshot | Product PRD sections 1–10; preserve unchanged |
+| [`implementation/FR-TRACEABILITY.md`](implementation/FR-TRACEABILITY.md) | Legacy 39-FR implementation mapping plus explicit v2 gap note | Engineering audit; not complete v2 traceability |
+| [`PRD_V2_DOCUMENTATION_INVENTORY.md`](PRD_V2_DOCUMENTATION_INVENTORY.md) | Recursive docs inventory and active/legacy/conflict classification | Migration audit |
 | [`implementation/SPL-CONTENT-REVIEW.md`](implementation/SPL-CONTENT-REVIEW.md) | Draft SPL mathematical references, evidence guard fixes, executed checks and proposed item/rubric review decisions | Engineering review; OI/OPS approval remains pending |
-| [`implementation/SESSION-INTEGRITY.md`](implementation/SESSION-INTEGRITY.md) | Saved-evidence validation, interrupted journey scenarios and real v2 PostgreSQL permission/revision checks | Executed engineering checks; OPS-05 remains pending |
 | [`source/ReThink-Documentation-original.pdf`](source/ReThink-Documentation-original.pdf) | Exact canonical uploaded source including tables, spacing and visual layout | All 133 pages |
 
 ## Project in a minute
 
 **Rethink** is a self-directed, AI-assisted mathematics **conceptual recovery** platform. Rather than solving any math problem or teaching an entire curriculum, it attempts to find a **supported** prerequisite conceptual blocker from student evidence, teach that concept with curated scaffolding, and evaluate its independent application and transfer.
 
-**MVP**: Catalog-first Algebra → selectable Sistem Persamaan Linear (SPL) → support only *Distributive Property* blocker. Diagnosis: Q1 SPL MCQ, Q2 short algebra application, Q3 short conceptual explanation; optional Q4 targeted probe once at most. Results: Confirmed / Rejected / Uncertain. Learning: Visual Explanation → Worked Example → Partial Guided Practice. Validation on eligible recovery: retry without assistance → conditional transfer → Understood / Procedural Only / Needs Reinforcement. Hybrid map: Explore / Focus / Progress. Non-confirmed students can review the curated concept optionally, but that does not confirm the blocker; validation after optional review is **open**.
+**MVP**: Catalog-first Algebra → selectable SPL. Diagnosis uses ten curated primary questions Q1–Q10 for bounded multi-concept screening, per-concept evidence synthesis, and bounded follow-up probes with separate IDs. Results distinguish Supported / Not Supported / Uncertain / Insufficiently Assessed, coverage, priority and content availability. Learning is open after diagnosis; Distributive Property remains the only complete curated package: Visual Explanation → Worked Example → Partial Guided Practice. Concept validation uses Independent Retry → Transfer Problem. Separate SPL Final Assessment has exactly five questions, passes at 3/5, preserves retries, and does not assign prerequisite learner states.
 
-**Source status:** PRD v1.0 source labels **39 Must Have FRs Approved**. `Approved` ≠ built or verified. Three source decisions are still **Open** (`OI-01`, `OI-02`, `OI-03`) and five operational specifications **Pending** (`OPS-01..05`). The separately supplied `design/DESIGN.md` is a **style guide**; the `design/gamification-*`, `design/onboarding-*` and `design/ux-writing-*` / `UX-WRITING.md` documents are **PROPOSED feature/interaction/content specifications**. None authorizes changes to approved product logic. An AI agent must not decide open dependencies implicitly.
+**Source status:** PRD v2 Product Requirements and Detailed Requirements tabs contain **43 approved functional requirements**; PAPER remains research context. `Approved` ≠ built or verified. Runtime implementation remains partial; see [`PRD_V2_MIGRATION_CHANGELOG.md`](PRD_V2_MIGRATION_CHANGELOG.md). Supplemental `design/` documents retain their stated proposed status.
 
 ## Design, onboarding, gamification, and UX-writing extensions
 
@@ -71,7 +70,7 @@ These additional documents are **not in the original 133-page PRD PDF**. They ex
 | Contextual feedback during learning | `design/gamification-specification.md` PART B, `requirements.md` C3/C4/C5, `decisions.md` | `design/gamification-acceptance-tests.md`, OPS-01/02/03/04 |
 | Concept achievement | `design/gamification-specification.md` PART C, `requirements.md` C5, `decisions.md` | `design/gamification-acceptance-tests.md`, OI-02/OPS-03/04/05; do not award from C4 completion |
 | Hybrid learning map | `requirements.md` C2 & FR-X, `decisions.md` | Source pp. 64–65, 80–82, 85–88 |
-| Q1–Q4 diagnostic flow | `requirements.md` C3, `architecture.md` workflow D1–D7, `decisions.md` | Source pp. 66–71, 109–111, 118–125 |
+| Q1–Q10 diagnostic flow | `prd/mvp-definition.md` C3, `technical/architecture.md` D1–D7, migration changelog | PRD v2 PRD/Technical Blueprint tabs |
 | Mathematical / LLM reasoning | `architecture.md` AI/methodology, `decisions.md` OI-01 / OPS-04 | Source pp. 118–126; prior paper only when available |
 | Guided learning | `requirements.md` C4, `mvp-definition.md`, `decisions.md` OPS-01/02/04 | Source pp. 72–75, 111–113 |
 | Validation / state mapping | `requirements.md` C5, `decisions.md` OPS-03 / OI-02 | Source pp. 76–80, 113–115 |
@@ -108,7 +107,11 @@ This conversion includes **all 133 PDF pages**, grouped into independent, naviga
 - Section headings may continue onto the following PDF page; grouping follows actual source document transitions.
 - The **original PDF** contains no complete standalone design requirements tab or final physical backend specification despite the original proposed folder view. A separate `design/DESIGN.md` has since been supplied and preserves the visual style reference; gamification specifications have also been added as **PROPOSED**. Neither is part of the archival PDF or proof that full app-screen interaction design and operational decisions are approved.
 
-## Requirement registry
+## Active PRD v2 requirement registry
+
+C1: 5 · C2: 5 · C3: 10 · C4: 9 · C5: 11 · FR-X: 3 = **43**. See [the v2 inventory](implementation/PRD-V2-TRACEABILITY.md). Imported source approval does not mean all requirements are verified or production rollout is complete.
+
+### Historical v1 registry
 
 | Group | Count | IDs | Owner |
 |---|---:|---|---|
@@ -118,7 +121,7 @@ This conversion includes **all 133 PDF pages**, grouped into independent, naviga
 | C4 | 8 | FR-C4-01–FR-C4-08 | Targeted Guided Learning |
 | C5 | 8 | FR-C5-01–FR-C5-08 | Knowledge Validation & Learning Outcomes |
 | X | 3 | FR-X-01–FR-X-03 | Cross-Capability Integrity |
-| **Total** | **39** | All **Must Have / source Approved** | **Not necessarily verified** |
+| **Legacy total** | **39** | Historical v1 registry | **Not the v2 inventory** |
 
 ### Cross-cutting reference tags
 
@@ -133,4 +136,4 @@ This conversion includes **all 133 PDF pages**, grouped into independent, naviga
 
 ## Delivery status and honest completeness
 
-All PDF pages are included in the source archive; all 39 FRs are itemized in `prd/requirements.md`. The original PDF remains available inside this handoff. The separately uploaded visual reference is preserved unchanged in `design/DESIGN.md`, and the existing gamification add-on is indexed as a proposal. This is a **source-backed documentation handoff**, not proof that all business/technical details exist in the underlying source: OI/OPS decisions, finalized math item bank, complete approved screen flows, physical implementation contracts, and product test results are not supplied by the PDF or the supplemental design documents.
+All PDF pages remain in the source archive. `prd/requirements.md` is the historical 39-FR derivative; PRD v2 has 43 approved functional requirements and requires a future complete ID-by-ID reconciliation. The original PDF remains unchanged. Supplemental design, gamification, onboarding and UX-writing documents retain their proposal statuses. This handoff does not prove implementation or product acceptance.

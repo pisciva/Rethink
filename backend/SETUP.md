@@ -1,5 +1,7 @@
 # Vercel hosting and Swift setup
 
+**PRD v2 work:** the new ten-question diagnosis, concept projections, Socratic prompts and separate SPL final assessment use the [v3 API contract](docs/API-V3.md). The user approved the new bank/rules and the local content gate is enabled; the current production v2 API is unchanged. No database migration is required for the new nested, independently replayed topic history. Swift testing opts in with `RETHINK_PRD_V2=1` after enabling the reviewed backend; leave it unset against current production.
+
 Vercel hosts stateless HTTP functions; Supabase provides guest identities and durable recovery evidence. State is never saved in function memory or the Vercel filesystem.
 
 ## Supabase

@@ -1,12 +1,18 @@
 import { generateStructured } from './gateway.ts';
 import { questions } from '../content/distribution.ts';
-import { explanationObservation, reasoningNeedsReview, type Observation } from '../domain/journey.ts';
+import { explanationObservation, reasoningNeedsReview, verifiedReasoningQuote } from '../domain/diagnosis.ts';
+import type { Observation } from '../domain/model.ts';
 
 export type ReasoningAdvice = { observation: Observation; source: 'curated' | 'gateway' };
 const fallback: ReasoningAdvice = { observation: 'insufficient', source: 'curated' };
 
 /** AI can recognize a supported explanation, never choose a diagnosis or blocker. */
 export async function interpretReasoning(answer: string): Promise<ReasoningAdvice> {
+  const { observation, source } = await interpretReasoningWithQuote(answer);
+  return { observation, source };
+}
+
+export async function interpretReasoningWithQuote(answer: string): Promise<ReasoningAdvice & { quote?: string }> {
   const local = explanationObservation(answer);
   if (local !== 'insufficient') return { observation: local, source: 'curated' };
   if (!answer.trim() || answer.length > 1200 || reasoningNeedsReview(answer)) return fallback;
@@ -16,12 +22,6 @@ export async function interpretReasoning(answer: string): Promise<ReasoningAdvic
     schema: { type: 'object', properties: { label: { type: 'string', enum: ['correct', 'insufficient'] }, quote: { type: 'string' } }, required: ['label', 'quote'], additionalProperties: false },
     maxOutputTokens: 160, timeoutMs: 5000,
   });
-  if (!result.ok || !result.value || typeof result.value !== 'object' || Array.isArray(result.value)) return fallback;
-  const value = result.value as Record<string, unknown>;
-  if (Object.keys(value).length !== 2 || value.label !== 'correct' || typeof value.quote !== 'string') return fallback;
-  const quote = value.quote.trim().toLowerCase();
-  if (quote.length < 12 || quote.length > 160 || !answer.toLowerCase().includes(quote)) return fallback;
-  if (!/\b5\b/.test(quote) || !/\bx\b/.test(quote) || !/\b2\b/.test(quote) || !/(kedua|semua|setiap|masing-masing)/.test(quote)) return fallback;
-  if (/bukan hanya|tidak hanya|hanya.{0,35}x|\b2\b.{0,20}(tetap|tidak dikali)/.test(quote)) return fallback;
-  return { observation: 'correct', source: 'gateway' };
+  const quote = result.ok ? verifiedReasoningQuote(answer, result.value) : null;
+  return quote ? { observation: 'correct', source: 'gateway', quote } : fallback;
 }

@@ -2,6 +2,18 @@ import XCTest
 @testable import DiagnosisCore
 
 final class RemoteModelsTests: XCTestCase {
+    func testPRDV2SeparatesConceptEvidenceFromTopicAssessmentAndDecodesNewPhases() throws {
+        let data = Data(#"{"version":3,"contentVersion":"spl-prdv2-proposed-1","concept":"distribution","selectedTopic":"spl","phase":"final-result","origin":null,"currentQuestion":null,"learningContent":null,"diagnosticOutcome":"rejected","learningCompleted":false,"learnerState":null,"resultExplanation":"Scope","availableActions":["start-learning"],"attempts":[],"map":{"explore":"spl","focus":null,"progress":null},"operationalStatus":"implementation-review-pending","diagnosticResults":[{"id":"representation","title":"Representasi SPL","status":"insufficiently-assessed","learningAvailable":false,"priority":"optional","coverage":{"administered":1,"evaluable":1,"adequate":false},"learnerState":null}],"finalAssessment":{"canStart":false,"attempts":[{"id":1,"startedAt":"2026-10-23T07:00:00Z","completedAt":"2026-10-23T07:01:00Z","answered":5,"score":3,"result":"passed"}]},"hints":[]}"#.utf8)
+        let journey = try JSONDecoder().decode(RemoteJourney.self, from: data)
+        XCTAssertEqual(journey.phase, .finalResult)
+        XCTAssertEqual(journey.finalAssessment?.attempts.first?.score, 3)
+        XCTAssertEqual(journey.finalAssessment?.attempts.first?.result, "passed")
+        XCTAssertNil(journey.learnerState)
+        XCTAssertNil(journey.map.progress)
+        XCTAssertEqual(journey.diagnosticResults?.first?.status, "insufficiently-assessed")
+        XCTAssertFalse(journey.diagnosticResults?.first?.coverage.adequate ?? true)
+        XCTAssertEqual(RemotePhase(rawValue: "final-assessment"), .finalAssessment)
+    }
     func testCatalogDecodesCapabilitiesAndAvailability() throws {
         let json = """
         {
@@ -115,6 +127,43 @@ private final class RecoveryURLProtocol: URLProtocol {
 }
 
 final class RecoverySessionTests: XCTestCase {
+    func testPRDV2ClientUsesSeparateEndpointAndServerOwnedLearningContext() async throws {
+        let session = network()
+        let client = APIClient(baseURL: URL(string: "https://api.test")!, session: session, usesPRDV2: true)
+        var calls = 0
+        RecoveryURLProtocol.handler = { request in
+            calls += 1
+            XCTAssertEqual(request.url?.path, "/api/v3/progress")
+            var data = request.httpBody
+            if data == nil, let stream = request.httpBodyStream {
+                stream.open()
+                defer { stream.close() }
+                var bytes = [UInt8](repeating: 0, count: 1024)
+                var body = Data()
+                while stream.hasBytesAvailable {
+                    let count = stream.read(&bytes, maxLength: bytes.count)
+                    if count <= 0 { break }
+                    body.append(contentsOf: bytes.prefix(count))
+                }
+                data = body
+            }
+            let body = try JSONSerialization.jsonObject(with: data ?? Data()) as! [String: Any]
+            XCTAssertNil(body["concept"])
+            XCTAssertNil(body["learnerState"])
+            if calls == 1 {
+                XCTAssertEqual(body["action"] as? String, "start-learning")
+                XCTAssertEqual(body["conceptId"] as? String, "distribution")
+            } else {
+                XCTAssertEqual(body["action"] as? String, "restart-diagnosis")
+                XCTAssertNil(body["conceptId"])
+            }
+            return (200, Data(#"{"version":3,"revision":2,"journey":null}"#.utf8))
+        }
+        defer { RecoveryURLProtocol.handler = nil; session.invalidateAndCancel() }
+        _ = try await client.submit(action: .startLearning, expectedRevision: 1, token: "access")
+        _ = try await client.submit(action: .reset, expectedRevision: 2, token: "access")
+        XCTAssertEqual(calls, 2)
+    }
     private func network() -> URLSession {
         let config = URLSessionConfiguration.ephemeral
         config.protocolClasses = [RecoveryURLProtocol.self]

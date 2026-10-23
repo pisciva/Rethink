@@ -106,7 +106,9 @@ struct ProfileView: View {
             Button("Mulai ulang", role: .destructive) { Task { await journeyStore.reset(auth: auth) } }
             Button("Batal", role: .cancel) {}
         } message: {
-            Text("Jawaban dan kemajuan sesi saat ini akan diganti dengan sesi baru.")
+            Text(journeyStore.journey?.version == 3
+                 ? "Pemeriksaan dan konteks belajar akan dimulai ulang. Riwayat asesmen akhir SPL tetap disimpan."
+                 : "Jawaban dan kemajuan sesi saat ini akan diganti dengan sesi baru.")
         }
     }
 
@@ -120,6 +122,8 @@ struct ProfileView: View {
         case .reviewComplete: "Ulasan konsep selesai"
         case .retry, .transfer: "Sedang mencoba secara mandiri"
         case .validationResult: "Hasil validasi tersedia"
+        case .finalAssessment: "Asesmen akhir SPL sedang berlangsung"
+        case .finalResult: "Hasil asesmen akhir SPL tersedia"
         }
     }
 }

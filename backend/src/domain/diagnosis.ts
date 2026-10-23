@@ -40,6 +40,18 @@ export function explanationObservation(raw: string): Observation {
   return 'insufficient';
 }
 
+/** Validate quoted AI advice as evidence, including during offline snapshot replay. */
+export function verifiedReasoningQuote(answer: string, input: unknown): string | null {
+  if (reasoningNeedsReview(answer) || !input || typeof input !== 'object' || Array.isArray(input)) return null;
+  const value = input as Record<string, unknown>;
+  if (Object.keys(value).length !== 2 || value.label !== 'correct' || typeof value.quote !== 'string') return null;
+  const quote = value.quote.trim().toLowerCase();
+  if (quote.length < 12 || quote.length > 160 || !answer.toLowerCase().includes(quote)) return null;
+  if (!/\b5\b/.test(quote) || !/\bx\b/.test(quote) || !/\b2\b/.test(quote) || !/(kedua|semua|setiap|masing-masing)/.test(quote)) return null;
+  if (/bukan hanya|tidak hanya|hanya.{0,35}x|\b2\b.{0,20}(tetap|tidak dikali)/.test(quote)) return null;
+  return quote;
+}
+
 function coreOutcome(attempts: Attempt[]): DiagnosticOutcome | 'probe' {
   const q1 = attempts.find(a => a.role === 'q1-target')?.observation;
   const q2 = attempts.find(a => a.role === 'q2-application')?.observation;

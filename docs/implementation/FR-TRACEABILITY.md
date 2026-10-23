@@ -1,3 +1,5 @@
+> **PRD v2:** this file preserves verified v1 implementation evidence. The active 43-requirement inventory is [PRD-V2-TRACEABILITY.md](PRD-V2-TRACEABILITY.md); current migration work is [PRD-V2-PLAN.md](PRD-V2-PLAN.md).
+
 # MVP functional requirement implementation trace
 
 > **Current backend (23 October 2026):** the legacy implementation has been replaced by the Swift/Vercel recovery API in `backend/src/`. See [current architecture, module mapping and verification](BACKEND-REBUILD.md). Dated test totals below are historical; the active suite has 57 passing tests and the approved branches were exercised live. See [completion contract](MVP-COMPLETION.md). Whole-product acceptance remains separate from engineering checks.

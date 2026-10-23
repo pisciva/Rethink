@@ -12,7 +12,7 @@ export type AttemptEvidence = { category: EvidenceCategory; direction: EvidenceD
 export type Attempt = { questionId: string; role: QuestionRole; answer: string; observation: Observation; evidence: AttemptEvidence; at: string; interpretationSource?: 'curated' | 'gateway' };
 export type SubmissionIssue = 'stale_question' | 'expanded_form_required' | 'invalid_answer' | 'attempt_limit';
 
-export type Journey = { version: 2; contentVersion: typeof CONTENT_VERSION; concept: 'distribution'; selectedTopic: 'spl' | null; phase: Phase; origin: 'confirmed-recovery' | 'optional-review' | null; diagnosticOutcome: DiagnosticOutcome | null; learningCompleted: boolean; learnerState: LearnerState | null; attempts: Attempt[] };
+export type Journey = { version: 2; contentVersion: typeof CONTENT_VERSION; concept: 'distribution'; selectedTopic: 'spl' | null; phase: Phase; origin: 'confirmed-recovery' | 'optional-review' | null; diagnosticOutcome: DiagnosticOutcome | null; learningCompleted: boolean; learnerState: LearnerState | null; attempts: Attempt[]; prdV2?: unknown };
 export type PublicJourney = {
   version: 2;
   contentVersion: string;

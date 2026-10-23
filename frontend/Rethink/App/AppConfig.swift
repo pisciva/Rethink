@@ -13,6 +13,8 @@ import Foundation
 ///
 /// For local HTTP development on a device, add an ATS exception in Xcode.
 enum AppConfig {
+    // Opt in only against a deployed, content-approved PRD v2 API.
+    static let usesPRDV2 = ProcessInfo.processInfo.environment["RETHINK_PRD_V2"] == "1"
     // Onboarding development is paused; opt in explicitly when testing it again.
     static let replaysOnboardingForTesting = ProcessInfo.processInfo.environment["RETHINK_REPLAY_ONBOARDING"] == "1"
     static var opensHomeForDevelopment: Bool {

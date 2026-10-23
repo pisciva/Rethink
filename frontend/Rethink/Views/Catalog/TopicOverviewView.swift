@@ -119,6 +119,8 @@ struct TopicOverviewView: View {
         switch journey.phase {
         case .visual, .worked, .practice: return "Lanjutkan belajar"
         case .validationResult, .reviewComplete: return "Lihat hasil"
+        case .finalAssessment: return "Lanjutkan asesmen akhir SPL"
+        case .finalResult: return "Lihat hasil asesmen akhir SPL"
         default: return "Lanjutkan pemeriksaan"
         }
     }

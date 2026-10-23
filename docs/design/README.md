@@ -1,6 +1,15 @@
 # Rethink — Design Documentation Index
 
-> **Status and provenance:** This folder combines a **user-supplied visual style reference** with **PROPOSED onboarding, gamification and UX-writing specifications**. None of these overrides the approved PRD v1.0, 39 functional requirements, or pending OI/OPS decisions. The original PRD PDF remains at `../source/ReThink-Documentation-original.pdf`.
+> **Status and provenance:** This folder combines the PRD v2 design handoff, a user-supplied visual style reference, and **PROPOSED** onboarding, gamification and UX-writing specifications. PRD v2 behavior wins. The original PRD PDF remains archival at `../source/ReThink-Documentation-original.pdf`.
+
+## PRD v2 functional design navigation
+
+- [Design principles](design-principles.md)
+- [Diagnostic flow](diagnostic-flow.md)
+- [Learning map](learning-map.md)
+- [Guided learning flow](guided-learning-flow.md)
+- [Socratic tutor](socratic-tutor.md)
+- [Validation flow](validation-flow.md)
 
 ## Files
 

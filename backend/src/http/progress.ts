@@ -83,6 +83,10 @@ export function POST(request: Request) {
         : 'invalid_transition');
     }
 
+    // A legacy recovery restart cannot erase the separate PRD v2 topic history.
+    const topicHistory = currentRow?.session && typeof currentRow.session === 'object'
+      ? (currentRow.session as Record<string, unknown>).prdV2 : undefined;
+    if (topicHistory !== undefined) next.prdV2 = topicHistory;
     const saved = await saveJourney(user.id, command.expectedRevision, next);
     if (saved.kind === 'conflict') return conflict();
     return Response.json({ version: 2, revision: saved.revision, journey: publicJourney(next), feedback: feedbackFor(current, next, command.action), updatedAt: saved.updatedAt, resetRequired: false });

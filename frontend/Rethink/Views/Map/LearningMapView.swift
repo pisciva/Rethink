@@ -42,6 +42,27 @@ struct LearningMapView: View {
                 }
 
                 layerExplanation
+                if selectedLayer == .explore, let remote = catalog.catalog, remote.version >= 3 {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Relasi konsep dalam SPL").font(.headline)
+                        Text("Daftar ini menunjukkan hubungan materi, bukan hasil penilaianmu.")
+                            .font(.caption).foregroundStyle(HomeStyle.body)
+                        ForEach(remote.subjects.flatMap(\.topics).filter { $0.id == "spl" }.flatMap(\.concepts)) { concept in
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(concept.title).font(.subheadline.weight(.medium))
+                                Text(concept.capabilities?.guidedLearning == "active" ? "Materi belajar tersedia setelah pemeriksaan" : "Relasi konsep · materi belajar belum tersedia")
+                                    .font(.caption).foregroundStyle(HomeStyle.body)
+                            }
+                            .accessibilityElement(children: .combine)
+                        }
+                    }
+                    .padding(20)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .brandSurface()
+                }
+                if selectedLayer != .explore, let concepts = journeyStore.journey?.diagnosticResults, !concepts.isEmpty {
+                    ConceptEvidenceList(concepts: concepts)
+                }
                 if selectedLayer == .progress, !journeyStore.resetRequired,
                    let journey = journeyStore.journey {
                     if let evidence = journey.presentation?.validation {

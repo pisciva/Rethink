@@ -91,7 +91,7 @@ final class JourneyStore: ObservableObject {
         }
     }
 
-    func perform(_ action: RemoteAction, auth: AuthStore) async {
+    func perform(_ action: RemoteAction, auth: AuthStore, message: String? = nil) async {
         guard canMutate else { return }
         let generation = contextGeneration
         let owner = auth.session?.userId
@@ -104,7 +104,8 @@ final class JourneyStore: ObservableObject {
                 try await client.submit(
                     action: action,
                     expectedRevision: revision,
-                    token: token
+                    token: token,
+                    message: message
                 )
             }
             guard generation == contextGeneration && auth.session?.userId == owner else { return }
