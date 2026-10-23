@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="frontend/Rethink/Resources/Assets.xcassets/AppLogo.imageset/logo.png" width="88" alt="Logo Rethink" />
+  <img src="frontend/Rethink/Resources/images/logo-readme.png" width="88" alt="Logo Rethink" />
   <h1>Rethink</h1>
   <p>Aplikasi iOS untuk pemulihan pemahaman konsep matematika berbasis bukti.</p>
   <p>
@@ -82,6 +82,16 @@ Pilih SPL → Diagnosis 10 soal → Hasil per konsep
 | Gamifikasi | Progres dan pencapaian; sebagian indikator UI masih dummy | Progres aktivitas bukan persentase penguasaan konsep |
 
 > **Integrasi:** pre-test dari katalog belum mengirim jawaban ke backend. Alur server tersedia melalui `JourneyFlowView`.
+
+<a id="system-architecture"></a>
+
+## 🏗️ System Architecture
+
+<p align="center">
+  <img src="frontend/Rethink/Resources/images/arsitektur.png" alt="Rethink System Architecture: presentation, orchestration, learning services, AI support, knowledge, learner state, evaluation rules, dan infrastructure" width="100%" />
+</p>
+
+Frontend SwiftUI terhubung ke backend Next.js melalui API. Orchestrator mengatur diagnosis, pembelajaran, dan validasi; Supabase menyimpan sesi serta hasil belajar. AI mendukung analisis dan bantuan belajar dalam batas aturan evaluasi.
 
 <a id="repository-structure"></a>
 
