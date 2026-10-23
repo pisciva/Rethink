@@ -1,7 +1,6 @@
 <div align="center">
   <img src="frontend/Rethink/Resources/Assets.xcassets/AppLogo.imageset/logo.png" width="88" alt="Logo Rethink" />
   <h1>Rethink</h1>
-  <p><strong>Temukan hambatannya. Pahami konsepnya. Coba secara mandiri.</strong></p>
   <p>Aplikasi iOS untuk pemulihan pemahaman konsep matematika berbasis bukti.</p>
   <p>
     <img src="https://img.shields.io/badge/iOS-26%2B-111827?style=flat-square&amp;logo=apple&amp;logoColor=white" alt="iOS 26 ke atas" />
@@ -10,16 +9,18 @@
     <img src="https://img.shields.io/badge/Supabase-PostgreSQL-287D59?style=flat-square&amp;logo=supabase&amp;logoColor=white" alt="Supabase PostgreSQL" />
     <img src="https://img.shields.io/badge/Status-In%20Development-806A32?style=flat-square" alt="Status dalam pengembangan" />
   </p>
-  <p><a href="#getting-started">Getting Started</a> · <a href="#ios-frontend">Frontend</a> · <a href="#backend-recovery-api">Backend</a> · <a href="#integration-status">Integration Status</a></p>
+  <p><a href="#getting-started">🚀 Getting Started</a> · <a href="#ios-frontend">📱 Frontend</a> · <a href="#backend-recovery-api">⚙️ Backend</a> · <a href="#integration-status">🔗 Integration Status</a></p>
 </div>
 
 ---
 
-Rethink membantu siswa memeriksa kemungkinan hambatan konsep saat mengerjakan **Sistem Persamaan Linear (SPL)**, mempelajari konsep melalui materi terkurasi, lalu mencoba menerapkannya tanpa bantuan. Fokus MVP adalah **Sifat Distributif**. Hasil diagnosis, progres belajar, dan nilai tes dicatat terpisah.
+**Rethink** adalah aplikasi pembelajaran matematika yang membantu siswa mengenali kesulitan konsep, menentukan arah belajar, dan membangun pemahaman melalui penjelasan visual, contoh, serta latihan. Diagnosis berbasis bukti dan bantuan AI mengarahkan siswa ke konsep yang relevan, sementara evaluasi memeriksa penerapannya tanpa bantuan.
 
 Repository ini memuat **frontend SwiftUI**, **backend HTTP Next.js**, serta dokumentasi produk. Beberapa layar frontend masih berupa prototipe lokal dan belum menggunakan penilaian server.
 
-## Getting Started
+<a id="getting-started"></a>
+
+## 🚀 Getting Started
 
 | Tujuan | Buka |
 |---|---|
@@ -38,7 +39,9 @@ cd Rethink
 
 Frontend dan backend memiliki konfigurasi terpisah. Jalankan perintah setup dari folder masing-masing.
 
-## Learning Experience
+<a id="learning-experience"></a>
+
+## 🎓 Learning Experience
 
 ### Backend Learning Flow
 
@@ -63,7 +66,9 @@ Pilih SPL → Diagnosis 10 soal → Hasil per konsep
 - Validasi konsep menghasilkan **Understood**, **Procedural Only**, atau **Needs Reinforcement**; hasil tes SPL tetap terpisah.
 - Hasil hanya berlaku pada konsep dan soal yang dinilai.
 
-### Integration Status
+<a id="integration-status"></a>
+
+### 🔗 Integration Status
 
 | Bagian | Implementasi | Catatan |
 |---|---|---|
@@ -78,7 +83,9 @@ Pilih SPL → Diagnosis 10 soal → Hasil per konsep
 
 > **Integrasi:** pre-test dari katalog belum mengirim jawaban ke backend. Alur server tersedia melalui `JourneyFlowView`.
 
-## Repository Structure
+<a id="repository-structure"></a>
+
+## 🗂️ Repository Structure
 
 ```text
 Rethink/
@@ -110,7 +117,9 @@ Rethink/
 
 Cache tidak masuk source control. `backend/archive/` hanya salinan lokal dan tidak dipakai aplikasi.
 
-## iOS Frontend
+<a id="ios-frontend"></a>
+
+## 📱 iOS Frontend
 
 ### Technology & Architecture
 
@@ -165,7 +174,9 @@ Perangkat fisik tidak dapat mengakses server Mac melalui `localhost`; gunakan HT
 
 SwiftUI Canvas tersedia pada sejumlah view. Preview tetap membutuhkan kompilasi Xcode dan beberapa layar masih memerlukan environment store atau layanan akun.
 
-## Backend Recovery API
+<a id="backend-recovery-api"></a>
+
+## ⚙️ Backend Recovery API
 
 ### Technology & Structure
 
@@ -179,9 +190,11 @@ SwiftUI Canvas tersedia pada sejumlah view. Preview tetap membutuhkan kompilasi 
 | `src/application/` | Validasi dan koordinasi aksi belajar |
 | `src/infrastructure/` | Supabase, persistence, transport Gateway, interpretasi terbatas |
 | `src/http/` | CORS dan handler progres |
-| `src/prdv2/` | Bank, types, engine/event replay, handler asesmen sesuai PRD |
+| Modul asesmen | Bank soal, model, evaluasi bukti, dan riwayat asesmen |
 
-### Local Setup
+<a id="local-setup"></a>
+
+### 🚀 Local Setup
 
 Dari root repository:
 
@@ -241,7 +254,9 @@ Deploy repository yang sama ke Vercel dengan **Root Directory `backend`**, Node.
 
 Alamat deployment: **https://rethink-recovery-api.vercel.app**. Panduan: [backend/SETUP.md](backend/SETUP.md).
 
-## Development Checks
+<a id="development-checks"></a>
+
+## 🧪 Development Checks
 
 **Backend — dari `backend/`:**
 
@@ -280,7 +295,9 @@ Swift Package menguji model dan service. Backend menguji logika, HTTP, dan penyi
 
 </details>
 
-## Documentation & Collaboration
+<a id="documentation--collaboration"></a>
+
+## 📚 Documentation & Collaboration
 
 Folder `docs/` menyimpan PRD, desain, keputusan, dan catatan implementasi. Mulai dari [indeks](docs/INDEX.md), [PRD aktif](docs/prd/README.md), dan [pemetaan implementasi PRD](docs/implementation/PRD-V2-TRACEABILITY.md). Gunakan PRD aktif sebagai acuan perilaku produk.
 

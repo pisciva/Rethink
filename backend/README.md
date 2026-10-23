@@ -6,7 +6,9 @@ Backend HTTP untuk aplikasi SwiftUI Rethink, menggunakan **Next.js 16.4.2**, **T
 
 [README utama](../README.md) · [Setup lengkap](SETUP.md) · [Panduan integrasi](docs/API-V3.md)
 
-## Local Setup
+<a id="local-setup"></a>
+
+## 🚀 Local Setup
 
 Dari `backend/`:
 
@@ -34,7 +36,9 @@ Server lokal: `http://localhost:3001`. Pada PowerShell, gunakan `Copy-Item .env.
 
 Gunakan model yang mendukung structured output. Jika provider gagal, sistem memakai respons cadangan sesuai konteks.
 
-## Project Structure
+<a id="project-structure"></a>
+
+## 🗂️ Project Structure
 
 ```text
 app/api/             Route HTTP untuk health, katalog dan progres
@@ -43,7 +47,6 @@ src/domain/          Math, evidence, diagnosis, belajar, validasi, map, snapshot
 src/application/     Command recovery dan koordinasi
 src/infrastructure/  Auth Supabase, storage, Gateway dan reasoning guards
 src/http/            CORS dan handler progress
-src/prdv2/           Bank, types, engine/event replay, handler asesmen sesuai PRD
 supabase/migrations/  Schema dan RPC private journey
 tests/               Unit/API/HTTP/persistence/embedded PostgreSQL
 docs/                Kontrak HTTP
@@ -52,7 +55,9 @@ archive/             Salinan lokal historis; dikecualikan dari source aktif
 
 `archive/` hanya salinan lokal dan tidak dipakai backend.
 
-## Assessment & Learning Capabilities
+<a id="assessment--learning-capabilities"></a>
+
+## 🎓 Assessment & Learning Capabilities
 
 - Diagnosis dengan 10 soal utama dan hasil bukti per konsep.
 - Follow-up terbatas untuk memperjelas kekurangan bukti.
@@ -63,7 +68,9 @@ archive/             Salinan lokal historis; dikecualikan dari source aktif
 
 Bank soal frontend belum terhubung ke bank server. Hasil tes topik dan validasi konsep dicatat terpisah.
 
-## HTTP & Persistence
+<a id="http--persistence"></a>
+
+## 🔐 HTTP & Persistence
 
 - Informasi layanan, health, dan katalog dapat diakses publik.
 - Membaca dan menyimpan progres membutuhkan sesi pengguna.
@@ -77,7 +84,9 @@ Bank soal frontend belum terhubung ke bank server. Hasil tes topik dan validasi 
 
 Payload lengkap dan daftar aksi tersedia di [panduan integrasi](docs/API-V3.md).
 
-## Deployment & Verification
+<a id="deployment--verification"></a>
+
+## ☁️ Deployment & Verification
 
 Vercel: Root Directory **`backend`**, Node.js **24.x**, `npm ci`, `npm run build`, framework Next.js. `vercel.json` mencatat install/build; Root Directory tetap diatur pada Vercel project. Simpan secret di environment backend dan redeploy setelah mengubahnya.
 

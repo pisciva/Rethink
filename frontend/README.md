@@ -6,7 +6,9 @@ Frontend SwiftUI untuk Rethink. Target aplikasi **iOS 26.0**, arsitektur **MVVM*
 
 [README utama](../README.md) · [Konfigurasi aplikasi](Rethink/App/AppConfig.swift) · [Kontrak backend terbaru](../backend/docs/API-V3.md)
 
-## Getting Started
+<a id="getting-started"></a>
+
+## 🚀 Getting Started
 
 1. Buka `Rethink.xcodeproj` dengan Xcode yang menyediakan SDK iOS 26 atau lebih baru.
 2. Gunakan scheme `Rethink`; resolve dependency Swift Package.
@@ -21,7 +23,9 @@ RETHINK_SUPABASE_PUBLISHABLE_KEY=YOUR_PUBLIC_KEY
 
 Backend dan frontend harus memakai proyek Supabase yang sama dengan Anonymous Sign-Ins aktif. Jangan memasukkan secret/service-role key atau AI key ke aplikasi. Simulator pada Mac yang sama dapat memakai localhost; perangkat fisik memerlukan URL yang dapat dijangkau.
 
-## MVVM Structure
+<a id="mvvm-structure"></a>
+
+## 🧩 MVVM Structure
 
 | Folder | Isi |
 |---|---|
@@ -36,7 +40,9 @@ Backend dan frontend harus memakai proyek Supabase yang sama dengan Anonymous Si
 | `Rethink/Tests/DiagnosisCoreTests` | Regression fixtures model/service |
 | `Package.swift` | Test harness `DiagnosisCore`; bukan entry point UI aplikasi |
 
-## Remote Flow & Local Prototypes
+<a id="remote-flow--local-prototypes"></a>
+
+## 🔗 Remote Flow & Local Prototypes
 
 **Alur belajar:** `Views/Remote/JourneyFlowView.swift` membaca `JourneyStore` dan mengirim aksi ke server melalui `APIClient`. Konfigurasi koneksi dan pengaktifan alur asesmen mengikuti [panduan integrasi backend](../backend/docs/API-V3.md).
 
@@ -44,7 +50,9 @@ Backend dan frontend harus memakai proyek Supabase yang sama dengan Anonymous Si
 
 Chatbot memakai `ChatViewModel`: balasan simulasi, tombol Stop, tiga riwayat contoh, serta riwayat di UserDefaults. Foto profil disimpan di perangkat. Indikator progres pada header dan kartu masih dummy.
 
-## Onboarding & Previews
+<a id="onboarding--previews"></a>
+
+## 👋 Onboarding & Previews
 
 - DEBUG membuka Beranda secara default. Gunakan `RETHINK_SKIP_ONBOARDING=0` untuk menguji onboarding pertama.
 - `RETHINK_REPLAY_ONBOARDING=1` mengulang onboarding untuk testing.
@@ -52,7 +60,9 @@ Chatbot memakai `ChatViewModel`: balasan simulasi, tombol Stop, tiga riwayat con
 - Release memakai status completion yang tersimpan.
 - `#Preview` tersedia di entry point dan beberapa layar; Canvas tetap melakukan kompilasi dan sebagian view membutuhkan environment store.
 
-## Development Checks
+<a id="development-checks"></a>
+
+## 🧪 Development Checks
 
 Dari folder `frontend`:
 
