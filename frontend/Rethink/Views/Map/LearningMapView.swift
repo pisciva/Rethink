@@ -16,6 +16,7 @@ struct LearningMapView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(alignment: .leading, spacing: 24) {
+                TabPageHeader(title: "Peta")
                 BrandPageHeading(
                     eyebrow: "Peta belajarmu",
                     title: "Semuanya\nsaling terhubung.",
@@ -97,8 +98,8 @@ struct LearningMapView: View {
             .frame(maxWidth: 640)
             .frame(maxWidth: .infinity)
         }
-        .background(HomeStyle.sky.ignoresSafeArea())
-        .navigationTitle("Peta belajar")
+        .background(HomeStyle.background.ignoresSafeArea())
+        .toolbar(.hidden, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
         .task {
             if catalog.catalog == nil { await catalog.load() }

@@ -42,7 +42,7 @@ struct LearningHistoryView: View {
             .frame(maxWidth: 700)
             .frame(maxWidth: .infinity)
         }
-        .background(HomeStyle.sky.ignoresSafeArea())
+        .background(HomeStyle.background.ignoresSafeArea())
         .navigationTitle("Riwayat Belajar")
         .task { viewModel.reload() }
     }
@@ -111,7 +111,7 @@ private struct LearningHistoryDetailView: View {
             .frame(maxWidth: 700)
             .frame(maxWidth: .infinity)
         }
-        .background(HomeStyle.sky.ignoresSafeArea())
+        .background(HomeStyle.background.ignoresSafeArea())
         .navigationTitle("Detail Sesi")
     }
 

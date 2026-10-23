@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 110;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -64,6 +64,7 @@
 				"Reference/rekad/Screenshot 2026-10-18 at 22.12.36.png",
 				"Resources/images/1. Fondasi Aljabar.png",
 				Resources/images/mascot.png,
+				Resources/images/profile.png,
 				Tests/DiagnosisCoreTests/CatalogSupportTests.swift,
 				Tests/DiagnosisCoreTests/DiagnosisCoreSmokeTests.swift,
 				Tests/DiagnosisCoreTests/OnboardingTests.swift,

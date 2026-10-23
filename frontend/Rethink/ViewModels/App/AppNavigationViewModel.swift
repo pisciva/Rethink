@@ -4,8 +4,8 @@ import Foundation
 enum AppTab: Hashable {
     case home
     case explore
+    case chat
     case map
-    case profile
 }
 
 @MainActor

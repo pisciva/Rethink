@@ -45,7 +45,7 @@ struct JourneyFlowView: View {
                 }
             }
         }
-        .background(HomeStyle.sky.ignoresSafeArea())
+        .background(HomeStyle.background.ignoresSafeArea())
         .navigationTitle(navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .tabBar)
@@ -582,7 +582,7 @@ private struct RemoteQuestionCard: View {
             .padding(.bottom, 12)
             .frame(maxWidth: 640)
             .frame(maxWidth: .infinity)
-            .background(HomeStyle.sky.opacity(0.98))
+            .background(HomeStyle.background)
         }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {

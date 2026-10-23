@@ -282,3 +282,10 @@ Final completion deployment: `rethink-recovery-3b3353x58-hansens-projects-6e7d42
 ### PRD v2 hosted rollout — 23 October 2026
 
 At the user's explicit “push and deploy it” instruction, pushed `9edd5cb` on `codex/recovery-api-mvp-20261023` and deployed the approved v3 backend on https://rethink-recovery-api.vercel.app. Cloud build/TypeScript passed, zero install audit vulnerabilities; authenticated synthetic diagnosis, save/resume, five-item topic fail/pass retry/history, independent concept recovery/validation, guest isolation, revision conflicts and legacy reset preservation passed. Both temporary guests were deleted. [Detailed hosted evidence](implementation/PRD-V2-EXECUTION.md#production-push-and-deployment). The Swift opt-in flag remains `RETHINK_PRD_V2=1`; its default was not switched or an iOS release distributed. Existing v2 endpoints remain compatible. Expert and iOS/UX acceptance are still separate, unrun checks.
+
+
+### PR #3 merge integration — 23 October 2026
+
+User explicitly requested merging PR #3 (`BE` → `main`). Resolved conflicts in an isolated worktree, preserving current backend/API contracts, implementation approvals, source archives, state guards and removed legacy services while retaining main's grade-catalog/chat navigation work. The approved onboarding persistence/Release-first-launch behavior and catalog navigation reset are retained. No C3/C5 rules, learner claims or model authority changed.
+
+The Swift CI log showed all 27 package tests passing, then Xcode rejecting project object format 110. Aligned `objectVersion` with the project's existing `preferredProjectObjectVersion = 77`; retained synchronized groups, targets, package dependencies and deployment target. Use the SDK-supported `.search` tab role for the detached chat slot instead of referencing the unavailable iOS 27 `.prominent` member; runtime availability alone does not make a newer SDK symbol compilable. Updated-head backend and Mac CI must pass before the final merge; no bypass of failing checks is authorized or claimed.

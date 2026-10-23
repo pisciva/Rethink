@@ -54,7 +54,7 @@ struct OnboardingView: View {
                 && (viewModel.currentPage != .quickCheck || viewModel.quickCheckIndex == OnboardingQuickCheckItem.examples.count)
                 && (viewModel.currentPage != .chatbot || viewModel.chatbotUsed) { footer }
         }
-        .background(HomeStyle.sky.ignoresSafeArea())
+        .background(HomeStyle.background.ignoresSafeArea())
         .preferredColorScheme(.light)
         .onAppear { viewModel.begin() }
         .onChange(of: scenePhase) { _, phase in

@@ -8,7 +8,6 @@ struct HomeView: View {
     @Environment(\.dynamicTypeSize) private var typeSize
     let openExplore: () -> Void
     let openMap: () -> Void
-    let openProfile: () -> Void
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -32,7 +31,7 @@ struct HomeView: View {
             .frame(maxWidth: 640)
             .frame(maxWidth: .infinity)
         }
-        .background(HomeStyle.sky.ignoresSafeArea())
+        .background(HomeStyle.background.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
         .refreshable {
             await viewModel.reload()
@@ -42,30 +41,42 @@ struct HomeView: View {
     }
 
     private var header: some View {
-        HStack(spacing: 7) {
-            Image(systemName: "sparkles")
-                .font(.system(size: 19, weight: .medium))
-            Text("Rethink")
-                .font(.system(size: 22, weight: .medium))
-                .tracking(-0.9)
-            Spacer()
-            Button(action: openProfile) {
-                Image(systemName: "person.crop.circle")
-                    .font(.system(size: 24, weight: .light))
-                    .frame(width: 48, height: 48)
-                    .background(.white.opacity(0.8), in: Circle())
+        HStack(spacing: 12) {
+            ProfileButton(size: 56)
+
+            VStack(alignment: .leading, spacing: 5) {
+                Text("Halo, Akbar") // Dummy nama untuk preview.
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(HomeStyle.ink)
+                Text("Yuk lanjut belajar SPLDV!") // Dummy materi; belum terhubung ke progres.
+                    .font(.system(size: 12))
+                    .foregroundStyle(HomeStyle.body)
             }
-            .buttonStyle(GentlePressStyle())
-            .accessibilityLabel("Buka profil")
+            .accessibilityElement(children: .combine)
+
+            Spacer(minLength: 8)
+
+            // PROPOSED visual placeholder: not learning evidence or actual user progress.
+            ZStack {
+                Circle()
+                    .stroke(HomeStyle.ink.opacity(0.08), lineWidth: 4)
+                Circle()
+                    .trim(from: 0, to: 0.65)
+                    .stroke(HomeStyle.blue, style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                    .rotationEffect(.degrees(-90))
+                Image(systemName: "bolt.fill")
+                    .font(.system(size: 19, weight: .medium))
+                    .foregroundStyle(HomeStyle.blue)
+            }
+            .frame(width: 50, height: 50)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Contoh tampilan progres gamifikasi")
         }
-        .foregroundStyle(HomeStyle.ink)
+        .frame(maxWidth: .infinity)
     }
 
     private var introduction: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text(viewModel.snapshot?.displayName.map { "Halo, \($0)." } ?? "Halo, pemikir hebat.")
-                .font(.subheadline.weight(.medium))
-                .foregroundStyle(HomeStyle.body)
             HStack(alignment: .center, spacing: 0) {
                 VStack(alignment: .leading, spacing: 1) {
                     Text("Bikin konsep")

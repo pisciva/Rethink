@@ -53,7 +53,7 @@ struct CatalogSubtopicView: View {
             .id(selectedBranch?.id)
         }
         .background {
-            LinearGradient(colors: [HomeStyle.lavender.opacity(0.4), HomeStyle.sky, Color.white], startPoint: .top, endPoint: .bottom)
+            HomeStyle.background
                 .ignoresSafeArea()
         }
         .navigationTitle(subject.title)

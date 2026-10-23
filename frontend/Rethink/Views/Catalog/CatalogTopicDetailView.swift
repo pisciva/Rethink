@@ -50,7 +50,7 @@ struct CatalogTopicDetailView: View {
             .frame(maxWidth: 640)
             .frame(maxWidth: .infinity)
         }
-        .background(HomeStyle.sky.ignoresSafeArea())
+        .background(HomeStyle.background.ignoresSafeArea())
         .navigationTitle(subject.title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.visible, for: .navigationBar)
